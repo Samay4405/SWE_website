@@ -7,6 +7,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
+import { HeroCanvas } from "@/components/three/HeroCanvas";
+
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
 
@@ -21,15 +23,9 @@ export function Hero() {
       id="hero"
       className="relative min-h-[calc(100vh-4rem)] md:min-h-[92vh] flex items-center justify-center overflow-hidden border-b border-border/60"
     >
-      {/* Background Graphic: Engineering Constellation & Grid */}
+      {/* Background Graphic: Three.js Interactive Network with SVG Fallback */}
       <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
-        <Image
-          src="/images/hero-fallback.svg"
-          alt="Engineering constellation network"
-          fill
-          priority
-          className="object-cover object-right md:object-center opacity-85"
-        />
+        <HeroCanvas />
         {/* Soft radial vignette to keep text ultra-legible */}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent md:via-background/60" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />

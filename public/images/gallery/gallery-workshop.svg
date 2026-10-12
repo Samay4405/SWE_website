@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 900" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="60%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="900" fill="url(#g2)" />
+  <!-- Terminal block -->
+  <rect x="50" y="200" width="700" height="450" rx="12" fill="#020617" stroke="#334155" stroke-width="2" />
+  <circle cx="90" cy="235" r="6" fill="#EF4444" />
+  <circle cx="115" cy="235" r="6" fill="#EAB308" />
+  <circle cx="140" cy="235" r="6" fill="#22C55E" />
+  <text x="90" y="300" fill="#38BDF8" font-family="monospace" font-size="20">$ kubectl get deployments</text>
+  <text x="90" y="340" fill="#94A3B8" font-family="monospace" font-size="16">READY   UP-TO-DATE   AVAILABLE   AGE</text>
+  <text x="90" y="375" fill="#4ADE80" font-family="monospace" font-size="16">3/3     3            3           12d</text>
+  <text x="90" y="440" fill="#38BDF8" font-family="monospace" font-size="20">$ git commit -m &quot;feat: auto-scaling&quot;</text>
+  <text x="90" y="480" fill="#E2E8F0" font-family="monospace" font-size="16">[main 9c2a10d] feat: auto-scaling active</text>
+  <g font-family="system-ui, sans-serif">
+    <rect x="50" y="50" width="100" height="28" rx="14" fill="#0284C7" fill-opacity="0.8" />
+    <text x="100" y="69" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">WORKSHOP</text>
+    <text x="50" y="780" fill="#FFFFFF" font-size="32" font-weight="800">Kubernetes Intensive</text>
+    <text x="50" y="820" fill="#CBD5E1" font-size="16">Hands-on Container Orchestration &amp; Cloud DevOps</text>
+  </g>
+</svg>

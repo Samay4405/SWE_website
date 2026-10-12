@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 750" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="g8" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B0764" />
+      <stop offset="60%" stop-color="#581C87" />
+      <stop offset="100%" stop-color="#7E22CE" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="750" fill="url(#g8)" />
+  <g font-family="system-ui, sans-serif">
+    <rect x="50" y="50" width="70" height="28" rx="14" fill="#7E22CE" fill-opacity="0.8" />
+    <text x="85" y="69" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">TEAM</text>
+    <text x="50" y="630" fill="#FFFFFF" font-size="32" font-weight="800">Chapter Roadmap Session</text>
+    <text x="50" y="670" fill="#F3E8FF" font-size="16">Annual Strategy, Budgets &amp; National Delegations</text>
+  </g>
+</svg>

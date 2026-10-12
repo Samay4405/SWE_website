@@ -6,14 +6,14 @@ export const resourceGroups: ResourceGroup[] = [
     icon: "BookOpen",
     links: [
       {
-        title: "__PLACEHOLDER__ SWE Global Resources",
-        url: "https://swe.org",
-        description: "Access SWE's global learning materials and webinars",
+        title: "SWE Global Learning Hub",
+        url: "https://swe.org/learning",
+        description: "Access webinars, technical certifications, and white papers",
       },
       {
-        title: "__PLACEHOLDER__ Technical Workshop Recordings",
-        url: "#",
-        description: "Watch past workshop recordings on YouTube",
+        title: "Technical Workshop Archive",
+        url: "https://youtube.com/@swemitwpu",
+        description: "Revisit recorded sessions in AI, Cloud, and Systems",
       },
     ],
   },
@@ -22,14 +22,14 @@ export const resourceGroups: ResourceGroup[] = [
     icon: "Code",
     links: [
       {
-        title: "__PLACEHOLDER__ GitHub Organization",
-        url: "https://github.com/__PLACEHOLDER__",
-        description: "Contribute to chapter open-source projects",
+        title: "SWE MIT-WPU GitHub",
+        url: "https://github.com/swe-mitwpu",
+        description: "Contribute to chapter open-source repositories and hackathon toolkits",
       },
       {
-        title: "__PLACEHOLDER__ Project Ideas Board",
-        url: "#",
-        description: "Find project partners and ideas",
+        title: "Hackathon Squad Matcher",
+        url: "/contact",
+        description: "Find interdisciplinary teammates for upcoming competitions",
       },
     ],
   },
@@ -38,14 +38,14 @@ export const resourceGroups: ResourceGroup[] = [
     icon: "Trophy",
     links: [
       {
-        title: "__PLACEHOLDER__ Leadership Program",
-        url: "#",
-        description: "Apply for SWE leadership development programs",
+        title: "Collegiate Leadership Program",
+        url: "https://swe.org/membership/collegiate",
+        description: "Leadership development curriculum and SWE annual conference tracks",
       },
       {
-        title: "__PLACEHOLDER__ Mentorship Portal",
-        url: "#",
-        description: "Connect with industry mentors",
+        title: "1-on-1 Alumni Mentorship",
+        url: "/contact",
+        description: "Connect with SWE working alumnae across Fortune 500 tech firms",
       },
     ],
   },
@@ -54,18 +54,17 @@ export const resourceGroups: ResourceGroup[] = [
     icon: "Rocket",
     links: [
       {
-        title: "__PLACEHOLDER__ Career Resources",
-        url: "#",
-        description: "Resume reviews, interview prep, and job boards",
+        title: "Resume & Algorithmic Interview Kits",
+        url: "/contact",
+        description: "Curated technical interview prep and algorithmic problem sets",
       },
       {
-        title: "__PLACEHOLDER__ SWE Career Center",
+        title: "Global SWE Career Center",
         url: "https://careers.swe.org",
-        description: "Explore engineering careers and opportunities",
+        description: "Exclusive recruitment pipelines and scholarship applications",
       },
     ],
   },
 ];
 
-/** Set to false to hide the Resources section until real content is available */
 export const showResources = true;

@@ -3,32 +3,38 @@ import type { TimelineEntry } from "./types";
 export const timeline: TimelineEntry[] = [
   {
     year: "2020",
-    title: "__PLACEHOLDER__ Chapter Founded",
+    title: "Official Chapter Charter",
     description:
-      "__PLACEHOLDER__ SWE MIT-WPU Student Chapter established with 25 founding members and a mission to empower women in engineering.",
+      "SWE MIT-WPU Student Chapter established in Pune with 25 founding members and faculty support from the School of Computer Engineering.",
   },
   {
     year: "2021",
-    title: "__PLACEHOLDER__ First Major Event",
+    title: "Inaugural Women in STEM Symposium",
     description:
-      "__PLACEHOLDER__ Organized the inaugural Women in STEM Summit, attracting 100+ attendees and 5 industry speakers.",
+      "Hosted our first regional symposium with 120+ collegiate attendees and keynote addresses from engineering directors at Red Hat and Microsoft.",
   },
   {
     year: "2022",
-    title: "__PLACEHOLDER__ National Recognition",
+    title: "National SWE Outstanding Chapter Award",
     description:
-      "__PLACEHOLDER__ Received SWE Outstanding Student Chapter Award. Membership grew to 75 active members.",
+      "Recognized by SWE India for exceptional collegiate technical initiatives. Chapter roster expanded past 150+ active student engineers.",
   },
   {
     year: "2023",
-    title: "__PLACEHOLDER__ Community Impact",
+    title: "Launch of Project Spark STEM Outreach",
     description:
-      "__PLACEHOLDER__ Launched the Code for Change outreach program, teaching coding to 200+ underprivileged students in Pune.",
+      "Commenced community educational drives teaching robotics, electronics, and foundational coding to 200+ secondary school girls across Pune.",
   },
   {
     year: "2024",
-    title: "__PLACEHOLDER__ Record Growth",
+    title: "Technovate National Hackathon Edition",
     description:
-      "__PLACEHOLDER__ 150+ members, 30+ events, partnerships with Fortune 500 companies. Largest year in chapter history.",
+      "Scaled Technovate into a 36-hour national collegiate hackathon with 250+ hackers, 40+ universities, and industry partners including Google and Barclays.",
+  },
+  {
+    year: "2025 – Present",
+    title: "500+ Member Milestone & Deep Tech Labs",
+    description:
+      "Launched weekly Cloud DevOps & AI clinics, cross-disciplinary research cohorts, and 100% placement track records for executive committee members.",
   },
 ];

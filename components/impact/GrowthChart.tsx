@@ -38,12 +38,12 @@ export function GrowthChart() {
         >
           <defs>
             <linearGradient id="colorMembers" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="5%" stop-color="#4A3AFF" stop-opacity={0.3} />
-              <stop offset="95%" stop-color="#4A3AFF" stop-opacity={0.0} />
+              <stop offset="5%" stopColor="#4A3AFF" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#4A3AFF" stopOpacity={0.0} />
             </linearGradient>
             <linearGradient id="colorEvents" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="5%" stop-color="#6B5CFF" stop-opacity={0.2} />
-              <stop offset="95%" stop-color="#6B5CFF" stop-opacity={0.0} />
+              <stop offset="5%" stopColor="#6B5CFF" stopOpacity={0.2} />
+              <stop offset="95%" stopColor="#6B5CFF" stopOpacity={0.0} />
             </linearGradient>
           </defs>
           <CartesianGrid

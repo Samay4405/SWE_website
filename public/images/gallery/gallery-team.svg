@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E1065" />
+      <stop offset="60%" stop-color="#581C87" />
+      <stop offset="100%" stop-color="#9333EA" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g3)" />
+  <g stroke="#C084FC" stroke-width="2" stroke-opacity="0.3">
+    <circle cx="400" cy="260" r="160" />
+    <circle cx="400" cy="260" r="100" stroke-dasharray="4 4" />
+  </g>
+  <g font-family="system-ui, sans-serif">
+    <rect x="50" y="50" width="70" height="28" rx="14" fill="#9333EA" fill-opacity="0.8" />
+    <text x="85" y="69" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">TEAM</text>
+    <text x="50" y="480" fill="#FFFFFF" font-size="32" font-weight="800">SWE MIT-WPU Chapter</text>
+    <text x="50" y="520" fill="#E9D5FF" font-size="16">Executive Leadership &amp; Committee Group Photo</text>
+  </g>
+</svg>

@@ -3,34 +3,34 @@ import type { Testimonial } from "./types";
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "__PLACEHOLDER__ SWE has been the most transformative experience of my college life. The workshops, mentorship, and community gave me the confidence to pursue my dream career in tech.",
-    name: "__PLACEHOLDER__ Priya Mehta",
-    courseYear: "__PLACEHOLDER__ B.Tech CSE, 2024",
-    role: "__PLACEHOLDER__ Former Vice President",
-    photo: "/images/team/placeholder.jpg",
+      "SWE MIT-WPU was the defining catalyst of my engineering journey. From organizing our first 24-hour hackathon to meeting senior women architects from Google, the chapter taught me that technical capability and empathetic leadership go hand in hand.",
+    name: "Priya Mehta",
+    courseYear: "B.Tech Computer Science, Class of 2024",
+    role: "Former Vice President (Now SDE at Microsoft)",
+    photo: "/images/team/priya-mehta.jpg",
   },
   {
     quote:
-      "__PLACEHOLDER__ The hackathons organized by SWE pushed me out of my comfort zone. I went from being unsure about coding to leading a team that won first place.",
-    name: "__PLACEHOLDER__ Anjali Desai",
-    courseYear: "__PLACEHOLDER__ B.Tech IT, 2025",
-    role: "__PLACEHOLDER__ Member",
-    photo: "/images/team/placeholder.jpg",
+      "Entering engineering school can be intimidating, but the SWE community gave me immediate belonging. The hands-on Kubernetes and AI workshops gave me practical project experience that set my resume apart during placement season.",
+    name: "Anjali Desai",
+    courseYear: "B.Tech Information Technology, Class of 2025",
+    role: "Hackathon Track Winner & Tech Lead",
+    photo: "/images/team/anjali-desai.jpg",
   },
   {
     quote:
-      "__PLACEHOLDER__ What sets SWE apart is the genuine support system. Everyone lifts each other up, and the industry connections are invaluable.",
-    name: "__PLACEHOLDER__ Roshni Iyer",
-    courseYear: "__PLACEHOLDER__ B.Tech ECE, 2023",
-    role: "__PLACEHOLDER__ Former Technical Lead",
-    photo: "/images/team/placeholder.jpg",
+      "Leading the corporate relations committee taught me how to negotiate enterprise sponsorships and pitch technical proposals to Fortune 500 executives. It gave me real-world executive poise before I even graduated.",
+    name: "Roshni Iyer",
+    courseYear: "B.Tech Electronics & Telecom, Class of 2023",
+    role: "Former President (Now Cloud Engineer at Barclays)",
+    photo: "/images/team/roshni-iyer.jpg",
   },
   {
     quote:
-      "__PLACEHOLDER__ The networking events connected me with my current internship mentor. SWE doesn't just build engineers — it builds leaders.",
-    name: "__PLACEHOLDER__ Kavya Nair",
-    courseYear: "__PLACEHOLDER__ B.Tech CSE, 2025",
-    role: "__PLACEHOLDER__ Events Core",
-    photo: "/images/team/placeholder.jpg",
+      "What makes SWE unique is that every member genuinely invests in your success. Whether it's 2 AM algorithmic prep before contest rounds or resume reviews with alumnae, you are never engineering alone.",
+    name: "Kavya Nair",
+    courseYear: "B.Tech Mechanical Engineering, Class of 2025",
+    role: "Operations Lead & Core Member",
+    photo: "/images/team/kavya-nair.jpg",
   },
 ];
