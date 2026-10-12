@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-stem" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064E3B" />
+      <stop offset="50%" stop-color="#047857" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg-stem)" />
+  
+  <g stroke="#A7F3D0" stroke-width="2" stroke-opacity="0.3">
+    <circle cx="950" cy="300" r="160" fill="none" />
+    <circle cx="950" cy="300" r="100" fill="none" stroke-dasharray="8 8" />
+    <polygon points="950,220 1020,340 880,340" fill="none" stroke="#D1FAE5" />
+    <circle cx="950" cy="300" r="16" fill="#ECFDF5" />
+  </g>
+
+  <g font-family="system-ui, sans-serif">
+    <rect x="80" y="80" width="120" height="32" rx="16" fill="#065F46" fill-opacity="0.6" stroke="#FFFFFF" stroke-opacity="0.2" />
+    <text x="140" y="101" fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1">OUTREACH</text>
+    
+    <text x="80" y="240" fill="#FFFFFF" font-size="46" font-weight="800" letter-spacing="-1">Project Spark</text>
+    <text x="80" y="295" fill="#D1FAE5" font-size="28" font-weight="500">High School STEM Outreach Drive</text>
+    
+    <text x="80" y="480" fill="#A7F3D0" font-size="18" font-family="monospace">COMMUNITY IMPACT // 120+ YOUNG LEARNERS</text>
+    <text x="80" y="520" fill="#ECFDF5" font-size="16">📍 Kothrud Community School &amp; MIT-WPU FabLab</text>
+  </g>
+</svg>

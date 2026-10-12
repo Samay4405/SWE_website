@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-summit" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1B4B" />
+      <stop offset="60%" stop-color="#312E81" />
+      <stop offset="100%" stop-color="#4338CA" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg-summit)" />
+  
+  <!-- Subtle decorative rings -->
+  <circle cx="1000" cy="300" r="280" stroke="#818CF8" stroke-width="1.5" stroke-opacity="0.2" fill="none" />
+  <circle cx="1000" cy="300" r="200" stroke="#818CF8" stroke-width="1" stroke-opacity="0.3" fill="none" stroke-dasharray="6 6" />
+  <circle cx="1000" cy="300" r="120" stroke="#C7D2FE" stroke-width="2" stroke-opacity="0.4" fill="none" />
+  
+  <g font-family="system-ui, sans-serif">
+    <rect x="80" y="80" width="80" height="32" rx="16" fill="#4338CA" fill-opacity="0.6" stroke="#FFFFFF" stroke-opacity="0.2" />
+    <text x="120" y="101" fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1">TALK</text>
+    
+    <text x="80" y="240" fill="#FFFFFF" font-size="48" font-weight="800" letter-spacing="-1">Women in STEM</text>
+    <text x="80" y="295" fill="#E0E7FF" font-size="28" font-weight="500">Leadership &amp; Deep Tech Horizons</text>
+    
+    <text x="80" y="480" fill="#A5B4FC" font-size="18" font-family="monospace">EXECUTIVE SYMPOSIUM // SWE MIT-WPU</text>
+    <text x="80" y="520" fill="#E2E8F0" font-size="16">📍 Swami Vivekananda Hall, Pune • Industry Leaders</text>
+  </g>
+</svg>

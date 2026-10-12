@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Background Radial Gradients for high-end atmospheric depth -->
+    <radialGradient id="hero-glow-1" cx="70%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4A3AFF" stop-opacity="0.14" />
+      <stop offset="60%" stop-color="#4A3AFF" stop-opacity="0.02" />
+      <stop offset="100%" stop-color="#4A3AFF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="hero-glow-2" cx="30%" cy="75%" r="40%">
+      <stop offset="0%" stop-color="#6B5CFF" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#6B5CFF" stop-opacity="0" />
+    </radialGradient>
+    
+    <!-- Grid Pattern -->
+    <pattern id="grid-pattern" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" stroke-opacity="0.04" stroke-width="1" />
+      <circle cx="0" cy="0" r="1.5" fill="currentColor" fill-opacity="0.12" />
+    </pattern>
+
+    <pattern id="dot-pattern" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="15" cy="15" r="1" fill="currentColor" fill-opacity="0.06" />
+    </pattern>
+
+    <!-- Node Glow Filter -->
+    <filter id="node-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Ambient Glow Layers -->
+  <rect width="100%" height="100%" fill="url(#hero-glow-1)" />
+  <rect width="100%" height="100%" fill="url(#hero-glow-2)" />
+
+  <!-- Engineering Coordinate Grid -->
+  <rect width="100%" height="100%" fill="url(#grid-pattern)" className="text-foreground" />
+  <rect width="100%" height="100%" fill="url(#dot-pattern)" className="text-foreground" />
+
+  <!-- Constellation Network / Engineering Schematic Vectors -->
+  <g stroke="#4A3AFF" stroke-opacity="0.22" stroke-width="1.2" stroke-dasharray="4 4">
+    <!-- Connecting circuit lines -->
+    <line x1="680" y1="180" x2="840" y2="240" />
+    <line x1="840" y1="240" x2="980" y2="190" />
+    <line x1="840" y1="240" x2="890" y2="390" />
+    <line x1="890" y1="390" x2="1050" y2="440" />
+    <line x1="890" y1="390" x2="760" y2="490" />
+    <line x1="760" y1="490" x2="650" y2="430" />
+    <line x1="650" y1="430" x2="680" y2="180" />
+    <line x1="760" y1="490" x2="820" y2="640" />
+    <line x1="820" y1="640" x2="990" y2="590" />
+    <line x1="990" y1="590" x2="1050" y2="440" />
+  </g>
+
+  <!-- Solid Accent Traces -->
+  <g stroke="#4A3AFF" stroke-opacity="0.45" stroke-width="1.5">
+    <polyline points="720,200 840,240 890,390 760,490 820,640" fill="none" />
+    <polyline points="840,240 980,190 1050,440" fill="none" />
+  </g>
+
+  <!-- Geometric Polygonal Shading (Engineering CAD mesh) -->
+  <polygon points="840,240 890,390 760,490 650,430 680,180" fill="#4A3AFF" fill-opacity="0.025" />
+  <polygon points="840,240 980,190 1050,440 890,390" fill="#4A3AFF" fill-opacity="0.04" />
+  <polygon points="890,390 1050,440 990,590 820,640 760,490" fill="#4A3AFF" fill-opacity="0.03" />
+
+  <!-- Circuit Nodes & Intersection Markers -->
+  <g fill="#4A3AFF">
+    <!-- Major Nodes with Rings -->
+    <circle cx="840" cy="240" r="5" filter="url(#node-glow)" />
+    <circle cx="840" cy="240" r="14" fill="none" stroke="#4A3AFF" stroke-opacity="0.3" stroke-width="1" />
+    
+    <circle cx="890" cy="390" r="6" filter="url(#node-glow)" fill="#6B5CFF" />
+    <circle cx="890" cy="390" r="22" fill="none" stroke="#6B5CFF" stroke-opacity="0.25" stroke-width="1" stroke-dasharray="2 3" />
+
+    <circle cx="760" cy="490" r="4.5" />
+    <circle cx="760" cy="490" r="11" fill="none" stroke="#4A3AFF" stroke-opacity="0.25" stroke-width="1" />
+
+    <circle cx="980" cy="190" r="4" />
+    <circle cx="1050" cy="440" r="5.5" filter="url(#node-glow)" />
+    <circle cx="680" cy="180" r="3.5" />
+    <circle cx="650" cy="430" r="4" />
+    <circle cx="820" cy="640" r="4" />
+    <circle cx="990" cy="590" r="4.5" />
+
+    <!-- Secondary Nodes -->
+    <circle cx="580" cy="310" r="2.5" fill-opacity="0.5" />
+    <circle cx="620" cy="580" r="2.5" fill-opacity="0.5" />
+    <circle cx="920" cy="120" r="2.5" fill-opacity="0.5" />
+    <circle cx="1110" cy="360" r="2.5" fill-opacity="0.5" />
+    <circle cx="730" cy="340" r="2" fill-opacity="0.3" />
+  </g>
+
+  <!-- Technical Overlay Crosshairs & Coordinate Tags -->
+  <g stroke="currentColor" stroke-opacity="0.2" stroke-width="1" className="text-foreground">
+    <!-- Target crosshairs -->
+    <path d="M 832 240 L 848 240 M 840 232 L 840 248" />
+    <path d="M 882 390 L 898 390 M 890 382 L 890 398" />
+    <path d="M 1042 440 L 1058 440 M 1050 432 L 1050 448" />
+
+    <!-- Corner engineering frame brackets -->
+    <path d="M 40 40 L 40 70 M 40 40 L 70 40" />
+    <path d="M 1160 40 L 1160 70 M 1160 40 L 1130 40" />
+    <path d="M 40 760 L 40 730 M 40 760 L 70 760" />
+    <path d="M 1160 760 L 1160 730 M 1160 760 L 1130 760" />
+  </g>
+
+  <!-- Engineering Spec Text / Coordinate labels -->
+  <g font-family="monospace" font-size="10" fill="currentColor" fill-opacity="0.3" className="text-foreground">
+    <text x="856" y="235">N:402.18 // SWE_CORE</text>
+    <text x="906" y="385">MIT_WPU_COLLEGIATE</text>
+    <text x="1066" y="445">PUNE_IN [18.5204° N, 73.8567° E]</text>
+    <text x="60" y="65">SYS:ENG_FUTURE_INIT</text>
+    <text x="1020" y="65">VER:2026.1</text>
+  </g>
+</svg>
