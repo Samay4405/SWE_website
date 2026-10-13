@@ -5,6 +5,10 @@ import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://swe-mitwpu.vercel.app"
+  ),
+  robots: { index: true, follow: true },
   title: {
     default: "SWE MIT-WPU — Society of Women Engineers",
     template: "%s | SWE MIT-WPU",
@@ -40,8 +44,14 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:text-sm focus:font-medium focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        >
+          Skip to main content
+        </a>
         <Navbar />
-        <main className="flex-1 pt-16 md:pt-18">{children}</main>
+        <main id="main" className="flex-1 pt-16 md:pt-18">{children}</main>
         <Footer />
       </body>
     </html>
