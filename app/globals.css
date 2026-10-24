@@ -57,13 +57,14 @@
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-display);
 
-  /* Custom brand colors — accessible via Tailwind classes:
-     bg-brand, text-brand-foreground, etc. */
+  /* Custom brand colors — accessible via Tailwind classes */
   --color-brand: #4A3AFF;
   --color-brand-hover: #3D2FD9;
   --color-brand-light: #6B5CFF;
   --color-brand-muted: #4A3AFF1A;
   --color-brand-foreground: #FFFFFF;
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
 
   /* Surface token */
   --color-surface: var(--surface);
@@ -71,41 +72,51 @@
 
 :root {
   /* SWE Design System — Light Mode */
-  --background: #FAFAF9;
-  --foreground: #1A1A1A;
+  --background: #FDFDFC;
+  --foreground: #1F1D2B;
   --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
+  --card-foreground: #1F1D2B;
   --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
-  --primary: #4A3AFF;
+  --popover-foreground: #1F1D2B;
+
+  /* Brand purple */
+  --primary: #5B5478;
   --primary-foreground: #FFFFFF;
-  --secondary: #F5F5F4;
-  --secondary-foreground: #1A1A1A;
-  --muted: #F5F5F4;
-  --muted-foreground: #6B6B6B;
-  --accent: #F5F5F4;
-  --accent-foreground: #1A1A1A;
+
+  /* Soft purple tints */
+  --secondary: #F3F2F7;
+  --secondary-foreground: #3E3857;
+  --muted: #F3F2F7;
+  --muted-foreground: #6E6A80;
+  --accent: #ECEAF2;
+  --accent-foreground: #3E3857;
+
+  /* Brand yellow */
+  --highlight: #DCC554;
+  --highlight-foreground: #1F1D2B;
+
   --destructive: #EF4444;
-  --border: #E5E5E3;
-  --input: #E5E5E3;
-  --ring: #4A3AFF;
-  --chart-1: #4A3AFF;
-  --chart-2: #6B5CFF;
-  --chart-3: #8B7FFF;
-  --chart-4: #ABA3FF;
-  --chart-5: #CBC7FF;
+  --border: #E6E4EC;
+  --input: #E6E4EC;
+  --ring: #5B5478;
+
+  --chart-1: #5B5478;
+  --chart-2: #DCC554;
+  --chart-3: #8A84A3;
+  --chart-4: #A9A9AA;
+  --chart-5: #C9C5D8;
+
   --radius: 0.5rem;
   --surface: #FFFFFF;
 
-  /* Sidebar (if ever used) */
-  --sidebar: #FAFAF9;
-  --sidebar-foreground: #1A1A1A;
-  --sidebar-primary: #4A3AFF;
+  --sidebar: #FDFDFC;
+  --sidebar-foreground: #1F1D2B;
+  --sidebar-primary: #5B5478;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F5F5F4;
-  --sidebar-accent-foreground: #1A1A1A;
-  --sidebar-border: #E5E5E3;
-  --sidebar-ring: #4A3AFF;
+  --sidebar-accent: #ECEAF2;
+  --sidebar-accent-foreground: #3E3857;
+  --sidebar-border: #E6E4EC;
+  --sidebar-ring: #5B5478;
 }
 
 .dark {
@@ -133,7 +144,6 @@
   --chart-4: #CBC7FF;
   --chart-5: #EBE9FF;
   --surface: #171717;
-
   --sidebar: #171717;
   --sidebar-foreground: #EDEDED;
   --sidebar-primary: #6B5CFF;
@@ -194,7 +204,7 @@
 }
 
 /* ─────────────────────────────────────────────
-   UTILITY CLASSES
+   UTILITY CLASSES & ANIMATIONS
    ───────────────────────────────────────────── */
 
 @layer utilities {
@@ -211,6 +221,87 @@
   /* Text balance for headings */
   .text-balance {
     text-wrap: balance;
+  }
+
+  .hero-float {
+    animation: hero-float 9s ease-in-out infinite;
+  }
+
+  .hero-float-delayed {
+    animation: hero-float 11s ease-in-out 1.2s infinite;
+  }
+
+  .animate-data-stream-1 {
+    animation: dataStream 6s linear infinite;
+  }
+
+  .animate-data-stream-2 {
+    animation: dataStream 8s linear 2s infinite;
+  }
+
+  .animate-data-stream-3 {
+    animation: dataStream 5.5s linear 1s infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulseGlow 4s ease-in-out infinite;
+  }
+
+  .animate-pulse-medium {
+    animation: pulseGlow 3s ease-in-out 1s infinite;
+  }
+
+  .animate-pulse-fast {
+    animation: pulseGlow 2.5s ease-in-out 0.5s infinite;
+  }
+
+  .animate-halo-ring {
+    animation: pulseHalo 3.5s ease-out infinite;
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes dataStream {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -240;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes pulseHalo {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
   }
 }
 

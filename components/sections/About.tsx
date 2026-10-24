@@ -1,191 +1,156 @@
 "use client";
 
-import { Code2, Compass, HeartHandshake, Briefcase, Globe2, MapPin, Building2, ArrowRight } from "lucide-react";
-import { ScrollReveal, ScrollRevealItem } from "@/components/shared/ScrollReveal";
+import Image from "next/image";
+import { Users, BookOpen, Star, ArrowRight } from "lucide-react";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
-const focusAreas = [
+const pillars = [
   {
-    icon: Code2,
-    title: "Technical Excellence",
+    title: "Connecting",
     description:
-      "Deep-dive workshops in AI, full-stack engineering, cloud architecture, and competitive hackathons built to cultivate industry-ready technical skills.",
-    tag: "Workshops & Hackathons",
+      "Building a supportive community where ideas, experiences, and opportunities come together.",
+    icon: Users,
+    iconBg: "bg-[#EDE6FA]",
+    iconColor: "text-[#7254A8]",
   },
   {
-    icon: Compass,
-    title: "Leadership Development",
+    title: "Learning",
     description:
-      "Student-run committees, public speaking training, and project management roles empowering members to lead technical teams with confidence.",
-    tag: "Initiatives & Management",
+      "Gaining hands-on experience, building technical skills, and exploring new possibilities.",
+    icon: BookOpen,
+    iconBg: "bg-[#FFF0B3]",
+    iconColor: "text-[#A67C00]",
   },
   {
-    icon: HeartHandshake,
-    title: "Inclusive Community",
+    title: "Leading",
     description:
-      "A supportive, peer-driven sisterhood of engineers sharing resources, academic mentorship, interview prep, and collaborative research.",
-    tag: "Mentorship & Culture",
-  },
-  {
-    icon: Briefcase,
-    title: "Career Advancement",
-    description:
-      "Direct exposure to multinational tech sponsors, resume critiques, panel talks with senior women leaders, and exclusive hiring pipelines.",
-    tag: "Networking & Placements",
-  },
-];
-
-const tiers = [
-  {
-    level: "Global Footprint",
-    name: "SWE Global",
-    detail: "40,000+ members across 400+ collegiate & professional chapters worldwide since 1950.",
-    icon: Globe2,
-    badge: "Est. 1950",
-  },
-  {
-    level: "National Network",
-    name: "SWE India",
-    detail: "Unifying premier technical institutions and Fortune 500 corporate partners across the country.",
-    icon: Building2,
-    badge: "All-India",
-  },
-  {
-    level: "Local Impact",
-    name: "MIT-WPU Chapter",
-    detail: "Pune's active chapter fostering student engineering breakthroughs, hackathons, and outreach.",
-    icon: MapPin,
-    badge: "Pune, India",
-    highlight: true,
+      "Empowering women to take initiative, create change, and shape a more inclusive tech future.",
+    icon: Star,
+    iconBg: "bg-[#EDE6FA]",
+    iconColor: "text-[#7254A8]",
   },
 ];
 
 export function About() {
   return (
-    <section id="about" className="section-padding bg-background border-b border-border/60">
+    <section id="about" className="relative bg-white pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
       <div className="section-container">
-        {/* Section Header */}
-        <ScrollReveal className="max-w-3xl mb-16 md:mb-24">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-muted/50 text-xs font-mono font-medium text-muted-foreground mb-4">
-            <span>01 // ABOUT THE CHAPTER</span>
-          </div>
+        {/* ── Top Part: Two-Column Introduction ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 xl:gap-20 items-center mb-20 md:mb-28">
+          {/* Left Column: Heading & Mission */}
+          <ScrollReveal className="lg:col-span-6 xl:col-span-6">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#7254A8]">
+                ABOUT SWE
+              </span>
+              <span className="h-[1.5px] w-7 bg-[#C4B5E6]" />
+            </div>
+
+            {/* Main Two-Line Heading */}
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-extrabold tracking-tight leading-[1.12] mb-6 sm:mb-7"
+              style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
+            >
+              <span className="block text-[#24164F]">
+                More than a society.
+              </span>
+              <span className="block text-[#8B6BC2] mt-1 sm:mt-1.5">
+                A space to build.
+              </span>
+            </h2>
+
+            {/* Supporting Description */}
+            <p className="text-base sm:text-lg text-[#5E5B70] leading-relaxed max-w-xl font-normal">
+              The Society of Women Engineers (SWE) at MIT-WPU is a community of
+              curious minds, aspiring engineers, and future innovators. We bring
+              together women who want to explore technology, develop practical
+              skills, collaborate on meaningful projects, and create opportunities
+              for one another.
+            </p>
+          </ScrollReveal>
+
+          {/* Right Column: Event Photograph */}
+          <ScrollReveal delay={0.15} className="lg:col-span-6 xl:col-span-6">
+            <div className="relative w-full max-w-lg lg:max-w-none mx-auto">
+              {/* Subtle restrained soft lavender backdrop shape behind top-right corner */}
+              <div
+                className="pointer-events-none absolute -top-4 -right-4 sm:-top-6 sm:-right-6 w-3/4 h-3/4 rounded-[32px] bg-[#EDE6FA]/70 -z-10"
+                aria-hidden="true"
+              />
+
+              {/* Main Photo Card */}
+              <div className="relative rounded-2xl md:rounded-[22px] overflow-hidden shadow-[0_14px_38px_rgba(36,22,79,0.08)] border border-[#E5E2EC]/80 bg-white">
+                <Image
+                  src="/images/about/workshop-audience.jpg"
+                  alt="SWE MIT-WPU students and members collaborating in a technical workshop"
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto object-cover aspect-[4/3] sm:aspect-[16/11]"
+                  priority={false}
+                />
+              </div>
+
+              {/* Editorial Floating Badge (Bottom Right) */}
+              <div className="absolute -bottom-4 right-3 sm:-bottom-5 sm:right-5 z-10 bg-[#EDE6FA]/95 backdrop-blur-md border border-[#D5CBEA] rounded-xl sm:rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5 shadow-[0_10px_25px_rgba(36,22,79,0.08)] flex items-center gap-3">
+                <div className="text-left">
+                  <p className="text-[11px] sm:text-xs font-bold text-[#24164F] leading-tight">
+                    Real People.
+                  </p>
+                  <p className="text-[11px] sm:text-xs font-bold text-[#24164F] leading-tight">
+                    Real Projects.
+                  </p>
+                  <p className="text-[11px] sm:text-xs font-medium text-[#7254A8] leading-tight">
+                    Lasting Impact.
+                  </p>
+                </div>
+                <ArrowRight className="size-4 text-[#7254A8] ml-1" />
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* ── Bottom Part: Three SWE Pillars ── */}
+        <div className="border-t border-[#E5E2EC] pt-14 md:pt-18">
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6"
+            className="mb-10 text-center text-2xl font-bold tracking-tight text-[#24164F] sm:text-3xl md:mb-14"
             style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
           >
-            A global movement with a deeply personal collegiate home.
+            Three Pillars of SWE
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            The Society of Women Engineers (SWE) is the world’s largest advocate and catalyst for change for women in engineering and technology. 
-            At MIT World Peace University, Pune, our student chapter transforms that global legacy into tangible student opportunities: 
-            building real projects, publishing research, hosting flagship symposiums, and championing diversity in STEM.
-          </p>
-        </ScrollReveal>
-
-        {/* Part 2: Global → India → MIT-WPU Connecting Tier Diagram */}
-        <div className="mb-20 md:mb-28">
-          <div className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-6">
-            // Organizational Heritage
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-            {tiers.map((tier, idx) => {
-              const Icon = tier.icon;
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#E5E2EC]">
+            {pillars.map((pillar, idx) => {
+              const Icon = pillar.icon;
               return (
                 <ScrollReveal
-                  key={tier.name}
+                  key={pillar.title}
                   delay={idx * 0.1}
-                  className={`relative p-6 sm:p-8 rounded-lg border transition-all duration-300 ${
-                    tier.highlight
-                      ? "border-primary bg-primary/[0.03] shadow-[0_0_24px_rgba(74,58,255,0.08)]"
-                      : "border-border bg-card hover:border-foreground/20"
-                  }`}
+                  className="group flex flex-col items-center px-6 py-8 text-center transition-all duration-300 hover:-translate-y-1 md:px-8 md:py-0 lg:px-12 first:pt-0 first:md:pl-0 last:pb-0 last:md:pr-0"
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-                      {tier.level}
-                    </span>
-                    <span
-                      className={`text-xs px-2.5 py-0.5 rounded-full font-mono font-medium ${
-                        tier.highlight
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted text-muted-foreground"
-                      }`}
-                    >
-                      {tier.badge}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className="mb-4 flex flex-col items-center gap-3">
                     <div
-                      className={`p-2 rounded-md ${
-                        tier.highlight
-                          ? "bg-primary/10 text-primary"
-                          : "bg-muted text-foreground"
-                      }`}
+                      className={`size-12 shrink-0 rounded-full ${pillar.iconBg} ${pillar.iconColor} flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-xs`}
                     >
                       <Icon className="size-5" />
                     </div>
                     <h3
-                      className="text-xl font-bold text-foreground tracking-tight"
+                      className="text-2xl font-bold tracking-tight text-[#24164F]"
                       style={{
                         fontFamily: "var(--font-display), system-ui, sans-serif",
                       }}
                     >
-                      {tier.name}
+                      {pillar.title}
                     </h3>
                   </div>
 
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {tier.detail}
+                  {/* Description */}
+                  <p className="max-w-sm text-sm font-normal leading-relaxed text-[#74738A] sm:text-[15px]">
+                    {pillar.description}
                   </p>
-
-                  {idx < tiers.length - 1 && (
-                    <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 bg-background border border-border rounded-full p-1 text-muted-foreground">
-                      <ArrowRight className="size-3" />
-                    </div>
-                  )}
                 </ScrollReveal>
               );
             })}
           </div>
-        </div>
-
-        {/* Part 3: Four Focus Areas 2x2 Grid */}
-        <div>
-          <div className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-6">
-            // Core Strategic Pillars
-          </div>
-          <ScrollReveal stagger className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {focusAreas.map((area) => {
-              const Icon = area.icon;
-              return (
-                <ScrollRevealItem key={area.title}>
-                  <div className="h-full p-6 sm:p-8 rounded-lg border border-border bg-card hover:border-foreground/30 transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="p-3 rounded-lg bg-muted/60 text-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-200">
-                          <Icon className="size-6" />
-                        </div>
-                        <span className="text-xs font-mono text-muted-foreground bg-muted/40 px-2.5 py-1 rounded">
-                          {area.tag}
-                        </span>
-                      </div>
-                      <h4
-                        className="text-xl font-bold text-foreground mb-3 tracking-tight"
-                        style={{
-                          fontFamily: "var(--font-display), system-ui, sans-serif",
-                        }}
-                      >
-                        {area.title}
-                      </h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {area.description}
-                      </p>
-                    </div>
-                  </div>
-                </ScrollRevealItem>
-              );
-            })}
-          </ScrollReveal>
         </div>
       </div>
     </section>

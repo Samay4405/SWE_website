@@ -7,13 +7,13 @@ import type { Variants } from "framer-motion";
 export const fadeInUp: Variants = {
   hidden: {
     opacity: 0,
-    y: 12,
+    y: 18,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.65,
       ease: "easeOut",
     },
   },

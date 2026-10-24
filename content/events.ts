@@ -2,13 +2,71 @@ import type { Event } from "./types";
 
 export const events: Event[] = [
   {
+    id: "0",
+    slug: "building-with-javascript",
+    title: "Building with JavaScript",
+    category: "workshop",
+    displayCategory: "WORKSHOP",
+    displayDate: "Date TBA",
+    displayLocation: "MIT-WPU",
+    date: "2026-05-12T10:00:00+05:30",
+    location: "Computing Labs, MIT-WPU Pune",
+    coverImage: "/images/events/javascript-workshop.jpg",
+    shortDescription:
+      "A hands-on session to strengthen your JavaScript skills, build real-world projects, and gain confidence in web development.",
+    body: `### Building with JavaScript Masterclass
+
+Join SWE MIT-WPU for an immersive, practical coding workshop designed to take you from core JavaScript fundamentals to modern full-stack development patterns.
+
+#### What We'll Cover
+1. **ES6+ Modern Syntax:** Destructuring, promises, async/await, and functional programming concepts.
+2. **Interactive DOM & State:** Building dynamic user interfaces and asynchronous API integrations.
+3. **Real-World Project Sprint:** Writing modular code, debugging like a pro, and deploying your web project.
+
+#### Who Should Attend
+Collegiate engineers, student developers, and aspiring frontend/fullstack builders looking to strengthen their technical depth and portfolio.`,
+    schedule: [
+      {
+        time: "10:00 AM",
+        title: "Welcome & Setup",
+        description: "Environment check, Node.js tooling, and starter repo cloning.",
+      },
+      {
+        time: "10:30 AM",
+        title: "Part 1: Asynchronous JavaScript",
+        description: "Event loop, fetch API, and async/await deep dive.",
+      },
+      {
+        time: "12:30 PM",
+        title: "Hands-on Project Sprint",
+        description: "Building a functional real-time dashboard application.",
+      },
+      {
+        time: "02:00 PM",
+        title: "Showcase & Q&A",
+        description: "Code reviews, debugging tips, and next steps.",
+      },
+    ],
+    speakers: [
+      {
+        name: "Neha Sharma",
+        title: "Senior Frontend Engineer & SWE Mentor",
+      },
+    ],
+    partners: ["GitHub Campus", "SWE Pune Section"],
+    gallery: [],
+  },
+  {
     id: "1",
     slug: "technovate-hackathon-2026",
     title: "Technovate 2026: AI & Sustainability Hackathon",
     category: "hackathon",
+    displayCategory: "HACKATHON",
+    displayDate: "Apr 18, 2026",
+    displayLocation: "MIT-WPU",
     date: "2026-04-18T09:00:00+05:30",
     location: "Chanakya Auditorium & Labs, MIT-WPU Pune",
-    coverImage: "/images/events/technovate-hackathon.svg",
+    coverImage: "/images/events/hackathon-collab.jpg",
     shortDescription:
       "A flagship 36-hour national collegiate hackathon challenging 250+ student developers to architect AI solutions addressing renewable energy, smart mobility, and healthcare access.",
     body: `### Welcome to Technovate 2026
@@ -81,9 +139,12 @@ Participants will receive 1-on-1 technical guidance from senior software archite
     slug: "women-in-stem-leadership-summit",
     title: "Women in STEM: Leadership & Deep Tech Horizons",
     category: "talk",
+    displayCategory: "KEYNOTE & SUMMIT",
+    displayDate: "Mar 24, 2026",
+    displayLocation: "MIT-WPU",
     date: "2026-03-24T14:30:00+05:30",
     location: "Swami Vivekananda Hall, MIT-WPU",
-    coverImage: "/images/events/leadership-summit.svg",
+    coverImage: "/images/events/stem-summit.jpg",
     shortDescription:
       "A high-impact symposium featuring senior engineering executives and SWE alumnae sharing insights on leading large-scale technical teams and breaking the glass ceiling.",
     body: `### About the Summit
@@ -134,39 +195,51 @@ Join SWE MIT-WPU for an inspiring afternoon of candid discourse, leadership fram
     slug: "cloud-native-kubernetes-masterclass",
     title: "Cloud-Native Architecture & Kubernetes Intensive",
     category: "workshop",
-    date: "2026-02-28T10:00:00+05:30",
-    location: "Computing Lab 4, Chanakya Building, MIT-WPU",
-    coverImage: "/images/events/cloud-workshop.svg",
+    displayCategory: "WORKSHOP",
+    displayDate: "May 08, 2026",
+    displayLocation: "MIT-WPU",
+    date: "2026-05-08T10:00:00+05:30",
+    location: "Computing Lab 4, MIT-WPU",
+    coverImage: "/images/events/cloud-masterclass.jpg",
     shortDescription:
-      "A hands-on, terminal-driven technical workshop covering Docker containerization, Kubernetes orchestration, Helm charts, and continuous deployment pipelines.",
-    body: `### Masterclass Overview
+      "A hands-on terminal masterclass teaching microservices deployment, container orchestration with Kubernetes, and production CI/CD workflows on AWS.",
+    body: `### Hands-on Cloud-Native Engineering
 
-Modern backend and platform engineering relies heavily on containerization and automated cluster management. This 6-hour hands-on masterclass takes students from basic container files to deploying a distributed microservice cluster on cloud infrastructure.
+Master modern containerized workflows in this full-day technical workshop led by AWS certified architects and SWE technical leads.
 
-#### Prerequisites
-- Basic familiarity with Linux terminal commands.
-- Laptop with Docker Desktop installed (lab workstations will also be configured).
-
-#### Topics Covered
-1. **Container Fundamentals:** Writing clean Dockerfiles and multi-stage builds.
-2. **Kubernetes Primitives:** Pods, Deployments, Services, ConfigMaps, and Secrets.
-3. **Ingress & Observability:** Routing traffic and reading cluster metrics.
-4. **GitOps:** Continuous deployment with GitHub Actions.`,
+#### Workshop Syllabus
+1. **Container Fundamentals:** Dockerizing Node.js and Python microservices from scratch.
+2. **Kubernetes Primitives:** Pods, Deployments, Services, ConfigMaps, and Ingress routing.
+3. **Observability & Health Checks:** Setting up Prometheus metrics and Grafana dashboards.`,
     schedule: [
-      { time: "10:00 AM", title: "Containers 101: Docker Demystified", description: "Architecture and basic CLI operations." },
-      { time: "11:30 AM", title: "Microservices Containerization Lab", description: "Hands-on containerization of a Node.js + Redis service." },
-      { time: "01:00 PM", title: "Lunch & Networking", description: "Catered lunch at student commons." },
-      { time: "02:00 PM", title: "Kubernetes Cluster Architecture", description: "Control plane vs worker nodes, YAML manifest authoring." },
-      { time: "03:30 PM", title: "Live Cluster Deployment & Helm", description: "Deploying multi-tier apps with health checks." },
-      { time: "05:00 PM", title: "Q&A, Git Badges & Certifications", description: "Certificate distribution and open lab time." },
+      {
+        time: "10:00 AM",
+        title: "Docker Essentials & Image Optimization",
+        description: "Multi-stage Dockerfiles and image security scanning.",
+      },
+      {
+        time: "12:00 PM",
+        title: "Kubernetes Local Cluster Setup",
+        description: "Deploying pods and services with Minikube and Kind.",
+      },
+      {
+        time: "02:30 PM",
+        title: "Production Ingress & Autoscaling",
+        description: "Horizontal Pod Autoscaler (HPA) and traffic management.",
+      },
+      {
+        time: "04:30 PM",
+        title: "CI/CD Deployment to Cloud",
+        description: "GitHub Actions pipeline deploying to EKS cluster.",
+      },
     ],
     speakers: [
       {
-        name: "Tanvi Joshi",
-        title: "Staff Cloud Engineer, Red Hat Pune",
+        name: "Isha Patel",
+        title: "Cloud Infrastructure Architect, Red Hat",
       },
     ],
-    partners: ["Cloud Native Pune", "Red Hat"],
+    partners: ["AWS Cloud Club", "CNCF Community Group Pune"],
     gallery: [],
   },
   {
@@ -174,31 +247,41 @@ Modern backend and platform engineering relies heavily on containerization and a
     slug: "swe-industry-connect-mixer",
     title: "Annual SWE Industry Mixer & Mentor Connect",
     category: "networking",
-    date: "2026-05-10T17:30:00+05:30",
-    location: "Student Innovation Center, MIT-WPU Campus",
-    coverImage: "/images/events/networking-mixer.svg",
+    displayCategory: "NETWORKING",
+    displayDate: "Jun 14, 2026",
+    displayLocation: "MIT-WPU",
+    date: "2026-06-14T17:00:00+05:30",
+    location: "Student Activity Center, MIT-WPU",
+    coverImage: "/images/about/workshop-audience.jpg",
     shortDescription:
-      "An exclusive speed-mentoring and networking evening connecting collegiate members with engineers from Google, Barclays, Tata Technologies, and Veritas.",
-    body: `### Building Meaningful Professional Ties
+      "Speed mentoring rounds connecting chapter members with technical managers, talent leads, and engineering alumni across premier Pune tech hubs.",
+    body: `### Building Professional Bridges
 
-Navigating tech recruitment is easier with a trusted mentor by your side. The SWE MIT-WPU Annual Industry Mixer brings together 30+ working professionals from top engineering hubs across Pune and Mumbai to meet our student chapter members.
-
-#### Format: Speed Mentoring
-Each participant rotates through three 20-minute small-group discussions covering:
-- Technical interview strategies and coding rounds
-- Transitioning from collegiate projects to enterprise codebases
-- Higher education (MS/PhD in CS/ECE/Mech) vs Industry paths`,
+The Annual SWE Industry Mixer is our premier networking evening designed to connect undergraduate women in engineering with accomplished technical leaders and recruiters.`,
     schedule: [
-      { time: "05:30 PM", title: "Registrations & Refreshments" },
-      { time: "06:00 PM", title: "Opening Remarks & Mentor Introduction" },
-      { time: "06:30 PM", title: "Structured Mentoring Rotations" },
-      { time: "08:00 PM", title: "Open Networking & Dinner Reception" },
+      {
+        time: "05:00 PM",
+        title: "Registration & Icebreakers",
+        description: "Badges and speed-mentoring table allocation.",
+      },
+      {
+        time: "05:30 PM",
+        title: "Rotational Speed Mentoring",
+        description: "15-minute focused mentoring cycles across diverse domains.",
+      },
+      {
+        time: "07:00 PM",
+        title: "Open Mixer & Refreshments",
+        description: "Informal conversations and resume drop-offs.",
+      },
     ],
     speakers: [
-      { name: "Priyanka Nair", title: "Software Engineer III, Google" },
-      { name: "Sneha Patil", title: "Senior Security Analyst, Barclays" },
+      {
+        name: "Meera Joshi",
+        title: "Staff Systems Engineer, Cisco Systems",
+      },
     ],
-    partners: ["Barclays", "Veritas Technologies", "Tata Technologies"],
+    partners: ["Barclays Pune", "Eaton India Innovation Center"],
     gallery: [],
   },
   {
@@ -206,52 +289,41 @@ Each participant rotates through three 20-minute small-group discussions coverin
     slug: "stem-empowerment-pune-outreach",
     title: "Project Spark: High School STEM Outreach Drive",
     category: "outreach",
-    date: "2026-01-24T09:30:00+05:30",
-    location: "Kothrud Community High School & MIT-WPU FabLab",
-    coverImage: "/images/events/stem-outreach.svg",
+    displayCategory: "OUTREACH",
+    displayDate: "Jul 20, 2026",
+    displayLocation: "Pune Schools",
+    date: "2026-07-20T09:30:00+05:30",
+    location: "Government Secondary School, Kothrud, Pune",
+    coverImage: "/images/about/presentation-audience.jpg",
     shortDescription:
-      "A community outreach initiative where SWE student mentors taught fundamental robotics, Scratch coding, and circuit design to 120+ young female students.",
-    body: `### Inspiring the Next Generation of Engineers
+      "Chapter volunteers conducting interactive robotics demonstrations, Scratch programming labs, and inspiring 120+ young female students in Kothrud schools.",
+    body: `### Inspiring Tomorrow's Engineers Today
 
-Project Spark is SWE MIT-WPU's flagship social impact program. We believe early exposure to engineering wonder plants the seed for lifelong STEM careers.
-
-Our collegiate volunteers spent a full day working with secondary school girls, guiding them through hands-on breadboard circuits, building solar-powered buggies, and writing their first interactive computer games.`,
+Project Spark is SWE MIT-WPU's flagship community engagement initiative, bringing science and engineering directly into local municipal classrooms.`,
     schedule: [
-      { time: "09:30 AM", title: "Volunteer Briefing & Lab Setup" },
-      { time: "10:30 AM", title: "Interactive Electronics Demo: LEDs & Sensors" },
-      { time: "12:30 PM", title: "Robo-Racer Assembly Challenge" },
-      { time: "02:30 PM", title: "Scratch Programming Lab" },
-      { time: "04:00 PM", title: "Showcase & Mentorship Kits Distribution" },
-    ],
-    speakers: [],
-    partners: ["Pune Rotary Club Youth Wing", "MIT-WPU Social Welfare Council"],
-    gallery: [],
-  },
-  {
-    id: "6",
-    slug: "algorithmic-arena-coding-battle",
-    title: "Algorithmic Arena 2026: Collegiate Coding Challenge",
-    category: "competition",
-    date: "2026-03-08T18:00:00+05:30",
-    location: "Online / MIT-WPU Central Computing Center",
-    coverImage: "/images/events/coding-battle.svg",
-    shortDescription:
-      "An intense 3-hour competitive programming showdown celebrating International Women's Day with algorithmic problem-solving and cash prizes.",
-    body: `### Test Your Algorithmic Prowess
-
-To commemorate International Women's Day, SWE MIT-WPU hosts Algorithmic Arena — an ICPC-style individual competitive programming contest.
-
-Featuring 6 graded algorithmic challenges ranging from graph theory and dynamic programming to string hashing and combinatorics, participants test their problem-solving under time pressure.`,
-    schedule: [
-      { time: "06:00 PM", title: "Contest Platform Onboarding" },
-      { time: "06:30 PM", title: "Contest Starts (3 Hours)" },
-      { time: "09:30 PM", title: "Contest Freeze & Scoreboard Reveal" },
-      { time: "10:00 PM", title: "Live Editorial & Solution Walkthroughs" },
+      {
+        time: "09:30 AM",
+        title: "Interactive Physics & Robotics Demo",
+        description: "Hands-on demonstration of sensors and basic robotics.",
+      },
+      {
+        time: "11:00 AM",
+        title: "Scratch Programming Workshop",
+        description: "Guiding 120 students through visual animation projects.",
+      },
+      {
+        time: "01:00 PM",
+        title: "Scholarship & Career Guidance",
+        description: "Encouraging girls to pursue technical streams after high school.",
+      },
     ],
     speakers: [
-      { name: "Arpita Sen", title: "Candidate Master (Codeforces), SWE Tech Lead" },
+      {
+        name: "Tanvi Deshpande",
+        title: "Outreach Lead & 3rd Year B.Tech CSE",
+      },
     ],
-    partners: ["CodeChef MIT-WPU Chapter"],
+    partners: ["Rotary Club of Pune", "Pune Municipal Corporation Education Board"],
     gallery: [],
   },
 ];

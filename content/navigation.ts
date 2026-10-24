@@ -2,11 +2,11 @@ import type { NavLink } from "./types";
 
 export const navLinks: NavLink[] = [
   { label: "About", href: "#about", isSection: true },
-  { label: "Events", href: "/events" },
-  { label: "Team", href: "/team" },
-  { label: "Impact", href: "/impact" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Contact", href: "/contact" },
+  { label: "Events", href: "#events", isSection: true },
+  { label: "Team", href: "#team", isSection: true },
+  { label: "Impact", href: "#impact", isSection: true },
+  { label: "Gallery", href: "#gallery", isSection: true },
+  { label: "Contact", href: "#contact", isSection: true },
 ];
 
 export const socialLinks = [

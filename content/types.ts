@@ -27,6 +27,9 @@ export interface Event {
     | "networking"
     | "competition"
     | "outreach";
+  displayCategory?: string;
+  displayDate?: string;
+  displayLocation?: string;
   date: string; // ISO 8601
   location: string;
   coverImage: string;

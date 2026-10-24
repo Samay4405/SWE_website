@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { spaceGrotesk, inter } from "@/lib/fonts";
+import { plusJakartaSans, inter } from "@/lib/fonts";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} h-full`}
+      className={`${plusJakartaSans.variable} ${inter.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
         <Navbar />

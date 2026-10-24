@@ -1,25 +1,34 @@
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
-import { WhyJoin } from "@/components/sections/WhyJoin";
-import { EventsPreview } from "@/components/sections/EventsPreview";
+import { EventsCarousel } from "@/components/sections/EventsCarousel";
+import { TeamSection } from "@/components/sections/TeamSection";
 import { ImpactPreview } from "@/components/sections/ImpactPreview";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Timeline } from "@/components/sections/Timeline";
-import { Resources } from "@/components/sections/Resources";
-import { JourneyCTA } from "@/components/sections/JourneyCTA";
+import { GallerySection } from "@/components/sections/GallerySection";
+import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function Home() {
   return (
     <>
+      {/* 1. Existing purple-gradient hero section */}
       <Hero />
+
+      {/* 2. Existing About SWE section */}
       <About />
-      <WhyJoin />
-      <EventsPreview />
+
+      {/* 3. New integrated Events carousel */}
+      <EventsCarousel />
+
+      {/* 4. Team section */}
+      <TeamSection />
+
+      {/* 5. Impact section */}
       <ImpactPreview />
-      <Testimonials />
-      <Timeline />
-      <Resources />
-      <JourneyCTA />
+
+      {/* 6. Gallery section */}
+      <GallerySection />
+
+      {/* 7. Contact section */}
+      <ContactSection />
     </>
   );
 }
