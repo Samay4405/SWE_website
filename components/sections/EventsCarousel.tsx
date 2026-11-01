@@ -1,306 +1,665 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import {
+  animate,
+  type AnimationPlaybackControls,
+  motion,
+  type MotionValue,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
+import {
+  type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Calendar, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { events } from "@/content/events";
-import { ScrollReveal } from "@/components/shared/ScrollReveal";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "@/lib/touch";
+import { cn } from "@/lib/utils";
+import {
+  timelineEventsData,
+  type TimelineEventItem,
+} from "@/content/timelineEvents";
+
+// ── Physical / spring coefficients adapted for editorial fluidity ──
+const GLIDE_SPRING = { stiffness: 130, damping: 25, mass: 0.9 };
+const FLICK_MOMENTUM = 0.32;
+const MAX_FLICK_EVENTS = 3;
+const DRAG_THRESHOLD = 4;
+const RUBBER_BAND = 0.28;
+
+// Scale and dimming for neighbouring cards
+const SIDE_SCALE = 0.78;
+const SIDE_DIM = 0.38;
+
+// Vertical center of the cards within the stage
+const CARD_CENTER = 0.44;
+
+// Gap ticks: refined, minimal lines positioned strictly between adjacent cards
+const GAP_TICKS = 5;
+const GAP_TICK_SPAN = 0.65;
+const TICK_SHORT = 0.08;
+const TICK_TALL = 0.14;
+
+type Geometry = {
+  step: number;
+  cardWidth: number;
+  near: number;
+  halfWidth: number;
+};
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function cardX(o: number, { step, near }: Geometry) {
+  const a = Math.abs(o);
+  return Math.sign(o) * (a <= 1 ? a * near : near + (a - 1) * step);
+}
+
+function cardScale(o: number) {
+  return 1 - (1 - SIDE_SCALE) * Math.min(Math.abs(o), 1);
+}
+
+// ── Refined Event Card with Cover Image Header and Crisp Content Area ──
+function TimelineEventCard({
+  scroll,
+  index,
+  geometry,
+  event,
+  active,
+  onSelect,
+  onKeyDown,
+  buttonRef,
+}: {
+  scroll: MotionValue<number>;
+  index: number;
+  geometry: Geometry;
+  event: TimelineEventItem;
+  active: boolean;
+  onSelect: (index: number) => void;
+  onKeyDown: (e: ReactKeyboardEvent<HTMLButtonElement>, index: number) => void;
+  buttonRef: (node: HTMLButtonElement | null) => void;
+}) {
+  const id = useId();
+  const { cardWidth } = geometry;
+  const offset = useTransform(scroll, (s) => index - s);
+  const x = useTransform(offset, (o) => cardX(o, geometry));
+  const scale = useTransform(offset, cardScale);
+  const zIndex = useTransform(offset, (o) => 100 - Math.round(Math.abs(o) * 10));
+  const veilOpacity = useTransform(
+    offset,
+    (o) => SIDE_DIM * Math.min(Math.abs(o), 1),
+  );
+
+  return (
+    <motion.li
+      data-slot="timeline-event"
+      data-active={active || undefined}
+      className="absolute left-1/2 list-none"
+      style={{
+        top: `${CARD_CENTER * 100}%`,
+        x,
+        scale,
+        zIndex,
+        width: cardWidth,
+        marginLeft: -cardWidth / 2,
+      }}
+    >
+      <div className="relative -translate-y-1/2">
+        <div
+          className={cn(
+            "group relative flex flex-col overflow-hidden rounded-2xl border bg-white transition-all duration-300",
+            active
+              ? "border-[#5B5478]/40 shadow-[0_18px_42px_-14px_rgba(91,84,120,0.22)] ring-1 ring-[#5B5478]/15"
+              : "border-[#E8E4F0] shadow-[0_10px_28px_-16px_rgba(91,84,120,0.12)] hover:border-[#5B5478]/30",
+          )}
+        >
+          {/* TOP: Image Header (Notion-style cover banner) */}
+          <div className="relative w-full h-[168px] sm:h-[180px] overflow-hidden bg-[#F2EFF7] flex-shrink-0">
+            <Image
+              src={event.coverImage}
+              alt={event.title}
+              fill
+              sizes="(max-width: 640px) 290px, (max-width: 1024px) 340px, 370px"
+              className="object-cover object-center select-none transition-transform duration-700 ease-out group-hover:scale-105"
+              priority={index < 3}
+            />
+            {/* Subtle top edge shine and gradient vignette */}
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-60"
+              aria-hidden="true"
+            />
+          </div>
+
+          {/* BOTTOM: Clean White Content Area */}
+          <div className="relative flex flex-col justify-between p-4 sm:p-5 bg-white text-left min-h-[148px]">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <span
+                  id={`${id}-date`}
+                  className="text-[11px] font-mono uppercase tracking-wider text-[#8A82A6] font-medium"
+                >
+                  {event.dateDisplay}
+                </span>
+                <span className="text-[10px] font-mono text-[#DCC554] font-semibold">
+                  EVENT {String(index + 1).padStart(2, "0")}
+                </span>
+              </div>
+
+              <h3
+                id={`${id}-title`}
+                className="font-bold text-[16px] sm:text-[17px] text-[#1F1D2B] tracking-tight line-clamp-1"
+                style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
+              >
+                {event.title}
+              </h3>
+
+              <p
+                className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#5E5875] line-clamp-3 font-normal"
+                style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
+              >
+                {event.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Side veil for non-active neighbours (softly dims without disappearing) */}
+          <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[#FCFBFE]"
+            style={{ opacity: veilOpacity }}
+          />
+        </div>
+
+        {/* Full surface clickable button */}
+        <button
+          ref={buttonRef}
+          type="button"
+          tabIndex={active ? 0 : -1}
+          aria-current={active ? "step" : undefined}
+          aria-labelledby={`${id}-title ${id}-date`}
+          onClick={() => onSelect(index)}
+          onKeyDown={(e) => onKeyDown(e, index)}
+          className="absolute inset-0 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#5B5478] focus-visible:ring-offset-2"
+        />
+      </div>
+    </motion.li>
+  );
+}
+
+// ── Subtle Connecting Tick Marks Between Adjacent Cards ──
+function GapTicks({
+  scroll,
+  index,
+  geometry,
+  gap,
+}: {
+  scroll: MotionValue<number>;
+  index: number;
+  geometry: Geometry;
+  gap: number;
+}) {
+  const { cardWidth } = geometry;
+  const x = useTransform(scroll, (s) => {
+    const o = index - s;
+    const right = cardX(o, geometry) + (cardWidth * cardScale(o)) / 2;
+    const left = cardX(o + 1, geometry) - (cardWidth * cardScale(o + 1)) / 2;
+    return (right + left) / 2;
+  });
+
+  const spacing = (gap * GAP_TICK_SPAN) / (GAP_TICKS - 1);
+  const middle = (GAP_TICKS - 1) / 2;
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      className="pointer-events-none absolute left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center z-0"
+      style={{ x, top: `${CARD_CENTER * 100}%`, gap: spacing - 1 }}
+    >
+      {Array.from({ length: GAP_TICKS }, (_, i) => (
+        <span
+          key={i}
+          className={cn(
+            "block w-0.5 rounded-full transition-colors",
+            i === middle ? "bg-[#5B5478]/40" : "bg-[#5B5478]/18",
+          )}
+          style={{
+            height: cardWidth * (i === middle ? TICK_TALL : TICK_SHORT),
+          }}
+        />
+      ))}
+    </motion.div>
+  );
+}
 
 export function EventsCarousel() {
-  const prefersReducedMotion = useReducedMotion();
-  const carouselEvents = events.slice(0, 4);
-  const total = carouselEvents.length;
+  const prefersReducedMotion = useReducedMotion() ?? false;
+  const events = timelineEventsData;
+  const total = events.length;
+  const last = Math.max(0, total - 1);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // 1 = next, -1 = prev
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleNext = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % total);
-  }, [total]);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [stageWidth, setStageWidth] = useState(900);
 
-  const handlePrev = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
-  }, [total]);
+  useLayoutEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    setStageWidth(el.clientWidth);
+    const ro = new ResizeObserver(([entry]) => {
+      setStageWidth(entry.contentRect.width);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
-  // Keyboard navigation when section is focused
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowLeft") handlePrev();
-    if (e.key === "ArrowRight") handleNext();
+  // Card width tailored to 340-370px on desktop with responsive mobile/tablet bounds
+  const cardWidth = Math.min(
+    360,
+    stageWidth * (stageWidth < 640 ? 0.8 : stageWidth < 1024 ? 0.46 : 0.32),
+  );
+
+  const gap = clamp(cardWidth * 0.22, 36, 68);
+  const geometry: Geometry = {
+    step: cardWidth * SIDE_SCALE + gap,
+    cardWidth,
+    near: (cardWidth * (1 + SIDE_SCALE)) / 2 + gap,
+    halfWidth: stageWidth / 2,
+  };
+  const { step } = geometry;
+
+  const scroll = useMotionValue(0);
+  const glideRef = useRef<AnimationPlaybackControls | null>(null);
+  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const latest = useRef({ events, activeIndex, step, last });
+  useLayoutEffect(() => {
+    latest.current = { events, activeIndex, step, last };
+  });
+
+  const glidingRef = useRef(false);
+
+  const commit = useCallback((index: number) => {
+    const current = latest.current;
+    if (index === current.activeIndex) return;
+    current.activeIndex = index;
+    setActiveIndex(index);
+  }, []);
+
+  useEffect(() => {
+    return scroll.on("change", (v) => {
+      if (glidingRef.current) return;
+      commit(clamp(Math.round(v), 0, latest.current.last));
+    });
+  }, [scroll, commit]);
+
+  const stopGlide = useCallback(() => {
+    glidingRef.current = false;
+    glideRef.current?.stop();
+    glideRef.current = null;
+  }, []);
+
+  const glideTo = useCallback(
+    (to: number, velocity = scroll.getVelocity()) => {
+      stopGlide();
+      commit(to);
+      if (prefersReducedMotion) {
+        scroll.set(to);
+        return;
+      }
+      glidingRef.current = true;
+      glideRef.current = animate(scroll, to, {
+        type: "spring",
+        ...GLIDE_SPRING,
+        velocity,
+        restDelta: 0.001,
+        onComplete: () => {
+          glidingRef.current = false;
+          glideRef.current = null;
+        },
+      });
+    },
+    [scroll, stopGlide, commit, prefersReducedMotion],
+  );
+
+  const settle = useCallback(
+    (velocity: number) => {
+      const projected =
+        scroll.get() +
+        clamp(velocity * FLICK_MOMENTUM, -MAX_FLICK_EVENTS, MAX_FLICK_EVENTS);
+      glideTo(clamp(Math.round(projected), 0, latest.current.last), velocity);
+    },
+    [scroll, glideTo],
+  );
+
+  const select = useCallback(
+    (index: number, focus = false) => {
+      const target = clamp(index, 0, latest.current.last);
+      glideTo(target);
+      if (focus) buttonsRef.current[target]?.focus({ preventScroll: true });
+    },
+    [glideTo],
+  );
+
+  const onKeyDown = useCallback(
+    (e: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
+      const next =
+        e.key === "ArrowRight"
+          ? index + 1
+          : e.key === "ArrowLeft"
+            ? index - 1
+            : e.key === "Home"
+              ? 0
+              : e.key === "End"
+                ? latest.current.last
+                : null;
+      if (next === null) return;
+      e.preventDefault();
+      select(next, true);
+    },
+    [select],
+  );
+
+  // Global window arrow key listener when hover/focused inside events
+  useEffect(() => {
+    const handleGlobalKey = (e: KeyboardEvent) => {
+      if (
+        document.activeElement?.tagName === "INPUT" ||
+        document.activeElement?.tagName === "TEXTAREA"
+      ) {
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        select(Math.max(0, latest.current.activeIndex - 1));
+      } else if (e.key === "ArrowRight") {
+        select(Math.min(latest.current.last, latest.current.activeIndex + 1));
+      }
+    };
+    window.addEventListener("keydown", handleGlobalKey);
+    return () => window.removeEventListener("keydown", handleGlobalKey);
+  }, [select]);
+
+  // Pointer drag gestures
+  const draggingRef = useRef(false);
+  const drag = useRef({
+    id: -1,
+    startX: 0,
+    startScroll: 0,
+    moved: false,
+    lastX: 0,
+    lastT: 0,
+    prevX: 0,
+    prevT: 0,
+  });
+
+  const onPointerDown = (e: ReactPointerEvent) => {
+    if (e.button !== 0) return;
+    stopGlide();
+    const now = performance.now();
+    drag.current = {
+      id: e.pointerId,
+      startX: e.clientX,
+      startScroll: scroll.get(),
+      moved: false,
+      lastX: e.clientX,
+      lastT: now,
+      prevX: e.clientX,
+      prevT: now,
+    };
+    draggingRef.current = true;
   };
 
-  // Touch Swipe Handling for Mobile
-  const touchStartX = useRef<number | null>(null);
-  const touchEndX = useRef<number | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.targetTouches[0].clientX;
-    touchEndX.current = null;
+  const onPointerMove = (e: ReactPointerEvent) => {
+    const d = drag.current;
+    if (!draggingRef.current || e.pointerId !== d.id) return;
+    const dx = e.clientX - d.startX;
+    if (!d.moved) {
+      if (Math.abs(dx) < DRAG_THRESHOLD) return;
+      d.moved = true;
+      capturePointer(e.currentTarget, e.pointerId);
+    }
+    const raw = d.startScroll - dx / step;
+    scroll.set(
+      raw < 0
+        ? raw * RUBBER_BAND
+        : raw > last
+          ? last + (raw - last) * RUBBER_BAND
+          : raw,
+    );
+    d.prevX = d.lastX;
+    d.prevT = d.lastT;
+    d.lastX = e.clientX;
+    d.lastT = performance.now();
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.targetTouches[0].clientX;
+  const onPointerUp = (e: ReactPointerEvent) => {
+    const d = drag.current;
+    if (!draggingRef.current || e.pointerId !== d.id) return;
+    draggingRef.current = false;
+    if (!d.moved) return;
+    releasePointer(e.currentTarget, e.pointerId);
+    const dt = d.lastT - d.prevT;
+    const vpx = dt > 0 ? (d.lastX - d.prevX) / dt : 0;
+    settle((-vpx * 1000) / step);
   };
 
-  const handleTouchEnd = () => {
-    if (touchStartX.current === null || touchEndX.current === null) return;
-    const distance = touchStartX.current - touchEndX.current;
-    if (distance > 50) handleNext(); // swipe left -> next
-    if (distance < -50) handlePrev(); // swipe right -> prev
-  };
+  // Horizontal mouse wheel gesture
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    let settleTimer: number | undefined;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      stopGlide();
+      const { step, last } = latest.current;
+      scroll.set(clamp(scroll.get() + e.deltaX / step, -0.3, last + 0.3));
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(
+        () =>
+          glideTo(clamp(Math.round(scroll.get()), 0, latest.current.last), 0),
+        140,
+      );
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      window.clearTimeout(settleTimer);
+    };
+  }, [scroll, stopGlide, glideTo]);
 
-  const currentEvent = carouselEvents[currentIndex];
-  const prevIndex = (currentIndex - 1 + total) % total;
-  const nextIndex = (currentIndex + 1) % total;
-  const prevEvent = carouselEvents[prevIndex];
-  const nextEvent = carouselEvents[nextIndex];
-  const slideVariants = {
-    enter: (dir: number) => ({
-      x: prefersReducedMotion ? 0 : dir > 0 ? 120 : -120,
-      opacity: prefersReducedMotion ? 1 : 0.8,
-    }),
-    center: {
-      x: 0,
+  useEffect(() => stopGlide, [stopGlide]);
+
+  // Entrance animation variants triggered when section enters viewport
+  const headerVariant = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 20 },
+    visible: {
       opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
+    },
+  };
+
+  const subtitleVariant = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
       transition: {
-        duration: prefersReducedMotion ? 0 : 0.45,
-        ease: [0.22, 1, 0.36, 1] as const,
+        duration: 0.6,
+        delay: 0.12,
+        ease: [0.16, 1, 0.3, 1] as const,
       },
     },
-    exit: (dir: number) => ({
-      x: prefersReducedMotion ? 0 : dir > 0 ? -120 : 120,
-      opacity: prefersReducedMotion ? 1 : 0.8,
+  };
+
+  const timelineStageVariant = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
       transition: {
-        duration: prefersReducedMotion ? 0 : 0.35,
-        ease: [0.4, 0, 1, 1] as const,
+        duration: 0.7,
+        delay: 0.22,
+        ease: [0.16, 1, 0.3, 1] as const,
       },
-    }),
+    },
   };
 
   return (
     <section
       id="events"
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-      className="relative scroll-mt-[72px] overflow-x-clip bg-[#FBF9FE] pt-6 pb-10 outline-none select-none md:scroll-mt-[80px] md:pt-8 md:pb-12"
-      aria-roledescription="carousel"
-      aria-label="SWE MIT-WPU Events Showcase"
+      className="relative w-full bg-[#FCFBFE] overflow-hidden select-none py-12 sm:py-16 md:py-20 flex flex-col justify-center min-h-[calc(100svh-90px)]"
+      aria-label="Events and Workshops Timeline"
     >
-      {/* ── Section Header (Understated, Minimal) ── */}
-      <ScrollReveal className="section-container mb-5 md:mb-6">
-        {/* Eyebrow */}
-        <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
-          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#7254A8]">
-            OUR EVENTS
-          </span>
-          <span className="h-[2px] w-8 rounded-full bg-[#D4A017]" />
-        </div>
+      {/* ── Soft Ambient Atmospheric Highlights ── */}
+      <div
+        className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[500px] rounded-full blur-3xl opacity-20 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(91,84,120,0.12) 0%, rgba(220,197,84,0.06) 55%, transparent 75%)",
+        }}
+        aria-hidden="true"
+      />
 
-        {/* Heading */}
-        <h2
-          className="text-3xl font-extrabold tracking-tight text-[#24164F] sm:text-4xl lg:text-[2.75rem]"
-          style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
+      <div className="mx-auto w-full max-w-[1360px] px-4 sm:px-6 lg:px-8 flex flex-col">
+        {/* ── 1. Heading & Subtitle Sequence ── */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="flex flex-col items-center text-center mb-6 sm:mb-8 md:mb-10"
         >
-          Events
-        </h2>
-      </ScrollReveal>
+          {/* Heading */}
+          <motion.h2
+            variants={headerVariant}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#1F1D2B] leading-tight"
+            style={{
+              fontFamily: "var(--font-display), system-ui, sans-serif",
+              letterSpacing: "-0.025em",
+            }}
+          >
+            Events &amp; Workshops
+          </motion.h2>
 
-      {/* ── Carousel Stage with Central Card and Partial Previews ── */}
-      <ScrollReveal className="w-full">
-        <div
-          className="relative w-full overflow-visible py-4"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          {/* Subtitle */}
+          <motion.p
+            variants={subtitleVariant}
+            className="mt-2.5 sm:mt-3 text-sm sm:text-base text-[#5E5875] max-w-xl font-normal leading-relaxed"
+            style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
+          >
+            Celebrating a year of learning, collaboration, and impact.
+          </motion.p>
+        </motion.div>
+
+        {/* ── 2. Interactive Horizontal Timeline Stage ── */}
+        <motion.div
+          variants={timelineStageVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="relative w-full"
         >
-        <div className="relative mx-auto w-full max-w-[1040px] px-4 sm:px-6 md:px-0 xl:max-w-[1120px]">
-          {/* ── Minimal Navigation Arrows (Positioned Outside Featured Card) ── */}
-          {/* Left Arrow */}
-          <button
-            type="button"
-            onClick={handlePrev}
-            aria-label="Previous event"
-            className="group absolute left-6 top-1/2 z-30 hidden -translate-y-1/2 cursor-pointer rounded-full border border-[#E7DFF3] bg-white/95 p-2.5 text-[#4D347A] shadow-lg shadow-[#24164F]/10 backdrop-blur transition-all duration-200 hover:scale-105 hover:bg-[#F4EFFB] hover:text-[#7254A8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7254A8] md:flex"
-          >
-            <ChevronLeft className="size-5 stroke-[1.8] transition-transform duration-200 group-hover:-translate-x-0.5" />
-          </button>
-
-          {/* Right Arrow */}
-          <button
-            type="button"
-            onClick={handleNext}
-            aria-label="Next event"
-            className="group absolute right-6 top-1/2 z-30 hidden -translate-y-1/2 cursor-pointer rounded-full border border-[#E7DFF3] bg-white/95 p-2.5 text-[#4D347A] shadow-lg shadow-[#24164F]/10 backdrop-blur transition-all duration-200 hover:scale-105 hover:bg-[#F4EFFB] hover:text-[#7254A8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7254A8] md:flex"
-          >
-            <ChevronRight className="size-5 stroke-[1.8] transition-transform duration-200 group-hover:translate-x-0.5" />
-          </button>
-
-          {/* ── Left Previous Card Preview (Partially visible on desktop) ── */}
+          {/* Editorial Edge Vignettes (Soft left and right stage fade) */}
           <div
-            onClick={handlePrev}
+            className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-20 bg-gradient-to-r from-[#FCFBFE] to-transparent z-20"
             aria-hidden="true"
-            className="pointer-events-auto absolute right-[calc(100%-5rem)] top-0 z-10 hidden h-[440px] w-full scale-[0.96] cursor-pointer overflow-hidden rounded-3xl border border-[#DCD0F0] bg-white opacity-40 shadow-xl shadow-[#24164F]/10 blur-[2px] transition-[filter,opacity] duration-300 hover:opacity-65 hover:blur-0 md:flex lg:h-[460px]"
-          >
-            <div className="relative w-1/2 h-full overflow-hidden bg-slate-100">
-              <Image
-                src={prevEvent.coverImage}
-                alt={prevEvent.title}
-                fill
-                sizes="480px"
-                className="object-cover"
-              />
-            </div>
-            <div className="flex w-1/2 flex-col justify-between border-l border-[#EBE5F7] bg-gradient-to-br from-white to-[#F3EEFA] p-8 lg:p-12">
-              <div>
-                <span className="block text-xs font-bold uppercase tracking-[0.2em] text-[#7254A8] mb-3">
-                  {prevEvent.displayCategory || prevEvent.category.toUpperCase()}
-                </span>
-                <h4
-                  className="text-2xl font-bold text-[#24164F] tracking-tight mb-4"
-                  style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
-                >
-                  {prevEvent.title}
-                </h4>
-              </div>
-            </div>
-          </div>
+          />
+          <div
+            className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-20 bg-gradient-to-l from-[#FCFBFE] to-transparent z-20"
+            aria-hidden="true"
+          />
 
-          {/* ── Active Featured Central Card ── */}
-          <div className="relative z-20 min-h-[440px] w-full overflow-hidden rounded-2xl md:h-[440px] md:min-h-0 md:rounded-3xl lg:h-[460px]">
-            <AnimatePresence custom={direction} mode="sync">
-              <motion.div
-                key={currentEvent.id}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="group absolute inset-0 flex h-full w-full flex-col overflow-hidden rounded-2xl border border-[#D8C9EC] bg-white shadow-[0_24px_70px_rgba(65,43,105,0.16)] md:flex-row md:rounded-3xl"
+          <div
+            ref={stageRef}
+            aria-label="Events Horizontal Timeline. Drag or use arrow keys."
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+            className={cn(
+              "relative w-full cursor-grab overflow-hidden active:cursor-grabbing",
+              TOUCH_GESTURE_CLASS,
+            )}
+            style={{
+              height: "410px",
+            }}
+          >
+            {/* Small Connecting Tick Marks in gaps between adjacent cards */}
+            {events.slice(0, -1).map((ev, i) => (
+              <GapTicks
+                key={ev.id}
+                scroll={scroll}
+                index={i}
+                geometry={geometry}
+                gap={gap}
+              />
+            ))}
+
+            {/* Event Cards Track */}
+            <ul className="absolute inset-0 m-0 p-0">
+              {events.map((ev, i) => (
+                <TimelineEventCard
+                  key={ev.id}
+                  scroll={scroll}
+                  index={i}
+                  geometry={geometry}
+                  event={ev}
+                  active={i === activeIndex}
+                  onSelect={select}
+                  onKeyDown={onKeyDown}
+                  buttonRef={(node) => {
+                    buttonsRef.current[i] = node;
+                  }}
+                />
+              ))}
+            </ul>
+
+            <div className="pointer-events-none absolute inset-x-2 top-[44%] z-30 flex -translate-y-1/2 justify-between sm:inset-x-4">
+              <button
+                type="button"
+                onClick={() => select(Math.max(0, activeIndex - 1))}
+                disabled={activeIndex === 0}
+                aria-label="Previous event"
+                className="pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#ECE7F4] bg-white text-[#5B5478] shadow-xs transition-all duration-200 hover:border-[#5B5478] hover:bg-[#FAF8FD] hover:text-[#1F1D2B] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
               >
-                {/* Left Side: Large Landscape Photograph */}
-                <div className="relative w-full md:w-1/2 h-56 sm:h-64 md:h-full overflow-hidden bg-slate-100">
-                  <Image
-                    src={currentEvent.coverImage}
-                    alt={currentEvent.title}
-                    fill
-                    priority={currentIndex === 0}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                </div>
-
-                {/* Right Side: Event Information */}
-                <div className="flex w-full flex-col justify-between border-t border-[#E7DFF3] bg-gradient-to-br from-white via-[#FBF9FE] to-[#F0EAF8] p-6 sm:p-8 md:w-1/2 md:border-l md:border-t-0 md:p-8 lg:p-10">
-                  <div>
-                    {/* Category */}
-                    <span className="mb-3 inline-flex w-fit items-center rounded-full border border-[#E4D8F2] bg-[#F3EDF9] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#65458F] sm:text-xs">
-                      {currentEvent.displayCategory || currentEvent.category.toUpperCase()}
-                    </span>
-
-                    {/* Title */}
-                    <h3
-                      className="mb-3 text-xl font-extrabold leading-[1.18] tracking-tight text-[#24164F] sm:text-2xl lg:text-[1.8rem]"
-                      style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
-                    >
-                      {currentEvent.title}
-                    </h3>
-
-                    {/* Date & Venue Metadata */}
-                    <div className="mb-3 flex items-center gap-3 text-xs font-medium text-[#5E5B70] sm:text-sm">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="size-4 text-[#7254A8]" />
-                        <span>{currentEvent.displayDate || currentEvent.date}</span>
-                      </div>
-                      <span className="text-[#D5D1E2]">|</span>
-                      <div className="flex items-center gap-1.5">
-                        <MapPin className="size-4 text-[#7254A8]" />
-                        <span>{currentEvent.displayLocation || currentEvent.location}</span>
-                      </div>
-                    </div>
-                    {/* Concise Description */}
-                    <p className="mb-4 line-clamp-3 text-sm font-normal leading-relaxed text-[#5E5B70] sm:text-base">
-                      {currentEvent.shortDescription}
-                    </p>
-                  </div>
-
-                  {/* Explore Event Link */}
-                  <div>
-                    <Link
-                      href={`/events/${currentEvent.slug}`}
-                      className="inline-flex items-center gap-2 rounded-full bg-[#4F347B] px-4 py-2 text-sm font-semibold text-white shadow-md shadow-[#4F347B]/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#3E2864] group/link sm:text-base"
-                    >
-                      <span>Explore event</span>
-                      <ArrowRight className="size-4 transition-transform duration-200 group-hover/link:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* ── Right Next Card Preview (Partially visible on desktop) ── */}
-          <div
-            onClick={handleNext}
-            aria-hidden="true"
-            className="pointer-events-auto absolute left-[calc(100%-5rem)] top-0 z-10 hidden h-[440px] w-full scale-[0.96] cursor-pointer overflow-hidden rounded-3xl border border-[#DCD0F0] bg-white opacity-40 shadow-xl shadow-[#24164F]/10 blur-[2px] transition-[filter,opacity] duration-300 hover:opacity-65 hover:blur-0 md:flex lg:h-[460px]"
-          >
-            <div className="relative w-1/2 h-full overflow-hidden bg-slate-100">
-              <Image
-                src={nextEvent.coverImage}
-                alt={nextEvent.title}
-                fill
-                sizes="480px"
-                className="object-cover"
-              />
-            </div>
-            <div className="flex w-1/2 flex-col justify-between border-l border-[#EBE5F7] bg-gradient-to-br from-white to-[#F3EEFA] p-8 lg:p-12">
-              <div>
-                <span className="block text-xs font-bold uppercase tracking-[0.2em] text-[#7254A8] mb-3">
-                  {nextEvent.displayCategory || nextEvent.category.toUpperCase()}
-                </span>
-                <h4
-                  className="text-2xl font-bold text-[#24164F] tracking-tight mb-4"
-                  style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
-                >
-                  {nextEvent.title}
-                </h4>
-              </div>
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => select(Math.min(last, activeIndex + 1))}
+                disabled={activeIndex === last}
+                aria-label="Next event"
+                className="pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#ECE7F4] bg-white text-[#5B5478] shadow-xs transition-all duration-200 hover:border-[#5B5478] hover:bg-[#FAF8FD] hover:text-[#1F1D2B] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           </div>
+        </motion.div>
+
+        {/* ── 3. Event Navigation Controls ── */}
+        <div className="relative z-20 mx-auto mt-4 flex w-full max-w-4xl items-center justify-center px-2 sm:mt-5">
+          <div className="font-mono text-xs text-[#5B5478] tracking-wider">
+            <span className="font-bold text-sm text-[#1F1D2B]">
+              {String(activeIndex + 1).padStart(2, "0")}
+            </span>
+            <span className="text-[#C4BFE0] mx-1">/</span>
+            <span className="text-[#8E8A9F]">
+              {String(total).padStart(2, "0")}
+            </span>
           </div>
-
-        {/* ── Carousel Bottom Controls (Counter & Dash Indicators) ── */}
-        <div className="mt-4 flex items-center justify-center gap-4">
-          {/* Mobile Previous Button */}
-          <button
-            type="button"
-            onClick={handlePrev}
-            aria-label="Previous event"
-            className="md:hidden p-2 text-[#24164F] hover:text-[#7254A8] transition-colors"
-          >
-            <ChevronLeft className="size-5" />
-          </button>
-
-          {/* Counter "01 / 04" */}
-          <span className="text-xs sm:text-sm font-semibold font-mono text-[#5E5B70] tracking-wider">
-            {String(currentIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-
-          {/* Mobile Next Button */}
-          <button
-            type="button"
-            onClick={handleNext}
-            aria-label="Next event"
-            className="md:hidden p-2 text-[#24164F] hover:text-[#7254A8] transition-colors"
-          >
-            <ChevronRight className="size-5" />
-          </button>
         </div>
       </div>
-      </ScrollReveal>
     </section>
   );
 }

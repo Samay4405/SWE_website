@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Vintage Film Grain Filter -->
+    <filter id="vintage-grain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.18  0 0 0 0 0.15  0 0 0 0 0.12  0 0 0 0.08 0" />
+      <feComposite operator="in" in2="SourceGraphic" />
+    </filter>
+
+    <!-- Vintage Halftone Grid Pattern -->
+    <pattern id="sepia-halftone" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="6" cy="6" r="1.4" fill="#d4c5b3" opacity="0.08" />
+    </pattern>
+
+    <!-- Archival Newspaper Grid Lines -->
+    <pattern id="archival-grid" width="240" height="240" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="240" y2="0" stroke="#c2b29f" stroke-opacity="0.05" stroke-width="1" />
+      <line x1="0" y1="0" x2="0" y2="240" stroke="#c2b29f" stroke-opacity="0.05" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Deep Sepia Monochromatic Base -->
+  <rect width="100%" height="100%" fill="#1a1613" />
+  <rect width="100%" height="100%" fill="url(#sepia-halftone)" />
+  <rect width="100%" height="100%" fill="url(#archival-grid)" />
+
+  <!-- Archival Chronicle Masthead -->
+  <g transform="translate(100, 50)">
+    <text x="0" y="28" fill="#8f8172" font-family="Georgia, serif" font-size="11.5" font-weight="600" letter-spacing="7">ARCHIVE CHRONICLE · PIONEERING WOMEN IN STEM &amp; APPLIED SCIENCES</text>
+    <line x1="0" y1="42" x2="1720" y2="42" stroke="#8f8172" stroke-opacity="0.22" stroke-width="1" />
+  </g>
+
+  <!-- ── PANEL 1: ADA LOVELACE ── -->
+  <g transform="translate(100, 120)">
+    <rect width="380" height="430" fill="#241f1a" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <!-- Portrait simulation etching frame -->
+    <rect x="24" y="24" width="332" height="185" fill="#2e2722" />
+    <!-- Classical portrait silhouette etching -->
+    <circle cx="190" cy="95" r="42" fill="#3d342d" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 148 185 C 148 142 165 132 190 132 C 215 132 232 142 232 185 Z" fill="#3d342d" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">FOLIO 1843 // ALGORITHMIC THEORY</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Ada Lovelace</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+    
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">FIRST COMPUTER PROGRAMMER</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Authored the first machine algorithm for Charles
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Babbage&apos;s Analytical Engine, foreseeing modern
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      general-purpose computing a century ahead of her time.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[ANALYTICAL ENGINE · COMPUTING]</text>
+  </g>
+
+  <!-- ── PANEL 2: KATHERINE JOHNSON ── -->
+  <g transform="translate(520, 120)">
+    <rect width="420" height="430" fill="#221d19" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <rect x="24" y="24" width="372" height="185" fill="#2d2621" />
+    <circle cx="210" cy="95" r="42" fill="#3b322b" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 168 185 C 168 142 185 132 210 132 C 235 132 252 142 252 185 Z" fill="#3b322b" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">NASA LANGLEY // ORBITAL MECHANICS</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Katherine Johnson</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">ORBITAL TRAJECTORY SPECIALIST</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Calculated precise orbital flight paths for Alan Shepard,
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      John Glenn, and the historic 1969 Apollo 11
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      spaceflight that successfully landed humankind on the Moon.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[AEROSPACE · CELESTIAL MECHANICS]</text>
+  </g>
+
+  <!-- ── PANEL 3: MARIE CURIE ── -->
+  <g transform="translate(980, 120)">
+    <rect width="400" height="430" fill="#25201b" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <rect x="24" y="24" width="352" height="185" fill="#2f2722" />
+    <circle cx="200" cy="95" r="42" fill="#3e342c" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 158 185 C 158 142 175 132 200 132 C 225 132 242 142 242 185 Z" fill="#3e342c" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">NOBEL LAUREATE // 1903 &amp; 1911</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Marie Curie</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">RADIOACTIVITY RESEARCH</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Discovered polonium and radium; remaining the sole
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      individual in history awarded Nobel Prizes across two
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      distinct scientific disciplines: Physics and Chemistry.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[RADIOACTIVITY · NOBEL PRIZE]</text>
+  </g>
+
+  <!-- ── PANEL 4: KALPANA CHAWLA ── -->
+  <g transform="translate(1420, 120)">
+    <rect width="400" height="430" fill="#231e19" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <rect x="24" y="24" width="352" height="185" fill="#2e2722" />
+    <circle cx="200" cy="95" r="42" fill="#3c332b" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 158 185 C 158 142 175 132 200 132 C 225 132 242 142 242 185 Z" fill="#3c332b" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">MISSION STS-87 &amp; STS-107</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Kalpana Chawla</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">AEROSPACE ENGINEER</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      First Indian-born woman in space, dedicating her life to
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      atmospheric flight research and paving the path for
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      generations of women engineers across the globe.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[ASTRONAUTICS · SPACE EXPLORATION]</text>
+  </g>
+
+  <!-- ── PANEL 5: GRACE HOPPER ── -->
+  <g transform="translate(100, 590)">
+    <rect width="400" height="430" fill="#241f1a" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <rect x="24" y="24" width="352" height="185" fill="#2e2722" />
+    <circle cx="200" cy="95" r="42" fill="#3d342d" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 158 185 C 158 142 175 132 200 132 C 225 132 242 142 242 185 Z" fill="#3d342d" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">US NAVY // REAR ADMIRAL</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Grace Hopper</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">COMPILER INVENTOR</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Invented the first compiler for programming languages
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      and pioneered machine-independent language theory,
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      leading to the creation of COBOL and software automation.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[COMPUTER SCIENCE · COMPILERS]</text>
+  </g>
+
+  <!-- ── PANEL 6: MARGARET HAMILTON ── -->
+  <g transform="translate(540, 590)">
+    <rect width="400" height="430" fill="#221d19" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <rect x="24" y="24" width="352" height="185" fill="#2d2621" />
+    <circle cx="200" cy="95" r="42" fill="#3b322b" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 158 185 C 158 142 175 132 200 132 C 225 132 242 142 242 185 Z" fill="#3b322b" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">MIT INSTRUMENTATION LAB</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Margaret Hamilton</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">DIRECTOR OF SOFTWARE</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Coined the discipline term &quot;Software Engineering&quot; and
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      engineered the asynchronous flight software for the Apollo
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Guidance Computer that safely executed the Moon landing.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[SOFTWARE ARCHITECTURE · APOLLO]</text>
+  </g>
+
+  <!-- ── PANEL 7: CHIEN-SHIUNG WU ── -->
+  <g transform="translate(980, 590)">
+    <rect width="400" height="430" fill="#25201b" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <rect x="24" y="24" width="352" height="185" fill="#2f2722" />
+    <circle cx="200" cy="95" r="42" fill="#3e342c" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 158 185 C 158 142 175 132 200 132 C 225 132 242 142 242 185 Z" fill="#3e342c" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">EXPERIMENTAL NUCLEAR PHYSICS</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Chien-Shiung Wu</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">FIRST LADY OF PHYSICS</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Conducted the groundbreaking Wu Experiment proving the
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      non-conservation of parity in weak nuclear interactions,
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      fundamentally revising the laws of particle physics.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[PARTICLE PHYSICS · EXPERIMENTS]</text>
+  </g>
+
+  <!-- ── PANEL 8: HEDY LAMARR ── -->
+  <g transform="translate(1420, 590)">
+    <rect width="400" height="430" fill="#231e19" stroke="#8f8172" stroke-opacity="0.2" stroke-width="1" />
+    <rect x="24" y="24" width="352" height="185" fill="#2e2722" />
+    <circle cx="200" cy="95" r="42" fill="#3c332b" stroke="#66574b" stroke-width="1.5" />
+    <path d="M 158 185 C 158 142 175 132 200 132 C 225 132 242 142 242 185 Z" fill="#3c332b" stroke="#66574b" stroke-width="1.5" />
+    <text x="40" y="52" fill="#a89988" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3">PATENT US 2,292,387 // SPREAD SPECTRUM</text>
+    <text x="40" y="195" fill="#f0e6d8" font-family="Georgia, serif" font-size="24" font-weight="700">Hedy Lamarr</text>
+    <line x1="40" y1="205" x2="110" y2="205" stroke="#bda892" stroke-width="1.5" />
+
+    <text x="24" y="245" fill="#ded2c3" font-family="system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.8">SPREAD SPECTRUM INVENTOR</text>
+    <text x="24" y="275" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      Co-invented frequency-hopping spread spectrum wireless
+    </text>
+    <text x="24" y="296" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      communication, the foundational engineering principle
+    </text>
+    <text x="24" y="317" fill="#ad9c8a" font-family="Georgia, serif" font-size="13" font-style="italic">
+      behind modern Wi-Fi, Bluetooth, and GPS technologies.
+    </text>
+    <text x="24" y="390" fill="#9e8d7b" font-family="monospace" font-size="11" letter-spacing="2">[WIRELESS COMMS · FREQUENCY HOPPING]</text>
+  </g>
+</svg>

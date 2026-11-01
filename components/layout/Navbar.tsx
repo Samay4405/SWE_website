@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { cn } from "cn";
@@ -17,7 +18,7 @@ export function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  // When on homepage and over hero, use hero's white/lavender theme
+  // When on homepage and over hero, use hero's white theme
   const activeHeroTheme = isHome && isOverHero;
 
   // ── Hero & Scroll detection ──
@@ -115,38 +116,50 @@ export function Navbar() {
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
           activeHeroTheme
             ? isScrolledOverHero
-              ? "bg-[#171044]/35 backdrop-blur-md border-b border-white/10"
+              ? "bg-[#171044]/40 backdrop-blur-md border-b border-white/10"
               : "bg-transparent border-b border-transparent"
             : "bg-background/95 backdrop-blur-md border-b border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
         )}
       >
-        <nav className="section-container flex items-center justify-between h-16 md:h-18">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-heading font-bold text-lg tracking-tight group"
-            style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
-          >
-            <span
-              className={cn(
-                "transition-colors duration-300 font-extrabold text-xl tracking-tight",
-                activeHeroTheme ? "text-white" : "text-primary"
-              )}
+        {/* Full-width container: extreme left logo, centered links, extreme right CTA */}
+        <nav className="w-full px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between h-16 md:h-18">
+          {/* ── LEFT: Supplied SWE Logo at extreme left ── */}
+          <div className="flex-1 flex justify-start items-center">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 group focus:outline-hidden"
+              aria-label="SWE MIT-WPU Home"
             >
-              SWE
-            </span>
-            <span
-              className={cn(
-                "hidden sm:inline font-normal text-xs md:text-sm tracking-wide transition-colors duration-300",
-                activeHeroTheme ? "text-[#DCD0F5]/85" : "text-foreground/70"
-              )}
-            >
-              MIT-WPU
-            </span>
-          </Link>
+              <div className="relative h-7 sm:h-8 md:h-9 flex items-center">
+                <Image
+                  src="/images/hero/swe-logo.png"
+                  alt="SWE Logo"
+                  width={110}
+                  height={52}
+                  className={cn(
+                    "h-6 sm:h-7 md:h-8 w-auto object-contain transition-all duration-300 select-none",
+                    activeHeroTheme
+                      ? "brightness-100 drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]"
+                      : "brightness-0 opacity-80 group-hover:opacity-100"
+                  )}
+                  priority
+                />
+              </div>
+              <span
+                className={cn(
+                  "font-heading font-semibold text-xs md:text-sm tracking-widest uppercase transition-colors duration-300 border-l pl-2.5 select-none",
+                  activeHeroTheme
+                    ? "text-white/90 border-white/30"
+                    : "text-foreground/70 border-border"
+                )}
+              >
+                MIT-WPU
+              </span>
+            </Link>
+          </div>
 
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-1 lg:gap-2">
+          {/* ── CENTRE: Navigation links ── */}
+          <div className="hidden md:flex items-center justify-center gap-1 lg:gap-2">
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
@@ -155,24 +168,24 @@ export function Navbar() {
                   href={link.isSection && !isHome ? `/${link.href}` : link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   className={cn(
-                    "relative px-3.5 py-2 text-sm font-medium transition-colors duration-200 rounded-md",
+                    "relative px-3.5 py-2 text-sm font-medium transition-all duration-200 rounded-md tracking-wide",
                     activeHeroTheme
                       ? active
-                        ? "text-white font-semibold"
-                        : "text-[#DCD0F5]/80 hover:text-white"
+                        ? "text-white font-semibold drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]"
+                        : "text-white/85 hover:text-white hover:opacity-100"
                       : active
                       ? "text-foreground font-semibold"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {link.label}
-                  {/* Active indicator line */}
+                  {/* Subtle active indicator line */}
                   {active && (
                     <span
                       className={cn(
                         "absolute bottom-0.5 left-3.5 right-3.5 h-[2px] rounded-full transition-all duration-300",
                         activeHeroTheme
-                          ? "bg-white shadow-[0_0_8px_rgba(255,255,255,0.7)]"
+                          ? "bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
                           : "bg-primary"
                       )}
                     />
@@ -182,30 +195,38 @@ export function Navbar() {
             })}
           </div>
 
-          {/* Right side: CTA + Mobile toggle */}
-          <div className="flex items-center gap-3">
-            <Link href="/contact" className="hidden md:inline-flex">
-              <Button
-                size="sm"
+          {/* ── RIGHT: Join SWE button at extreme right ── */}
+          <div className="flex-1 flex justify-end items-center gap-3">
+            <Link href="/contact" className="hidden md:inline-flex group">
+              <button
+                type="button"
                 className={cn(
-                  "rounded-full px-5 py-2 text-sm font-medium transition-all duration-300",
+                  "relative inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer overflow-hidden",
                   activeHeroTheme
-                    ? "bg-white/5 border border-white/40 text-white hover:bg-white/15 hover:border-white shadow-[0_2px_12px_rgba(0,0,0,0.15)]"
-                    : "bg-primary text-primary-foreground hover:bg-primary/90 border-transparent shadow-xs"
+                    ? "bg-white/10 hover:bg-white/20 text-white border border-white/40 hover:border-white/90 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.15)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
+                    : "bg-primary text-primary-foreground hover:bg-primary/90 border border-transparent shadow-xs hover:shadow-md"
                 )}
               >
-                Join SWE
-              </Button>
+                <span className="relative z-10 flex items-center gap-1.5">
+                  Join SWE
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">
+                    →
+                  </span>
+                </span>
+                {activeHeroTheme && (
+                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+                )}
+              </button>
             </Link>
 
-            {/* Mobile hamburger */}
+            {/* Mobile hamburger button */}
             <Button
               variant="ghost"
               size="icon-sm"
               className={cn(
                 "md:hidden h-9 w-9 transition-colors duration-300",
                 activeHeroTheme
-                  ? "text-white hover:bg-white/10 hover:text-white"
+                  ? "text-white hover:bg-white/15 hover:text-white"
                   : "text-foreground hover:bg-muted"
               )}
               onClick={() => setMobileOpen(true)}

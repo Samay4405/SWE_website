@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { X } from "lucide-react";
+import Image from "next/image";
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +9,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetClose,
 } from "@/components/ui/sheet";
 import { navLinks } from "@/content/navigation";
 
@@ -52,13 +51,19 @@ export function MobileDrawer({
         <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
           <div className="flex items-center justify-between">
             <SheetTitle
-              className="text-lg font-bold"
+              className="text-lg font-bold flex items-center gap-2"
               style={{
                 fontFamily: "var(--font-display), system-ui, sans-serif",
               }}
             >
-              <span className="text-primary">SWE</span>{" "}
-              <span className="text-muted-foreground font-normal text-sm">
+              <Image
+                src="/images/hero/swe-logo.png"
+                alt="SWE Logo"
+                width={70}
+                height={32}
+                className="h-6 w-auto inline-block brightness-0 opacity-80"
+              />
+              <span className="text-muted-foreground font-normal text-xs uppercase tracking-wider border-l pl-2">
                 MIT-WPU
               </span>
             </SheetTitle>
@@ -88,7 +93,7 @@ export function MobileDrawer({
 
         <div className="px-6 pb-6 mt-auto">
           <Link href="/contact" onClick={() => onOpenChange(false)} className="block">
-            <Button className="w-full" size="lg">
+            <Button className="w-full rounded-full" size="lg">
               Join SWE
             </Button>
           </Link>

@@ -1,156 +1,263 @@
 "use client";
 
 import Image from "next/image";
-import { Users, BookOpen, Star, ArrowRight } from "lucide-react";
-import { ScrollReveal } from "@/components/shared/ScrollReveal";
+import { motion, useReducedMotion } from "framer-motion";
+import { Sparkles, ArrowUpRight } from "lucide-react";
 
-const pillars = [
-  {
-    title: "Connecting",
-    description:
-      "Building a supportive community where ideas, experiences, and opportunities come together.",
-    icon: Users,
-    iconBg: "bg-[#EDE6FA]",
-    iconColor: "text-[#7254A8]",
-  },
-  {
-    title: "Learning",
-    description:
-      "Gaining hands-on experience, building technical skills, and exploring new possibilities.",
-    icon: BookOpen,
-    iconBg: "bg-[#FFF0B3]",
-    iconColor: "text-[#A67C00]",
-  },
-  {
-    title: "Leading",
-    description:
-      "Empowering women to take initiative, create change, and shape a more inclusive tech future.",
-    icon: Star,
-    iconBg: "bg-[#EDE6FA]",
-    iconColor: "text-[#7254A8]",
-  },
-];
+/* ─────────────────────────────────────────────────────────────
+   ABOUT US SECTION — SWE MIT-WPU
+   Editorial two-column layout:
+   - 45% LEFT: "WHO WE ARE" eyebrow, expressive editorial heading,
+     refined description with purple highlights, decorative accent.
+   - 55% RIGHT: High-resolution SWE group photograph in a refined
+     asymmetric editorial frame with subtle lavender backdrop.
+   ───────────────────────────────────────────────────────────── */
 
 export function About() {
+  const prefersReducedMotion = useReducedMotion();
+
+  // Left Column Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.14,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const fadeUpVariant = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 26 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
+
+  const dividerVariant = {
+    hidden: { scaleX: 0, opacity: 0 },
+    visible: {
+      scaleX: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.9,
+        ease: [0.16, 1, 0.3, 1] as const,
+        delay: 0.4,
+      },
+    },
+  };
+
+  // Right Column Image Frame Animation Variants
+  const photoRevealVariant = {
+    hidden: {
+      opacity: 0,
+      y: prefersReducedMotion ? 0 : 32,
+      scale: prefersReducedMotion ? 1 : 0.98,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.95,
+        ease: [0.16, 1, 0.3, 1] as const,
+        delay: 0.15,
+      },
+    },
+  };
+
+  const backdropShapeVariant = {
+    hidden: { opacity: 0, scale: 0.92, rotate: -1 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
+      transition: {
+        duration: 1.1,
+        ease: [0.16, 1, 0.3, 1] as const,
+        delay: 0.05,
+      },
+    },
+  };
+
   return (
-    <section id="about" className="relative bg-white pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
-      <div className="section-container">
-        {/* ── Top Part: Two-Column Introduction ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 xl:gap-20 items-center mb-20 md:mb-28">
-          {/* Left Column: Heading & Mission */}
-          <ScrollReveal className="lg:col-span-6 xl:col-span-6">
-            {/* Eyebrow */}
-            <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#7254A8]">
-                ABOUT SWE
-              </span>
-              <span className="h-[1.5px] w-7 bg-[#C4B5E6]" />
-            </div>
+    <section
+      id="about"
+      className="relative w-full bg-[#FCFBFE] overflow-hidden select-none scroll-mt-20 py-20 sm:py-24 md:py-28 lg:py-32"
+      aria-label="About SWE MIT-WPU"
+    >
+      {/* ── Soft Ambient Editorial Highlights (Atmospheric Depth) ── */}
+      <div
+        className="pointer-events-none absolute -top-24 left-1/4 w-[620px] h-[480px] rounded-full blur-3xl opacity-35 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(91,84,120,0.12) 0%, rgba(220,197,84,0.05) 55%, transparent 75%)",
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 right-10 w-[550px] h-[420px] rounded-full blur-3xl opacity-25 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(91,84,120,0.08) 0%, rgba(138,130,166,0.06) 60%, transparent 80%)",
+        }}
+        aria-hidden="true"
+      />
 
-            {/* Main Two-Line Heading */}
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-extrabold tracking-tight leading-[1.12] mb-6 sm:mb-7"
-              style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
+      <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-8 md:px-10 lg:px-12">
+        {/* ── 45 / 55 Two-Column Composition ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 sm:gap-14 lg:gap-12 xl:gap-16 items-center">
+          
+          {/* ═══════════════════════════════════════════════════════════════
+              LEFT COLUMN — TEXT CONTENT (~45% on desktop)
+             ═══════════════════════════════════════════════════════════════ */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="lg:col-span-5 flex flex-col justify-center text-left"
+          >
+            {/* 1. Small Uppercase Eyebrow Label */}
+            <motion.div variants={fadeUpVariant} className="flex items-center gap-2 mb-4">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#5B5478]" />
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.24em] text-[#5B5478]">
+                WHO WE ARE
+              </span>
+              <span className="h-px w-6 bg-[#C4B5E6]" />
+            </motion.div>
+
+            {/* 2. Expressive Editorial Heading */}
+            <motion.h2
+              variants={fadeUpVariant}
+              className="text-4xl sm:text-5xl lg:text-[3.25rem] xl:text-[3.65rem] font-bold tracking-tight text-[#1F1D2B] leading-[1.08]"
+              style={{
+                fontFamily: "var(--font-display), system-ui, sans-serif",
+                letterSpacing: "-0.03em",
+              }}
             >
-              <span className="block text-[#24164F]">
-                More than a society.
+              <span>About </span>
+              <span
+                className="italic font-serif text-[#5B5478]"
+                style={{
+                  fontFamily: "var(--font-display), Georgia, serif",
+                }}
+              >
+                Us
               </span>
-              <span className="block text-[#8B6BC2] mt-1 sm:mt-1.5">
-                A space to build.
-              </span>
-            </h2>
+            </motion.h2>
 
-            {/* Supporting Description */}
-            <p className="text-base sm:text-lg text-[#5E5B70] leading-relaxed max-w-xl font-normal">
-              The Society of Women Engineers (SWE) at MIT-WPU is a community of
-              curious minds, aspiring engineers, and future innovators. We bring
-              together women who want to explore technology, develop practical
-              skills, collaborate on meaningful projects, and create opportunities
-              for one another.
-            </p>
-          </ScrollReveal>
+            {/* 3. Editorial Description with Subtle Purple Accents */}
+            <motion.div variants={fadeUpVariant} className="mt-6 sm:mt-7 space-y-4 text-left">
+              <p
+                className="text-[15px] sm:text-base lg:text-[16.5px] leading-[1.75] text-[#4A4560] font-normal"
+                style={{
+                  fontFamily: "var(--font-sans), system-ui, sans-serif",
+                }}
+              >
+                The{" "}
+                <span className="font-semibold text-[#1F1D2B]">
+                  Society of Women Engineers
+                </span>{" "}
+                empowers women to thrive in engineering and technology. Through{" "}
+                <span className="text-[#5B5478] font-medium">mentorship</span>,{" "}
+                <span className="text-[#5B5478] font-medium">technical initiatives</span>, and an inclusive collegiate community, we inspire, support, and connect the next generation of women engineers.
+              </p>
 
-          {/* Right Column: Event Photograph */}
-          <ScrollReveal delay={0.15} className="lg:col-span-6 xl:col-span-6">
-            <div className="relative w-full max-w-lg lg:max-w-none mx-auto">
-              {/* Subtle restrained soft lavender backdrop shape behind top-right corner */}
-              <div
-                className="pointer-events-none absolute -top-4 -right-4 sm:-top-6 sm:-right-6 w-3/4 h-3/4 rounded-[32px] bg-[#EDE6FA]/70 -z-10"
+              <p
+                className="text-[14px] sm:text-[15px] lg:text-[15.5px] leading-[1.75] text-[#5E5875] font-normal"
+                style={{
+                  fontFamily: "var(--font-sans), system-ui, sans-serif",
+                }}
+              >
+                At{" "}
+                <span className="font-semibold text-[#1F1D2B]">
+                  MIT World Peace University, Pune
+                </span>
+                , our student chapter creates an open environment where collegiate engineers explore their potential, cultivate industry-ready technical skills, and lead technical innovation with purpose.
+              </p>
+            </motion.div>
+
+            {/* 4. Subtle Decorative Accent Divider */}
+            <motion.div
+              variants={dividerVariant}
+              className="mt-8 pt-7 border-t border-[#ECE7F4] flex items-center justify-between origin-left"
+            >
+              <div className="flex items-center gap-3 text-xs font-mono text-[#8E8A9F]">
+                <span className="font-semibold text-[#5B5478]">MIT-WPU CHAPTER</span>
+                <span>&bull;</span>
+                <span>EST. PUNE, INDIA</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-medium text-[#5B5478] hover:text-[#2E2A40] transition-colors">
+                <Sparkles className="h-3.5 w-3.5 text-[#DCC554]" />
+                <span className="font-mono text-[11px] uppercase tracking-wider">Chapter 01</span>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* ═══════════════════════════════════════════════════════════════
+              RIGHT COLUMN — SWE PHOTOGRAPH (~55% on desktop)
+             ═══════════════════════════════════════════════════════════════ */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            className="lg:col-span-7 relative w-full flex items-center justify-center lg:justify-end"
+          >
+            <div className="relative w-full max-w-[620px] lg:max-w-none">
+              
+              {/* Optional Subtle Offset Background Backdrop in Muted Lavender */}
+              <motion.div
+                variants={backdropShapeVariant}
+                className="absolute -inset-3 sm:-inset-4 md:-inset-5 rounded-[28px] sm:rounded-[34px] bg-gradient-to-tr from-[#EBE6F5] via-[#F4F1FA] to-[#FAF8FD] border border-[#E6E0F1]/70 -z-10 shadow-[0_12px_36px_-18px_rgba(91,84,120,0.14)]"
                 aria-hidden="true"
               />
 
-              {/* Main Photo Card */}
-              <div className="relative rounded-2xl md:rounded-[22px] overflow-hidden shadow-[0_14px_38px_rgba(36,22,79,0.08)] border border-[#E5E2EC]/80 bg-white">
-                <Image
-                  src="/images/about/workshop-audience.jpg"
-                  alt="SWE MIT-WPU students and members collaborating in a technical workshop"
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto object-cover aspect-[4/3] sm:aspect-[16/11]"
-                  priority={false}
-                />
-              </div>
+              {/* Editorial Frame with Asymmetric Softly Rounded Corners */}
+              <motion.div
+                variants={photoRevealVariant}
+                whileHover={
+                  prefersReducedMotion
+                    ? {}
+                    : {
+                        scale: 1.015,
+                        transition: { duration: 0.5, ease: "easeOut" },
+                      }
+                }
+                className="group relative w-full overflow-hidden rounded-[22px] sm:rounded-[28px] border border-[#E2DCEE] bg-white shadow-[0_20px_50px_-20px_rgba(91,84,120,0.22)] transition-shadow duration-500 hover:shadow-[0_28px_65px_-18px_rgba(91,84,120,0.28)]"
+              >
+                {/* Responsive Aspect Ratio Container preserving original SWE photograph */}
+                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.6] lg:aspect-[16/10.2] overflow-hidden bg-[#F2EFF7]">
+                  <Image
+                    src="/images/team/ananya-deshmukh.jpg"
+                    alt="Society of Women Engineers (SWE) MIT-WPU Chapter members and leadership"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 55vw"
+                    className="object-cover object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                    priority
+                  />
 
-              {/* Editorial Floating Badge (Bottom Right) */}
-              <div className="absolute -bottom-4 right-3 sm:-bottom-5 sm:right-5 z-10 bg-[#EDE6FA]/95 backdrop-blur-md border border-[#D5CBEA] rounded-xl sm:rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5 shadow-[0_10px_25px_rgba(36,22,79,0.08)] flex items-center gap-3">
-                <div className="text-left">
-                  <p className="text-[11px] sm:text-xs font-bold text-[#24164F] leading-tight">
-                    Real People.
-                  </p>
-                  <p className="text-[11px] sm:text-xs font-bold text-[#24164F] leading-tight">
-                    Real Projects.
-                  </p>
-                  <p className="text-[11px] sm:text-xs font-medium text-[#7254A8] leading-tight">
-                    Lasting Impact.
-                  </p>
+                  {/* Soft Editorial Edge Vignette Overlay */}
+                  <div
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-60"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0 rounded-[22px] sm:rounded-[28px] ring-1 ring-inset ring-black/5"
+                    aria-hidden="true"
+                  />
                 </div>
-                <ArrowRight className="size-4 text-[#7254A8] ml-1" />
-              </div>
+              </motion.div>
             </div>
-          </ScrollReveal>
-        </div>
+          </motion.div>
 
-        {/* ── Bottom Part: Three SWE Pillars ── */}
-        <div className="border-t border-[#E5E2EC] pt-14 md:pt-18">
-          <h2
-            className="mb-10 text-center text-2xl font-bold tracking-tight text-[#24164F] sm:text-3xl md:mb-14"
-            style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
-          >
-            Three Pillars of SWE
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#E5E2EC]">
-            {pillars.map((pillar, idx) => {
-              const Icon = pillar.icon;
-              return (
-                <ScrollReveal
-                  key={pillar.title}
-                  delay={idx * 0.1}
-                  className="group flex flex-col items-center px-6 py-8 text-center transition-all duration-300 hover:-translate-y-1 md:px-8 md:py-0 lg:px-12 first:pt-0 first:md:pl-0 last:pb-0 last:md:pr-0"
-                >
-                  <div className="mb-4 flex flex-col items-center gap-3">
-                    <div
-                      className={`size-12 shrink-0 rounded-full ${pillar.iconBg} ${pillar.iconColor} flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-xs`}
-                    >
-                      <Icon className="size-5" />
-                    </div>
-                    <h3
-                      className="text-2xl font-bold tracking-tight text-[#24164F]"
-                      style={{
-                        fontFamily: "var(--font-display), system-ui, sans-serif",
-                      }}
-                    >
-                      {pillar.title}
-                    </h3>
-                  </div>
-
-                  {/* Description */}
-                  <p className="max-w-sm text-sm font-normal leading-relaxed text-[#74738A] sm:text-[15px]">
-                    {pillar.description}
-                  </p>
-                </ScrollReveal>
-              );
-            })}
-          </div>
         </div>
       </div>
     </section>
