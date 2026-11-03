@@ -116,11 +116,16 @@ function TimelineEventCard({
       <div className="relative -translate-y-1/2">
         <div
           className={cn(
-            "group relative flex flex-col overflow-hidden rounded-2xl border bg-white transition-all duration-300",
+            "group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-300",
             active
-              ? "border-[#5B5478]/40 shadow-[0_18px_42px_-14px_rgba(91,84,120,0.22)] ring-1 ring-[#5B5478]/15"
-              : "border-[#E8E4F0] shadow-[0_10px_28px_-16px_rgba(91,84,120,0.12)] hover:border-[#5B5478]/30",
+              ? "border-[#6d28d9]/40 shadow-[0_18px_42px_-14px_rgba(109,40,217,0.22)] ring-1 ring-[#6d28d9]/15"
+              : "border-[#e9e3fb] shadow-[0_10px_28px_-16px_rgba(109,40,217,0.12)] hover:border-[#6d28d9]/30",
           )}
+          style={{
+            background: "rgba(255, 255, 255, 0.85)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+          }}
         >
           {/* TOP: Image Header (Notion-style cover banner) */}
           <div className="relative w-full h-[168px] sm:h-[180px] overflow-hidden bg-[#F2EFF7] flex-shrink-0">
@@ -139,31 +144,37 @@ function TimelineEventCard({
             />
           </div>
 
-          {/* BOTTOM: Clean White Content Area */}
-          <div className="relative flex flex-col justify-between p-4 sm:p-5 bg-white text-left min-h-[148px]">
+          {/* BOTTOM: Clean Semi-transparent Content Area */}
+          <div className="relative flex flex-col justify-between p-4 sm:p-5 bg-transparent text-left min-h-[148px]">
             <div>
               <div className="flex items-center justify-between gap-2 mb-1">
                 <span
                   id={`${id}-date`}
-                  className="text-[11px] font-mono uppercase tracking-wider text-[#8A82A6] font-medium"
+                  className="text-[11px] font-mono uppercase tracking-wider text-[#6b6385] font-normal"
                 >
                   {event.dateDisplay}
-                </span>
-                <span className="text-[10px] font-mono text-[#DCC554] font-semibold">
-                  EVENT {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
 
               <h3
                 id={`${id}-title`}
-                className="font-bold text-[16px] sm:text-[17px] text-[#1F1D2B] tracking-tight line-clamp-1"
+                className="font-semibold text-[16px] sm:text-[17px] text-[#1e1033] tracking-tight line-clamp-1"
                 style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
               >
                 {event.title}
               </h3>
 
               <p
-                className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#5E5875] line-clamp-3 font-normal"
+                className={`mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6b6385] ${
+                  [
+                    "orientation-2025",
+                    "icebreaker-batch-ceremony-2025",
+                    "resq-centre-visit-2025",
+                    "icebreaker-2026",
+                  ].includes(event.id)
+                    ? "line-clamp-4"
+                    : "line-clamp-3"
+                } font-light`}
                 style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
               >
                 {event.description}
@@ -188,7 +199,7 @@ function TimelineEventCard({
           aria-labelledby={`${id}-title ${id}-date`}
           onClick={() => onSelect(index)}
           onKeyDown={(e) => onKeyDown(e, index)}
-          className="absolute inset-0 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#5B5478] focus-visible:ring-offset-2"
+          className="absolute inset-0 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9] focus-visible:ring-offset-2"
         />
       </div>
     </motion.li>
@@ -229,7 +240,7 @@ function GapTicks({
           key={i}
           className={cn(
             "block w-0.5 rounded-full transition-colors",
-            i === middle ? "bg-[#5B5478]/40" : "bg-[#5B5478]/18",
+            i === middle ? "bg-[#6d28d9]/40" : "bg-[#6d28d9]/18",
           )}
           style={{
             height: cardWidth * (i === middle ? TICK_TALL : TICK_SHORT),
@@ -518,19 +529,9 @@ export function EventsCarousel() {
   return (
     <section
       id="events"
-      className="relative w-full bg-[#FCFBFE] overflow-hidden select-none py-12 sm:py-16 md:py-20 flex flex-col justify-center min-h-[calc(100svh-90px)]"
+      className="relative w-full bg-transparent overflow-hidden select-none py-12 sm:py-16 md:py-20 flex flex-col justify-center min-h-[calc(100svh-90px)]"
       aria-label="Events and Workshops Timeline"
     >
-      {/* ── Soft Ambient Atmospheric Highlights ── */}
-      <div
-        className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[500px] rounded-full blur-3xl opacity-20 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(91,84,120,0.12) 0%, rgba(220,197,84,0.06) 55%, transparent 75%)",
-        }}
-        aria-hidden="true"
-      />
-
       <div className="mx-auto w-full max-w-[1360px] px-4 sm:px-6 lg:px-8 flex flex-col">
         {/* ── 1. Heading & Subtitle Sequence ── */}
         <motion.div
@@ -542,22 +543,38 @@ export function EventsCarousel() {
           {/* Heading */}
           <motion.h2
             variants={headerVariant}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#1F1D2B] leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1e1033] leading-tight"
             style={{
-              fontFamily: "var(--font-display), system-ui, sans-serif",
-              letterSpacing: "-0.025em",
+              fontFamily: "Inter, var(--font-sans), system-ui, sans-serif",
+              letterSpacing: "-0.035em",
             }}
           >
-            Events &amp; Workshops
+            Stories We&apos;ve{" "}
+            <em
+              style={{
+                fontFamily: '"Instrument Serif", Georgia, serif',
+                fontStyle: "italic",
+                fontWeight: 400,
+                color: "#6d28d9",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Created
+            </em>
+            .
           </motion.h2>
 
           {/* Subtitle */}
           <motion.p
             variants={subtitleVariant}
-            className="mt-2.5 sm:mt-3 text-sm sm:text-base text-[#5E5875] max-w-xl font-normal leading-relaxed"
-            style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
+            className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-[#6b6385] max-w-2xl font-light leading-relaxed"
+            style={{
+              fontFamily: "Inter, var(--font-sans), system-ui, sans-serif",
+              fontWeight: 300,
+              color: "#6b6385",
+            }}
           >
-            Celebrating a year of learning, collaboration, and impact.
+            A collection of events, experiences and moments that make our journey memorable.
           </motion.p>
         </motion.div>
 
@@ -624,39 +641,30 @@ export function EventsCarousel() {
               ))}
             </ul>
 
-            <div className="pointer-events-none absolute inset-x-2 top-[44%] z-30 flex -translate-y-1/2 justify-between sm:inset-x-4">
-              <button
-                type="button"
-                onClick={() => select(Math.max(0, activeIndex - 1))}
-                disabled={activeIndex === 0}
-                aria-label="Previous event"
-                className="pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#ECE7F4] bg-white text-[#5B5478] shadow-xs transition-all duration-200 hover:border-[#5B5478] hover:bg-[#FAF8FD] hover:text-[#1F1D2B] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => select(Math.min(last, activeIndex + 1))}
-                disabled={activeIndex === last}
-                aria-label="Next event"
-                className="pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#ECE7F4] bg-white text-[#5B5478] shadow-xs transition-all duration-200 hover:border-[#5B5478] hover:bg-[#FAF8FD] hover:text-[#1F1D2B] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
           </div>
         </motion.div>
 
         {/* ── 3. Event Navigation Controls ── */}
-        <div className="relative z-20 mx-auto mt-4 flex w-full max-w-4xl items-center justify-center px-2 sm:mt-5">
-          <div className="font-mono text-xs text-[#5B5478] tracking-wider">
-            <span className="font-bold text-sm text-[#1F1D2B]">
-              {String(activeIndex + 1).padStart(2, "0")}
-            </span>
-            <span className="text-[#C4BFE0] mx-1">/</span>
-            <span className="text-[#8E8A9F]">
-              {String(total).padStart(2, "0")}
-            </span>
+        <div className="relative z-20 mx-auto mt-4 flex w-full items-center justify-center px-2 sm:mt-5">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => select(Math.max(0, activeIndex - 1))}
+              disabled={activeIndex === 0}
+              aria-label="Previous event"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e9e3fb] bg-white text-[#6d28d9] shadow-xs transition-all duration-200 hover:border-[#6d28d9] hover:bg-[#f3edff] hover:text-[#1e1033] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => select(Math.min(last, activeIndex + 1))}
+              disabled={activeIndex === last}
+              aria-label="Next event"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e9e3fb] bg-white text-[#6d28d9] shadow-xs transition-all duration-200 hover:border-[#6d28d9] hover:bg-[#f3edff] hover:text-[#1e1033] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>

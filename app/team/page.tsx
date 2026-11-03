@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function TeamPage() {
   return (
-    <main className="min-h-screen bg-[#FCFBFE]">
+    <main className="min-h-screen bg-transparent">
       {/* Editorial Core Team & Heads 3D Cylindrical Carousels */}
       <TeamSection />
     </main>

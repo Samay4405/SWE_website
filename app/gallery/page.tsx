@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { galleryItems } from "@/content/gallery";
+import { galleryMasonryItems } from "@/content/gallery";
 import { GalleryClient } from "@/components/gallery/GalleryClient";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <main className="min-h-screen">
-      <GalleryClient initialItems={galleryItems} />
+      <GalleryClient initialItems={galleryMasonryItems} />
     </main>
   );
 }

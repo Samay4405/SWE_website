@@ -1,0 +1,417 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap");
+
+.contact-scope {
+  --pu: #6d28d9;
+  --soft: #a78bfa;
+  --ink: #1e1033;
+  --mute: #6b6385;
+  --line: #e9e3fb;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-sans), Inter, system-ui, sans-serif;
+  width: 100%;
+}
+
+.contact-scope * {
+  box-sizing: border-box;
+}
+
+.contact-scope .page {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.contact-scope .eb {
+  letter-spacing: 0.32em;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--pu);
+  font-weight: 500;
+}
+
+.contact-scope h1 {
+  font-size: clamp(2.1rem, 5.2vw, 4.1rem);
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  margin: 0.4em 0 0.45em;
+  color: var(--ink);
+}
+
+.contact-scope em {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--pu);
+  letter-spacing: -0.01em;
+}
+
+.contact-scope h1 em {
+  white-space: nowrap;
+}
+
+.contact-scope .lead {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--mute);
+  line-height: 1.75;
+  max-width: 38rem;
+  margin: 0 0 22px;
+}
+
+.contact-scope .status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.78rem;
+  color: var(--mute);
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.contact-scope .status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--soft);
+  display: inline-block;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.contact-scope .status.on i {
+  background: var(--pu);
+  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.16);
+}
+
+.contact-scope .grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  margin-top: 46px;
+  align-items: start;
+}
+
+.contact-scope .card {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  padding: 34px;
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.contact-scope .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 60px rgba(109, 40, 217, 0.12);
+}
+
+.contact-scope .card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    280px circle at var(--mx) var(--my),
+    #8b5cf6,
+    rgba(167, 139, 250, 0) 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+
+.contact-scope .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--mx) var(--my),
+    rgba(139, 92, 246, 0.09),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+
+.contact-scope .card:hover::before,
+.contact-scope .card:hover::after,
+.contact-scope .card:focus-within::before,
+.contact-scope .card:focus-within::after {
+  opacity: 1;
+}
+
+.contact-scope .ct {
+  font-family: var(--font-accent), "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.75rem;
+  letter-spacing: normal;
+  margin: 0 0 24px;
+  color: var(--ink);
+}
+
+.contact-scope form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.contact-scope .f {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-scope .w {
+  grid-column: 1 / -1;
+}
+
+.contact-scope label {
+  font-size: 0.78rem;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.contact-scope label b {
+  color: var(--pu);
+  font-weight: 400;
+}
+
+.contact-scope input,
+.contact-scope select,
+.contact-scope textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--ink);
+  background: #fcfbff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  outline: none;
+  transition: 0.25s;
+}
+
+.contact-scope input::placeholder,
+.contact-scope textarea::placeholder {
+  color: #a79fc0;
+}
+
+.contact-scope input:hover,
+.contact-scope select:hover,
+.contact-scope textarea:hover {
+  border-color: var(--soft);
+}
+
+.contact-scope input:focus,
+.contact-scope select:focus,
+.contact-scope textarea:focus {
+  border-color: var(--pu);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.12),
+    0 8px 24px rgba(109, 40, 217, 0.1);
+}
+
+.contact-scope select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%236d28d9' stroke-width='1.6'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.contact-scope textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.contact-scope .send {
+  grid-column: 1 / -1;
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+  padding: 16px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #1e1033, #4c1d95);
+  transition: 0.35s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-scope .send::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.7s;
+}
+
+.contact-scope .send:hover {
+  background: linear-gradient(90deg, #6d28d9, #8b5cf6);
+  box-shadow: 0 12px 34px rgba(109, 40, 217, 0.38);
+  transform: translateY(-2px);
+}
+
+.contact-scope .send:hover::after {
+  left: 120%;
+}
+
+.contact-scope .send svg {
+  transition: transform 0.3s;
+}
+
+.contact-scope .send:hover svg {
+  transform: translate(3px, -3px);
+}
+
+.contact-scope .send.ok {
+  background: linear-gradient(90deg, #6d28d9, #8b5cf6);
+}
+
+.contact-scope .row {
+  display: flex;
+  gap: 18px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-scope .row:first-of-type {
+  padding-top: 0;
+}
+
+.contact-scope .row:last-child {
+  border: 0;
+  padding-bottom: 0;
+}
+
+.contact-scope .ic {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #f1ebff;
+  color: var(--pu);
+  display: grid;
+  place-items: center;
+  transition: 0.35s;
+}
+
+.contact-scope .row:hover .ic {
+  background: var(--pu);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(109, 40, 217, 0.35);
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.contact-scope .row h3 {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.contact-scope .row p {
+  margin: 0;
+  font-weight: 300;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--mute);
+}
+
+.contact-scope .row a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.contact-scope .lnk {
+  display: inline-block;
+  margin-top: 9px;
+  font: inherit;
+  font-size: 0.78rem;
+  color: var(--pu);
+  text-decoration: none;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.contact-scope .lnk:hover {
+  border-color: var(--pu);
+}
+
+.contact-scope .rv {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: contact-up 0.8s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes contact-up {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-scope .rv {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .contact-scope .grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-scope .card {
+    padding: 26px;
+  }
+}
+
+@media (max-width: 560px) {
+  .contact-scope form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu } from "lucide-react";
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
@@ -11,59 +12,32 @@ import { navLinks } from "@/content/navigation";
 import { MobileDrawer } from "./MobileDrawer";
 
 export function Navbar() {
-  const [isOverHero, setIsOverHero] = useState(true);
-  const [isScrolledOverHero, setIsScrolledOverHero] = useState(false);
+  const [elementFocused, setElementFocused] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  // When on homepage and over hero, use hero's white theme
-  const activeHeroTheme = isHome && isOverHero;
-
-  // ── Hero & Scroll detection ──
-  useEffect(() => {
-    if (!isHome) return;
-
-    const heroEl = document.getElementById("hero");
-    if (!heroEl) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setIsOverHero(entry.isIntersecting);
-        setIsScrolledOverHero(entry.isIntersecting && window.scrollY > 20);
-      },
-      { rootMargin: "-72px 0px 0px 0px", threshold: 0 }
-    );
-
-    observer.observe(heroEl);
-
-    const handleScroll = () => {
-      const rect = heroEl.getBoundingClientRect();
-      const overHero = rect.bottom > 72;
-      setIsOverHero(overHero);
-      setIsScrolledOverHero(overHero && window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isHome]);
+  const handleHoverButton = (index: number | null) => {
+    setElementFocused(index);
+  };
 
   // ── Scroll spy for active section on homepage ──
   useEffect(() => {
-    if (!isHome) return;
+    if (!isHome) {
+      setIsScrolled(true);
+      return;
+    }
 
     const sectionIds = navLinks
       .filter((link) => link.isSection)
       .map((link) => link.href.replace("#", ""));
 
     const handleScroll = () => {
-      // While near the top within hero, clear active section
+      setIsScrolled(window.scrollY > 24);
+
+      // While near the top, active section is Home ("")
       if (window.scrollY < 240) {
         setActiveSection("");
         return;
@@ -91,6 +65,11 @@ export function Navbar() {
 
   const handleNavClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      if (href === "/" && isHome) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
       if (href.startsWith("#") && isHome) {
         e.preventDefault();
         const el = document.getElementById(href.replace("#", ""));
@@ -103,6 +82,9 @@ export function Navbar() {
   );
 
   const isActive = (href: string) => {
+    if (href === "/") {
+      return isHome && (activeSection === "" || activeSection === "hero");
+    }
     if (href.startsWith("#")) {
       return activeSection === href.replace("#", "");
     }
@@ -113,13 +95,17 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
-          activeHeroTheme
-            ? isScrolledOverHero
-              ? "bg-[#171044]/40 backdrop-blur-md border-b border-white/10"
-              : "bg-transparent border-b border-transparent"
-            : "bg-background/95 backdrop-blur-md border-b border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b",
+          isHome && !isScrolled
+            ? "bg-transparent border-transparent"
+            : "border-[#e9e3fb]/60"
         )}
+        style={{
+          backgroundColor:
+            isHome && !isScrolled ? "transparent" : "rgba(255, 255, 255, 0.7)",
+          backdropFilter: isHome && !isScrolled ? "none" : "blur(12px)",
+          WebkitBackdropFilter: isHome && !isScrolled ? "none" : "blur(12px)",
+        }}
       >
         {/* Full-width container: extreme left logo, centered links, extreme right CTA */}
         <nav className="w-full px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between h-16 md:h-18">
@@ -136,60 +122,55 @@ export function Navbar() {
                   alt="SWE Logo"
                   width={110}
                   height={52}
-                  className={cn(
-                    "h-6 sm:h-7 md:h-8 w-auto object-contain transition-all duration-300 select-none",
-                    activeHeroTheme
-                      ? "brightness-100 drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]"
-                      : "brightness-0 opacity-80 group-hover:opacity-100"
-                  )}
+                  className="h-6 sm:h-7 md:h-8 w-auto object-contain transition-all duration-300 select-none brightness-0 opacity-80 group-hover:opacity-100"
                   priority
                 />
               </div>
-              <span
-                className={cn(
-                  "font-heading font-semibold text-xs md:text-sm tracking-widest uppercase transition-colors duration-300 border-l pl-2.5 select-none",
-                  activeHeroTheme
-                    ? "text-white/90 border-white/30"
-                    : "text-foreground/70 border-border"
-                )}
-              >
+              <span className="font-heading font-semibold text-xs md:text-sm tracking-widest uppercase transition-colors duration-300 border-l border-neutral-300 pl-2.5 select-none text-neutral-600 group-hover:text-neutral-900">
                 MIT-WPU
               </span>
             </Link>
           </div>
 
-          {/* ── CENTRE: Navigation links ── */}
-          <div className="hidden md:flex items-center justify-center gap-1 lg:gap-2">
-            {navLinks.map((link) => {
+          {/* ── CENTRE: Navigation links with translucent purple hover highlight ── */}
+          <div
+            className="hidden md:flex items-center justify-center gap-1 lg:gap-1.5"
+            onMouseLeave={() => handleHoverButton(null)}
+          >
+            {navLinks.map((link, index) => {
               const active = isActive(link.href);
               return (
                 <Link
-                  key={link.href}
+                  key={link.label}
                   href={link.isSection && !isHome ? `/${link.href}` : link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
+                  onMouseEnter={() => handleHoverButton(index)}
                   className={cn(
-                    "relative px-3.5 py-2 text-sm font-medium transition-all duration-200 rounded-md tracking-wide",
-                    activeHeroTheme
-                      ? active
-                        ? "text-white font-semibold drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]"
-                        : "text-white/85 hover:text-white hover:opacity-100"
-                      : active
-                      ? "text-foreground font-semibold"
-                      : "text-muted-foreground hover:text-foreground"
+                    "relative inline-flex items-center justify-center px-3.5 py-1.5 text-[0.85rem] font-normal transition-colors duration-200 rounded-[7px] tracking-[0.04em] whitespace-nowrap select-none no-underline",
+                    active
+                    ? "text-[#1e1033] font-semibold"
+                    : "text-[#6b6385] hover:text-[#1e1033]"
                   )}
                 >
-                  {link.label}
-                  {/* Subtle active indicator line */}
-                  {active && (
-                    <span
-                      className={cn(
-                        "absolute bottom-0.5 left-3.5 right-3.5 h-[2px] rounded-full transition-all duration-300",
-                        activeHeroTheme
-                          ? "bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
-                          : "bg-primary"
-                      )}
-                    />
-                  )}
+                  <span className="relative z-10">{link.label}</span>
+
+                  {/* Translucent Purple Animated Hover Rectangle */}
+                  <AnimatePresence>
+                    {elementFocused === index && (
+                      <motion.div
+                        layout={true}
+                        layoutId="focused-element"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.2 }}
+                        className="-z-10 absolute inset-0 rounded-[7px] backdrop-blur-[1px] pointer-events-none"
+                        style={{
+                          backgroundColor: "rgba(109, 40, 217, 0.28)",
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
                 </Link>
               );
             })}
@@ -198,14 +179,9 @@ export function Navbar() {
           {/* ── RIGHT: Join SWE button at extreme right ── */}
           <div className="flex-1 flex justify-end items-center gap-3">
             <Link href="/contact" className="hidden md:inline-flex group">
-              <button
+              <Button
                 type="button"
-                className={cn(
-                  "relative inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer overflow-hidden",
-                  activeHeroTheme
-                    ? "bg-white/10 hover:bg-white/20 text-white border border-white/40 hover:border-white/90 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.15)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
-                    : "bg-primary text-primary-foreground hover:bg-primary/90 border border-transparent shadow-xs hover:shadow-md"
-                )}
+                className="relative inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-full text-[0.85rem] font-normal tracking-[0.04em] bg-primary text-primary-foreground hover:bg-primary/90 border border-transparent shadow-xs hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-1.5">
                   Join SWE
@@ -213,22 +189,14 @@ export function Navbar() {
                     →
                   </span>
                 </span>
-                {activeHeroTheme && (
-                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-                )}
-              </button>
+              </Button>
             </Link>
 
             {/* Mobile hamburger button */}
             <Button
               variant="ghost"
               size="icon-sm"
-              className={cn(
-                "md:hidden h-9 w-9 transition-colors duration-300",
-                activeHeroTheme
-                  ? "text-white hover:bg-white/15 hover:text-white"
-                  : "text-foreground hover:bg-muted"
-              )}
+              className="md:hidden h-9 w-9 text-neutral-800 hover:bg-neutral-100 transition-colors duration-300"
               onClick={() => setMobileOpen(true)}
               aria-label="Open navigation menu"
             >
@@ -248,3 +216,5 @@ export function Navbar() {
     </>
   );
 }
+
+export default Navbar;

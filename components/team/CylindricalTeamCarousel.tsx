@@ -9,7 +9,7 @@ import {
   useReducedMotion,
   type PanInfo,
 } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import type { EditorialTeamMember } from "@/content/teamData";
 
 interface CylindricalTeamCarouselProps {
@@ -101,15 +101,6 @@ export function CylindricalTeamCarousel({
 
   // Motion value for continuous rotation in degrees
   const rotation = useMotionValue(0);
-  const [currentDegree, setCurrentDegree] = useState(0);
-
-  // Sync state for rotation readouts / active card calculation
-  useEffect(() => {
-    const unsubscribe = rotation.on("change", (val) => {
-      setCurrentDegree(val);
-    });
-    return () => unsubscribe();
-  }, [rotation]);
 
   // Drag interaction tracking
   const startRotation = useRef(0);
@@ -162,10 +153,6 @@ export function CylindricalTeamCarousel({
     [rotation, stepAngle]
   );
 
-  // Active card indicator calculation
-  const normalizedRotation = ((-currentDegree % 360) + 360) % 360;
-  const activeIndex = Math.round(normalizedRotation / stepAngle) % faceCount;
-
   // 65% photo height, 35% white info panel
   const photoHeight = Math.round(cardDim.height * 0.65);
   const infoPanelHeight = cardDim.height - photoHeight;
@@ -216,7 +203,7 @@ export function CylindricalTeamCarousel({
             className="flex items-center justify-center origin-center"
             tabIndex={0}
             role="region"
-            aria-label="3D Cylindrical Team Carousel. Drag horizontally or use arrow buttons to rotate."
+            aria-label="3D Cylindrical Team Carousel. Use arrow buttons or keyboard arrow keys to rotate."
             onKeyDown={(e) => {
               if (e.key === "ArrowLeft") rotateToStep("prev");
               if (e.key === "ArrowRight") rotateToStep("next");
@@ -239,10 +226,13 @@ export function CylindricalTeamCarousel({
                   }}
                   className="origin-center transition-shadow duration-300 pointer-events-auto"
                 >
-                  {/* ── Profile Card: 65% Photo + 35% Crisp White Information Panel (Zero overlap guaranteed) ── */}
+                  {/* ── Profile Card: 65% Photo + 35% Information Panel ── */}
                   <div
-                    className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-[#E8E4F0] bg-white shadow-[0_14px_36px_-16px_rgba(91,84,120,0.14)] transition-all duration-300 hover:border-[#5B5478]/40 hover:shadow-[0_20px_48px_-12px_rgba(91,84,120,0.22)]"
+                    className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-[#e9e3fb] shadow-[0_14px_36px_-16px_rgba(109,40,217,0.14)] transition-all duration-300 hover:border-[#6d28d9]/40 hover:shadow-[0_20px_48px_-12px_rgba(109,40,217,0.22)]"
                     style={{
+                      background: "rgba(255, 255, 255, 0.85)",
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)",
                       transformStyle: "flat",
                       WebkitFontSmoothing: "antialiased",
                       MozOsxFontSmoothing: "grayscale",
@@ -276,13 +266,13 @@ export function CylindricalTeamCarousel({
                       />
                     </div>
 
-                    {/* LOWER SECTION — Dedicated White Information Panel (35% of total card height with crisp typography) */}
+                    {/* LOWER SECTION — Dedicated Information Panel (35% of total card height with crisp typography) */}
                     <div
-                      className={`relative flex flex-none flex-col justify-center bg-white ${
+                      className={`relative flex flex-none flex-col justify-center bg-transparent ${
                         usesCompactDimensions
                           ? "px-3.5 py-2.5 sm:px-4 sm:py-3"
                           : "px-4 py-3 sm:px-5 sm:py-3.5"
-                      } text-left border-t border-[#ECE7F4]`}
+                      } text-left border-t border-[#e9e3fb]`}
                       style={{
                         WebkitFontSmoothing: "antialiased",
                         MozOsxFontSmoothing: "grayscale",
@@ -296,7 +286,7 @@ export function CylindricalTeamCarousel({
                           usesCompactDimensions
                             ? "text-[15px] sm:text-[16px]"
                             : "text-[16px] sm:text-[17.5px]"
-                        } font-bold tracking-tight text-[#110E1B] leading-tight truncate`}
+                        } font-semibold tracking-tight text-[#1e1033] leading-tight truncate`}
                         style={{
                           fontFamily: "var(--font-display), system-ui, sans-serif",
                         }}
@@ -310,7 +300,7 @@ export function CylindricalTeamCarousel({
                           usesCompactDimensions
                             ? "text-[9.5px] sm:text-[10px] tracking-[0.14em]"
                             : "text-[10.5px] sm:text-[11px] tracking-[0.14em]"
-                        } font-bold uppercase text-[#524B6E] line-clamp-1`}
+                        } font-normal uppercase text-[#6b6385] line-clamp-1`}
                       >
                         {member.designation}
                       </p>
@@ -340,50 +330,25 @@ export function CylindricalTeamCarousel({
         </div>
       </div>
 
-      {/* ── Sleek Editorial Navigation Bar Directly Beneath Carousel ── */}
-      <div
-        className={`relative z-20 mt-3 sm:mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 ${
-          usesCompactDimensions ? "max-w-md sm:max-w-lg" : "max-w-xl"
-        } mx-auto px-2`}
-      >
-        {/* Interaction Hint */}
-        <div className="flex items-center gap-2 text-xs text-[#8E8A9F] tracking-wide font-medium">
-          <Sparkles className="h-3.5 w-3.5 text-[#DCC554]" />
-          <span>Drag horizontally to rotate 3D carousel</span>
-        </div>
-
-        {/* Navigation Cluster: Counter & Arrow Buttons */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          {/* Active Card Indicator */}
-          <div className="font-mono text-xs text-[#5B5478] tracking-wider">
-            <span className="font-bold text-sm text-[#2E2A40]">
-              {String(activeIndex + 1).padStart(2, "0")}
-            </span>
-            <span className="text-[#C4C0D0] mx-1">/</span>
-            <span className="text-[#8E8A9F]">
-              {String(faceCount).padStart(2, "0")}
-            </span>
-          </div>
-
-          {/* Minimal Sleek Prev / Next Buttons */}
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => rotateToStep("prev")}
-              aria-label="Rotate carousel to previous member"
-              className="group flex h-9 w-9 items-center justify-center rounded-full border border-[#E4E0EC] bg-white text-[#5B5478] shadow-sm transition-all duration-200 hover:border-[#5B5478] hover:bg-[#FAF8FD] hover:text-[#2E2A40] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5478]"
-            >
-              <ChevronLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => rotateToStep("next")}
-              aria-label="Rotate carousel to next member"
-              className="group flex h-9 w-9 items-center justify-center rounded-full border border-[#E4E0EC] bg-white text-[#5B5478] shadow-sm transition-all duration-200 hover:border-[#5B5478] hover:bg-[#FAF8FD] hover:text-[#2E2A40] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5478]"
-            >
-              <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-            </button>
-          </div>
+      {/* ── Centered Carousel Navigation ── */}
+      <div className="relative z-20 mt-3 flex justify-center sm:mt-4">
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => rotateToStep("prev")}
+            aria-label="Rotate carousel to previous member"
+            className="group flex h-9 w-9 items-center justify-center rounded-full border border-[#e9e3fb] bg-white/80 backdrop-blur-xs text-[#6d28d9] shadow-sm transition-all duration-200 hover:border-[#6d28d9] hover:bg-[#f3edff] hover:text-[#1e1033] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]"
+          >
+            <ChevronLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => rotateToStep("next")}
+            aria-label="Rotate carousel to next member"
+            className="group flex h-9 w-9 items-center justify-center rounded-full border border-[#e9e3fb] bg-white/80 backdrop-blur-xs text-[#6d28d9] shadow-sm transition-all duration-200 hover:border-[#6d28d9] hover:bg-[#f3edff] hover:text-[#1e1033] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]"
+          >
+            <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </button>
         </div>
       </div>
     </div>

@@ -48,7 +48,7 @@ export function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="section-padding bg-background border-b border-border/60"
+      className="section-padding bg-transparent border-b border-border/60"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}

@@ -53,15 +53,15 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* Fonts */
-  --font-sans: var(--font-body);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-display);
+  --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-mono: var(--font-body), system-ui, sans-serif;
+  --font-heading: var(--font-body), system-ui, sans-serif;
 
   /* Custom brand colors — accessible via Tailwind classes */
-  --color-brand: #4A3AFF;
-  --color-brand-hover: #3D2FD9;
-  --color-brand-light: #6B5CFF;
-  --color-brand-muted: #4A3AFF1A;
+  --color-brand: #6d28d9;
+  --color-brand-hover: #5b21b6;
+  --color-brand-light: #a78bfa;
+  --color-brand-muted: #6d28d91a;
   --color-brand-foreground: #FFFFFF;
   --color-highlight: var(--highlight);
   --color-highlight-foreground: var(--highlight-foreground);
@@ -72,61 +72,72 @@
 
 :root {
   /* SWE Design System — Light Mode */
+  --ink: #1e1033;
+  --purple: #6d28d9;
+  --soft-lilac: #a78bfa;
+  --muted-text: #6b6385;
+  --line: #e9e3fb;
+  --font-display: var(--font-body), system-ui, sans-serif;
   --background: #FDFDFC;
-  --foreground: #1F1D2B;
-  --card: #FFFFFF;
-  --card-foreground: #1F1D2B;
-  --popover: #FFFFFF;
-  --popover-foreground: #1F1D2B;
+  --foreground: var(--ink);
+  --card: rgba(255, 255, 255, 0.82);
+  --card-foreground: var(--ink);
+  --popover: rgba(255, 255, 255, 0.88);
+  --popover-foreground: var(--ink);
 
   /* Brand purple */
-  --primary: #5B5478;
+  --primary: var(--purple);
   --primary-foreground: #FFFFFF;
 
   /* Soft purple tints */
-  --secondary: #F3F2F7;
-  --secondary-foreground: #3E3857;
-  --muted: #F3F2F7;
-  --muted-foreground: #6E6A80;
-  --accent: #ECEAF2;
-  --accent-foreground: #3E3857;
+  --secondary: #f7f4ff;
+  --secondary-foreground: var(--ink);
+  --muted: #f7f4ff;
+  --muted-foreground: var(--muted-text);
+  --accent: #f3edff;
+  --accent-foreground: var(--purple);
 
   /* Brand yellow */
   --highlight: #DCC554;
-  --highlight-foreground: #1F1D2B;
+  --highlight-foreground: var(--ink);
 
   --destructive: #EF4444;
-  --border: #E6E4EC;
-  --input: #E6E4EC;
-  --ring: #5B5478;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--purple);
 
-  --chart-1: #5B5478;
+  --chart-1: var(--purple);
   --chart-2: #DCC554;
-  --chart-3: #8A84A3;
+  --chart-3: var(--soft-lilac);
   --chart-4: #A9A9AA;
-  --chart-5: #C9C5D8;
+  --chart-5: var(--line);
 
   --radius: 0.5rem;
   --surface: #FFFFFF;
 
   --sidebar: #FDFDFC;
-  --sidebar-foreground: #1F1D2B;
-  --sidebar-primary: #5B5478;
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--purple);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #ECEAF2;
-  --sidebar-accent-foreground: #3E3857;
-  --sidebar-border: #E6E4EC;
-  --sidebar-ring: #5B5478;
+  --sidebar-accent: #f3edff;
+  --sidebar-accent-foreground: var(--purple);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--purple);
 }
 
 .dark {
+  --ink: #EDEDED;
+  --purple: #A78BFA;
+  --soft-lilac: #C4B5FD;
+  --muted-text: #C1B9D8;
+  --line: #403653;
   --background: #0F0F0F;
   --foreground: #EDEDED;
   --card: #171717;
   --card-foreground: #EDEDED;
   --popover: #171717;
   --popover-foreground: #EDEDED;
-  --primary: #6B5CFF;
+  --primary: var(--purple);
   --primary-foreground: #FFFFFF;
   --secondary: #1F1F1F;
   --secondary-foreground: #EDEDED;
@@ -137,8 +148,8 @@
   --destructive: #EF4444;
   --border: #2A2A2A;
   --input: #2A2A2A;
-  --ring: #6B5CFF;
-  --chart-1: #6B5CFF;
+  --ring: var(--purple);
+  --chart-1: var(--purple);
   --chart-2: #8B7FFF;
   --chart-3: #ABA3FF;
   --chart-4: #CBC7FF;
@@ -166,40 +177,71 @@
   html {
     @apply scroll-smooth;
     font-family: var(--font-body), system-ui, sans-serif;
+    font-weight: 400;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-white text-foreground antialiased;
     font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), system-ui, sans-serif;
+    font-family: var(--font-body), system-ui, sans-serif;
     @apply font-semibold tracking-tight text-foreground;
   }
 
-  /* Fluid typography */
-  h1 {
-    font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-
+  h1,
   h2 {
-    font-size: clamp(2rem, 3vw + 0.5rem, 3rem);
-    line-height: 1.2;
-    letter-spacing: -0.015em;
+    font-family: var(--font-body), system-ui, sans-serif !important;
+    font-size: clamp(2rem, 4.6vw, 3.8rem) !important;
+    font-weight: 600 !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.035em !important;
+    color: var(--ink);
   }
 
   h3 {
-    font-size: clamp(1.25rem, 2vw + 0.25rem, 1.75rem);
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-weight: 600 !important;
     line-height: 1.3;
   }
 
+  h4,
+  h5,
+  h6 {
+    font-weight: 600 !important;
+  }
+
   p {
-    @apply leading-relaxed;
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.75;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
+
+  .section-label {
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--purple);
+  }
+
+  .font-accent {
+    font-family: var(--font-accent), Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--purple);
   }
 }
 
@@ -208,6 +250,14 @@
    ───────────────────────────────────────────── */
 
 @layer utilities {
+  /* Semi-transparent frosted glass cards across all pages matching Contact card spec */
+  .bg-card {
+    background-color: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-color: #e9e3fb !important;
+  }
+
   /* Section container with consistent padding and max-width */
   .section-container {
     @apply mx-auto w-full max-w-[1280px] px-6 md:px-12;

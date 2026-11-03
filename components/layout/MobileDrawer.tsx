@@ -27,6 +27,12 @@ export function MobileDrawer({
 }: MobileDrawerProps) {
   const handleNavClick = (href: string) => {
     onOpenChange(false);
+    if (href === "/" && isHome) {
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 300);
+      return;
+    }
     if (href.startsWith("#") && isHome) {
       // Small delay for sheet close animation before scrolling
       setTimeout(() => {
@@ -39,6 +45,9 @@ export function MobileDrawer({
   };
 
   const isActive = (href: string) => {
+    if (href === "/") {
+      return isHome && (activeSection === "" || activeSection === "hero");
+    }
     if (href.startsWith("#")) {
       return activeSection === href.replace("#", "");
     }

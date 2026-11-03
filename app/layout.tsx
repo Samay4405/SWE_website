@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { plusJakartaSans, inter } from "@/lib/fonts";
+import { inter, instrumentSerif } from "@/lib/fonts";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { BlobBackground } from "@/components/BlobBackground";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,12 +38,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plusJakartaSans.variable} ${inter.variable} h-full`}
+      className={`${inter.variable} ${instrumentSerif.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col antialiased">
-        <Navbar />
-        <main className="flex-1 pt-16 md:pt-18">{children}</main>
-        <Footer />
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap"
+        />
+      </head>
+      <body className="min-h-full flex flex-col antialiased bg-white">
+        <div className="site-bg">
+          <BlobBackground />
+          <Navbar />
+          <main className="relative z-[1] flex-1 pt-16 md:pt-18">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

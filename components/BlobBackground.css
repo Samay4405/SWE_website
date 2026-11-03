@@ -1,0 +1,189 @@
+/* ─────────────────────────────────────────────────────────────
+   BLOB BACKGROUND
+   File: components/BlobBackground.css
+   Edit blob positions, sizes, or timings here to tweak the background glow.
+   ───────────────────────────────────────────────────────────── */
+
+.site-bg {
+  position: relative;
+  overflow-x: clip;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.blob-bg-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(30px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  animation: dr 16s ease-in-out infinite alternate;
+}
+
+@keyframes dr {
+  to {
+    transform: translate(40px, 30px) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none !important;
+  }
+}
+
+/* ── Three Shared Gradient Styles ── */
+/* A: Soft Violet */
+.blob-style-a {
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.42), transparent 65%);
+}
+
+/* B: Deep Purple (faint) */
+.blob-style-b {
+  background: radial-gradient(circle, rgba(109, 40, 217, 0.22), transparent 65%);
+}
+
+/* C: Light Lavender */
+.blob-style-c {
+  background: radial-gradient(circle, rgba(196, 181, 253, 0.45), transparent 65%);
+}
+
+/* ── Staggered Continuous Flow (Percentage-based) ── */
+
+/* 1. Top-left, partly off-screen: A, ~520px, top 0%, left -180px */
+.blob-1 {
+  width: 520px;
+  height: 520px;
+  top: 0%;
+  left: -180px;
+  animation-delay: 0s;
+}
+
+/* 2. Right side: C, ~400px, top 12%, right -140px */
+.blob-2 {
+  width: 400px;
+  height: 400px;
+  top: 12%;
+  right: -140px;
+  animation-delay: -3s;
+}
+
+/* 3. Left side: B, ~500px, top 28%, left -200px */
+.blob-3 {
+  width: 500px;
+  height: 500px;
+  top: 28%;
+  left: -200px;
+  animation-delay: -6s;
+}
+
+/* 4. Right side: A, ~480px, top 44%, right -180px */
+.blob-4 {
+  width: 480px;
+  height: 480px;
+  top: 44%;
+  right: -180px;
+  animation-delay: -9s;
+}
+
+/* 5. Left side: C, ~420px, top 60%, left -140px */
+.blob-5 {
+  width: 420px;
+  height: 420px;
+  top: 60%;
+  left: -140px;
+  animation-delay: -12s;
+}
+
+/* 6. Right side: B, ~540px, top 76%, right -200px */
+.blob-6 {
+  width: 540px;
+  height: 540px;
+  top: 76%;
+  right: -200px;
+  animation-delay: -3s;
+}
+
+/* 7. Bottom-right, partly off-screen: B, ~560px, bottom -200px, right -200px */
+.blob-7 {
+  width: 560px;
+  height: 560px;
+  bottom: -200px;
+  right: -200px;
+  animation-delay: -6s;
+}
+
+/* 8. Bottom-left: A, ~460px, bottom -120px, left -160px */
+.blob-8 {
+  width: 460px;
+  height: 460px;
+  bottom: -120px;
+  left: -160px;
+  animation-delay: -9s;
+}
+
+/* ── Mobile (max-width 560px): Scale blobs to ~65% size ── */
+@media (max-width: 560px) {
+  .blob-1 {
+    width: 338px;
+    height: 338px;
+    left: -120px;
+    top: 0%;
+  }
+  .blob-2 {
+    width: 260px;
+    height: 260px;
+    right: -90px;
+    top: 12%;
+  }
+  .blob-3 {
+    width: 325px;
+    height: 325px;
+    left: -130px;
+    top: 28%;
+  }
+  .blob-4 {
+    width: 312px;
+    height: 312px;
+    right: -115px;
+    top: 44%;
+  }
+  .blob-5 {
+    width: 273px;
+    height: 273px;
+    left: -90px;
+    top: 60%;
+  }
+  .blob-6 {
+    width: 350px;
+    height: 350px;
+    right: -130px;
+    top: 76%;
+  }
+  .blob-7 {
+    width: 364px;
+    height: 364px;
+    bottom: -130px;
+    right: -130px;
+  }
+  .blob-8 {
+    width: 299px;
+    height: 299px;
+    bottom: -80px;
+    left: -105px;
+  }
+}

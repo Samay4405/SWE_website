@@ -65,7 +65,15 @@ export function Footer() {
   const currentYear = 2026;
 
   return (
-    <footer className="border-t border-border bg-muted/30">
+    <footer
+      className="relative z-[1] border-t border-[#e9e3fb]/60"
+      style={{
+        background:
+          "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7))",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+      }}
+    >
       <div className="section-container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8">
           {/* Brand column */}

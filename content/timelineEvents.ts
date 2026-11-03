@@ -11,65 +11,75 @@ export interface TimelineEventItem {
 export const timelineEventsData: TimelineEventItem[] = [
   // ── YEAR 2025 ──
   {
-    id: "ice-breaker-2025",
-    title: "Ice Breaker",
+    id: "orientation-2025",
+    title: "SWE Orientation 2025",
     year: 2025,
     yearLabel: "2025",
-    dateDisplay: "2025",
+    dateDisplay: "AUGUST 2025",
     description:
-      "A welcoming event that brought SWE members together, encouraged introductions, and helped build connections within the community.",
-    coverImage: "/images/events/networking-mixer.svg",
+      "An introduction to SWE, its mission and initiatives, welcoming curious students and giving them a glimpse into the community and opportunities ahead.",
+    coverImage: "/images/events/orientation-2025.jpg",
   },
   {
-    id: "resq-animal-shelter-2025",
-    title: "The ResQ Animal Shelter Visit",
+    id: "icebreaker-batch-ceremony-2025",
+    title: "Icebreaker & Batch Ceremony",
     year: 2025,
     yearLabel: "2025",
-    dateDisplay: "2025",
+    dateDisplay: "SEPTEMBER 2025",
     description:
-      "An opportunity to visit an animal shelter, understand animal welfare efforts, and engage with a meaningful community initiative.",
-    coverImage: "/images/events/stem-outreach.svg",
+      "An evening of games, laughter and connections as new recruits met the SWE heads, followed by a batch ceremony celebrating the team's new beginnings.",
+    coverImage: "/images/events/icebreaker-batch-ceremony-2025.jpg",
   },
   {
-    id: "welocal-bengaluru-2025",
-    title: "WeLocal Bengaluru",
+    id: "resq-centre-visit-2025",
+    title: "RESQ Centre Visit",
     year: 2025,
     yearLabel: "2025",
-    dateDisplay: "2025",
+    dateDisplay: "OCTOBER 2025",
     description:
-      "A collaborative experience focused on connecting with people, exchanging ideas, and exploring opportunities for learning and growth.",
-    coverImage: "/images/events/stem-summit.jpg",
+      "A visit to RESQ Charitable Trust to learn about animal rescue, veterinary care and rehabilitation efforts for injured wildlife and community animals.",
+    coverImage: "/images/events/resq-centre-visit-2025.jpg",
   },
 
   // ── YEAR 2026 ──
   {
     id: "jab-swe-met-hackathon-2026",
-    title: "Jab SWE Met Hackathon",
+    title: "SWE Hackathon",
     year: 2026,
     yearLabel: "2026",
-    dateDisplay: "2026",
+    dateDisplay: "JANUARY 2026",
     description:
-      "A collaborative hackathon where participants worked together, explored creative ideas, and developed innovative solutions.",
+      "A hackathon challenging participants to develop innovative solutions to real-world women's safety problems, featuring a prize pool of ₹20,000.",
     coverImage: "/images/events/hackathon-collab.jpg",
   },
   {
-    id: "orientation-2026",
-    title: "Orientation",
+    id: "we-local-bengaluru-2026",
+    title: "We Local – Bengaluru",
     year: 2026,
     yearLabel: "2026",
-    dateDisplay: "2026",
+    dateDisplay: "APRIL 2026",
     description:
-      "An introduction to SWE MIT-WPU, its vision, activities, and opportunities for students to learn, participate, and grow.",
-    coverImage: "/images/events/leadership-summit.svg",
+      "SWE members travelled to Bengaluru for We Local, connecting with the wider SWE community, exchanging ideas and celebrating women in engineering.",
+    coverImage: "/images/events/we-local-bengaluru-2026.jpg",
   },
   {
-    id: "ice-breaker-2026",
-    title: "Ice Breaker",
+    id: "orientation-2026",
+    title: "SWE Orientation 2026",
     year: 2026,
     yearLabel: "2026",
-    dateDisplay: "2026",
+    dateDisplay: "SEPTEMBER 2026",
     description:
-      "A fun community-building event designed to help members interact, get to know one another, and strengthen connections within SWE.",
-    coverImage: "/images/events/cloud-masterclass.jpg",
+      "Welcoming a new batch of aspiring members, introducing them to SWE's vision, initiatives and the opportunities to learn, contribute and grow.",
+    coverImage: "/images/events/orientation-2026.jpg",
+  },
+  {
+    id: "icebreaker-2026",
+    title: "Icebreaker 2026",
+    year: 2026,
+    yearLabel: "2026",
+    dateDisplay: "OCTOBER 2026",
+    description:
+      "A fun-filled gathering bringing new recruits and existing members together through games, conversations and activities, building connections beyond the classroom.",
+    coverImage: "/images/events/icebreaker-batch-ceremony-2025.jpg",
   },
 ];
