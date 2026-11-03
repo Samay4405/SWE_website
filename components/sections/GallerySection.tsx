@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import Masonry from "@/components/Masonry";
+import { galleryMasonryItems as archiveGalleryMasonryItems } from "@/content/gallery";
 
 export interface GalleryMasonryItem {
   id: string;
@@ -189,7 +190,7 @@ export function GallerySection() {
           <ScrollReveal delay={0.1} className="shrink-0">
             <Link href="/gallery">
               <Button variant="outline" className="gap-2 border-[#e9e3fb] text-[#1e1033] hover:bg-[#f3edff]">
-                Explore Full Archive ({galleryMasonryItems.length})
+                Explore Full Archive ({archiveGalleryMasonryItems.length})
                 <ArrowRight className="size-4 text-[#6d28d9]" />
               </Button>
             </Link>
@@ -199,7 +200,7 @@ export function GallerySection() {
         {/* ── React Bits Masonry Grid ── */}
         <div className="w-full relative min-h-[400px]">
           <Masonry
-            items={galleryMasonryItems}
+            items={galleryMasonryItems.slice(0, 11)}
             columnWidth={240}
             gap={12}
             radius={12}

@@ -127,7 +127,7 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     id: "head-8",
     name: "Janhavi Modak",
     designation: "HR Head",
-    photo: "/images/team/head-8.jpg",
+    photo: "/images/team/head-janhavi-modak.jpg",
     quote: "Making everyone feel like they belong.",
   },
   {

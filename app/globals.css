@@ -194,24 +194,28 @@
 
   h1,
   h2 {
-    font-family: var(--font-body), system-ui, sans-serif !important;
-    font-size: clamp(2rem, 4.6vw, 3.8rem) !important;
-    font-weight: 600 !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.035em !important;
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: clamp(2rem, 4.6vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
     color: var(--ink);
+  }
+
+  .contact-scope h2.ct {
+    font-family: var(--font-accent), Georgia, serif !important;
   }
 
   h3 {
     font-family: var(--font-body), system-ui, sans-serif;
-    font-weight: 600 !important;
+    font-weight: 600;
     line-height: 1.3;
   }
 
   h4,
   h5,
   h6 {
-    font-weight: 600 !important;
+    font-weight: 600;
   }
 
   p {

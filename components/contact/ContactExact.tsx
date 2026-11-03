@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./ContactExact.css";
 
 interface ContactExactProps {
@@ -8,8 +8,6 @@ interface ContactExactProps {
 }
 
 export function ContactExact({ id = "contact" }: ContactExactProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [statusText, setStatusText] = useState("Checking chapter hours…");
   const [copyText, setCopyText] = useState("Copy address");
   const [btnState, setBtnState] = useState<"idle" | "sending" | "ok">("idle");
   const [formData, setFormData] = useState({
@@ -21,36 +19,6 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
   });
 
   const formRef = useRef<HTMLFormElement>(null);
-
-  // Live open / closed status (IST, Mon–Fri 10:00–17:30)
-  useEffect(() => {
-    try {
-      const p = new Intl.DateTimeFormat("en-US", {
-        timeZone: "Asia/Kolkata",
-        weekday: "short",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: false,
-      }).formatToParts(new Date());
-
-      const g = (t: string) => p.find((x) => x.type === t)?.value || "";
-      const weekday = g("weekday");
-      const hour = parseInt(g("hour") || "0", 10) % 24;
-      const minute = parseInt(g("minute") || "0", 10);
-      const min = hour * 60 + minute;
-
-      const open =
-        !["Sat", "Sun"].includes(weekday) && min >= 600 && min < 1050;
-      setIsOpen(open);
-      setStatusText(
-        open
-          ? "Chapter desk is open now · until 5:30 PM IST"
-          : "Chapter desk is closed · opens Mon–Fri, 10:00 AM IST"
-      );
-    } catch {
-      setStatusText("Student Chapter desk · Mon–Fri, 10:00 AM – 5:30 PM IST");
-    }
-  }, []);
 
   // Card pointer glow effect
   const handleCardPointerMove = (e: React.PointerEvent<HTMLElement>) => {
@@ -135,7 +103,6 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
       <div id="join" className="absolute -top-24" aria-hidden="true" />
 
       <main className="page">
-        <div className="eb rv">Contact us</div>
         <h1
           className="rv"
           style={{ "--d": ".1s" } as React.CSSProperties}
@@ -150,15 +117,6 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
           corporate partnerships? Drop us a message or visit us on campus in
           Pune.
         </p>
-
-        <div
-          className={`status rv ${isOpen ? "on" : ""}`}
-          id="st"
-          style={{ "--d": ".3s" } as React.CSSProperties}
-        >
-          <i />
-          <span>{statusText}</span>
-        </div>
 
         <div className="grid">
           <section
