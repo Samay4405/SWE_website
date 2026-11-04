@@ -143,3 +143,4 @@ test("Homepage has no console errors", async ({ page }) => {
     `Console errors found: ${realErrors.join("\n")}`
   ).toHaveLength(0);
 });
+

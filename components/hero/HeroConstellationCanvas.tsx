@@ -549,3 +549,4 @@ export function HeroConstellationCanvas() {
     </div>
   );
 }
+
