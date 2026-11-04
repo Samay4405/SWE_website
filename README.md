@@ -1,9 +1,8 @@
-# Society of Women Engineers (SWE) — MIT-WPU Chapter Website
+# Society of Women Engineers (SWE) — MIT-WPU Student Chapter
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat&logo=react)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
-[![Three.js](https://img.shields.io/badge/Three.js-WebGL-black?style=flat&logo=three.js)](https://threejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 
 > **"Engineering the Future, Together."**  
@@ -11,18 +10,70 @@
 
 ---
 
-## 🌟 Overview & Key Features
+## 🌟 Architecture & Features
 
 This platform is a high-performance marketing and community portal built to represent a serious, modern collegiate engineering organization.
 
-- **Hero Canvas (3D WebGL):** Interactive Three.js floating constellation node network with mouse parallax, 60fps rendering, and automatic static SVG fallback for devices with reduced-motion preferences.
-- **Organizational Architecture:** 3-tier heritage visualizer (*SWE Global* → *SWE India* → *MIT-WPU Chapter*) and strategic focus areas (Technical, Leadership, Community, Career).
-- **Interactive Events Directory (`/events` & `/events/[slug]`):** Real-time category filtering (Hackathons, Workshops, Talks, Networking, Competitions, Outreach), text search, dynamic schedule timelines, and speaker profiles.
-- **Team Directory (`/team`):** Categorized rosters across Executive Leadership, Core Committee, and Faculty Mentors with accessible 3D-flip biography cards.
-- **Impact & Growth Analytics (`/impact`):** Recharts 5-year interactive membership growth curves (2021–2025), key honors, and corporate collaborator grid.
-- **Photo Gallery & Lightbox (`/gallery`):** Multi-category responsive masonry layout with keyboard-navigable full-screen modal lightbox.
-- **Interactive Contact & Join (`/contact`):** Validated contact inquiry form with Next.js App Router API endpoint (`/api/contact`), campus location details, and membership FAQs.
-- **Design System:** Space Grotesk display typography + Inter body text, refined neutral background palette with curated `#4A3AFF` deep violet accents.
+- **Hero Constellation Canvas:** High-efficiency Canvas 2D progressive constellation featuring 10 prominent women-in-STEM pioneers with damped velocity physics, division-by-zero guards, keyboard focusable nodes, and responsive glass tooltip cards.
+- **Immediate LCP Headline & Stabilized Typewriter:** Server-rendered Instrument Serif italic display typography with a fixed-width rotating typewriter container that eliminates layout shift (CLS < 0.05).
+- **Editorial About Section:** MagicUI pixel-reveal photography with touch and keyboard interaction, complemented by 4 core chapter value pillars (Community, Inclusion, Learning, Leadership).
+- **Physics Events Horizontal Carousel:** Physics-driven horizontal timeline with spring momentum, snap-to-card settling, active-card links to `/events/[slug]`, accessible 44px arrow controls, and a restored `/events` directory page with category filtering.
+- **Dual 3D Cylindrical Team Carousels:** Cylindrical 3D perspective carousels for the Core Executive Board (8) and Department Heads (14), featuring reduced-motion flat scrollers, live screen-reader announcements, and blur-placeholder images.
+- **"Stories That Stay" Impact Section:** Alumnae reflection cards framed with continuous conic gradient borders and zero-layout-thrash cursor spotlights updated via rAF, backed by authentic chapter impact statistics.
+- **Accessible Visual Archive & Lightbox:** Responsive masonry gallery serving optimized responsive formats via Next.js `Image`, with a WCAG 2.2 AA compliant modal lightbox featuring focus trapping, Escape key closing, and arrow key navigation.
+- **Campus Desk & Contact Form:** Live IST chapter office hours calculation (Monday–Friday 10:00 AM – 5:30 PM IST), honeypot spam protection, true error state alerts, and polite `aria-live` clipboard confirmation.
+
+---
+
+## 🎨 Design System & Tokens
+
+The design system is unified across `app/globals.css`, `lib/tokens.ts`, and `lib/animations.ts`:
+
+### Color Roles
+| Token | Hex / Value | Description |
+| :--- | :--- | :--- |
+| `--purple` | `#6538A5` | Primary brand purple for logos, CTAs, accents, and icons |
+| `--purple-deep` | `#532D8A` | Interactive hover state for primary purple |
+| `--purple-soft` | `#A78BDA` | Soft lavender borders and secondary highlights |
+| `--gold` | `#F5D76E` | Brand gold accent for badges, stars, and highlights |
+| `--gold-warm` | `#E8B94F` | Deep gold for quote icons and conic gradients |
+| `--ink` | `#1E1033` | Deep purple-black for high-contrast primary typography |
+| `--muted-text` | `#6B6385` | Accessible neutral for supporting paragraphs and dates |
+| `--line` | `#E9E3FB` | Soft lavender border for cards and dividers |
+| `--background` | `#FCFBFE` | Crisp off-white lavender ambient base |
+
+### Typography Scale
+- **Display Type:** `Instrument Serif` (Italic, weight 400, loaded via `next/font/google`).
+- **Body & Headings:** `Inter` (weights 300, 400, 500, 600, loaded via `next/font/google`).
+- **Eyebrow:** `0.6875rem` font-mono uppercase with `0.28em` tracking.
+- **Fluid Heading Scale:**
+  - `h1`: `clamp(2.25rem, 5.2vw, 4.25rem)` (line-height: 1.06)
+  - `h2`: `clamp(1.85rem, 4vw, 3.25rem)` (line-height: 1.12)
+  - `h3`: `clamp(1.25rem, 2.4vw, 1.75rem)` (line-height: 1.25)
+  - Body `p`: `1.05rem` (line-height: 1.75, font-light)
+
+### Motion Presets (`lib/animations.ts`)
+- **Editorial Ease:** `[0.16, 1, 0.3, 1]`
+- **Carousel Spring Glide:** `{ stiffness: 130, damping: 25, mass: 0.9 }`
+- **Carousel Snap:** `{ stiffness: 85, damping: 22, mass: 0.2 }`
+- **Global Reduced Motion:** All CSS animations and Framer Motion transitions honor `prefers-reduced-motion: reduce`.
+
+---
+
+## 📝 Content Management Guide
+
+### Adding or Updating Events
+1. **Homepage Timeline:** Update `content/timelineEvents.ts` with the event title, year, date string, description, and cover image path. Link it to a detail slug via `slug: "my-event-slug"`.
+2. **Directory & Detail Pages:** Add full details in `content/events.ts` including schedule, category, speakers, and venue. The page `/events/[slug]` is generated automatically.
+
+### Adding Team Members
+Edit `content/teamData.ts`:
+- Append to `coreTeamMembers` (Executive Board) or `headsTeamMembers` (Department Directors).
+- Include `name`, `designation`, `photo` (`/images/team/...`), and `quote`.
+
+### Adding Gallery Photos
+Add photo entries to `galleryMasonryItems` in `components/sections/GallerySection.tsx` and `content/gallery.ts`:
+- Set `width`, `height`, descriptive `title`, and accessible `alt` text.
 
 ---
 
@@ -48,60 +99,12 @@ npm run dev
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
----
-
-## 🛠️ Build & Production
+### Build & Production Testing
 
 ```bash
 # Type check and build optimized production bundle
 npm run build
 
-# Start production server
-npm run start
+# Run automated Playwright smoke test suite
+npm run test
 ```
-
----
-
-## 📸 Screen Recordings & Screenshots
-
-All visual test verification recordings and screenshots are available in the local directory:  
-📂 **[`screenshots/`](./screenshots/)**
-
-- **`final_complete_website_tour.webp`**: Comprehensive animated screen recording covering all pages, Three.js parallax, category filtering, lightbox, and form submission.
-- **`impact_page_full_*.png`**: Impact analytics page showing the Recharts growth graph.
-- **`gallery_masonry_grid_*.png`**: Photo gallery masonry view with filter pills.
-- **`team_page_flipped_*.png`**: Interactive team cards with flipped biography states.
-- **`contact_success_state_*.png`**: Contact submission confirmation state.
-
----
-
-## 🏛️ Project Structure
-
-```text
-├── app/
-│   ├── api/contact/route.ts    # Contact form API route handler
-│   ├── contact/page.tsx        # Contact & membership page
-│   ├── events/                 # Events directory & dynamic [slug] pages
-│   ├── gallery/page.tsx        # Masonry photo gallery & lightbox
-│   ├── impact/page.tsx         # Impact analytics & Recharts growth curves
-│   ├── team/page.tsx           # Team directory with flipped bios
-│   ├── layout.tsx              # Root layout with sticky Navbar & Footer
-│   └── page.tsx                # Homepage assembly
-├── components/
-│   ├── contact/                # Contact form component
-│   ├── events/                 # Event cards and directory client
-│   ├── gallery/                # MasonryGrid and Lightbox
-│   ├── impact/                 # Recharts GrowthChart
-│   ├── layout/                 # Sticky Navbar, Footer, MobileDrawer
-│   ├── sections/               # Hero, About, WhyJoin, Testimonials, Timeline, Resources, JourneyCTA
-│   ├── shared/                 # AnimatedCounter, FilterPills, ScrollReveal
-│   ├── three/                  # HeroCanvas (Three.js WebGL node network)
-│   └── ui/                     # shadcn UI components
-├── content/                    # Data models (events, team, stats, testimonials, gallery, timeline)
-└── screenshots/                # Screen recordings & verification screenshots
-```
-
----
-
-## 📄 License
-This project is licensed under the MIT License for the Society of Women Engineers, MIT-WPU Chapter.
