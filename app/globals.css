@@ -6,7 +6,8 @@
 
 /* ─────────────────────────────────────────────
    DESIGN TOKENS — SWE MIT-WPU
-   Neutral base + deep violet accent
+   Ethereal lavender atmosphere + deep violet & gold accents
+   Instrument Serif italic display type + Inter body
    ───────────────────────────────────────────── */
 
 @theme inline {
@@ -29,76 +30,70 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
 
-  /* Radius */
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* Radius scale */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
 
   /* Fonts */
   --font-sans: var(--font-body), system-ui, sans-serif;
-  --font-mono: var(--font-body), system-ui, sans-serif;
+  --font-body: var(--font-body), system-ui, sans-serif;
   --font-heading: var(--font-body), system-ui, sans-serif;
+  --font-serif: var(--font-accent), Georgia, serif;
 
-  /* Custom brand colors — accessible via Tailwind classes */
-  --color-brand: #6d28d9;
-  --color-brand-hover: #5b21b6;
-  --color-brand-light: #a78bfa;
-  --color-brand-muted: #6d28d91a;
-  --color-brand-foreground: #FFFFFF;
-  --color-highlight: var(--highlight);
-  --color-highlight-foreground: var(--highlight-foreground);
-
-  /* Surface token */
-  --color-surface: var(--surface);
+  /* Brand colors */
+  --color-swe-purple: #6538A5;
+  --color-swe-purple-deep: #532D8A;
+  --color-swe-purple-soft: #A78BDA;
+  --color-swe-purple-tint: rgba(101, 56, 165, 0.08);
+  --color-swe-gold: #F5D76E;
+  --color-swe-gold-warm: #E8B94F;
+  --color-swe-ink: #1e1033;
+  --color-swe-muted: #6b6385;
+  --color-swe-line: #e9e3fb;
 }
 
 :root {
   /* SWE Design System — Light Mode */
   --ink: #1e1033;
-  --purple: #6d28d9;
-  --soft-lilac: #a78bfa;
+  --purple: #6538A5;
+  --purple-deep: #532D8A;
+  --purple-soft: #A78BDA;
+  --purple-tint: rgba(101, 56, 165, 0.08);
+
+  --gold: #F5D76E;
+  --gold-warm: #E8B94F;
+  --gold-tint: rgba(245, 215, 110, 0.15);
+
   --muted-text: #6b6385;
   --line: #e9e3fb;
-  --font-display: var(--font-body), system-ui, sans-serif;
-  --background: #FDFDFC;
+  --background: #FCFBFE;
   --foreground: var(--ink);
-  --card: rgba(255, 255, 255, 0.82);
+
+  --card: rgba(255, 255, 255, 0.85);
   --card-foreground: var(--ink);
-  --popover: rgba(255, 255, 255, 0.88);
+  --popover: rgba(255, 255, 255, 0.92);
   --popover-foreground: var(--ink);
 
-  /* Brand purple */
+  /* Primary Brand Purple */
   --primary: var(--purple);
   --primary-foreground: #FFFFFF;
 
-  /* Soft purple tints */
-  --secondary: #f7f4ff;
+  /* Secondary Tints */
+  --secondary: #F6F2FC;
   --secondary-foreground: var(--ink);
-  --muted: #f7f4ff;
+  --muted: #F6F2FC;
   --muted-foreground: var(--muted-text);
-  --accent: #f3edff;
+  --accent: #F2ECFA;
   --accent-foreground: var(--purple);
 
-  /* Brand yellow */
-  --highlight: #DCC554;
+  /* Highlight Gold */
+  --highlight: var(--gold);
   --highlight-foreground: var(--ink);
 
   --destructive: #EF4444;
@@ -106,67 +101,56 @@
   --input: var(--line);
   --ring: var(--purple);
 
-  --chart-1: var(--purple);
-  --chart-2: #DCC554;
-  --chart-3: var(--soft-lilac);
-  --chart-4: #A9A9AA;
-  --chart-5: var(--line);
-
-  --radius: 0.5rem;
+  --radius: 1rem;
   --surface: #FFFFFF;
 
-  --sidebar: #FDFDFC;
-  --sidebar-foreground: var(--ink);
-  --sidebar-primary: var(--purple);
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #f3edff;
-  --sidebar-accent-foreground: var(--purple);
-  --sidebar-border: var(--line);
-  --sidebar-ring: var(--purple);
+  /* Z-Index Scale */
+  --z-ambient: -10;
+  --z-base: 0;
+  --z-canvas: 1;
+  --z-content: 2;
+  --z-interactive: 6;
+  --z-overlay: 10;
+  --z-sticky: 20;
+  --z-navbar: 50;
+  --z-modal: 100;
+  --z-tooltip: 110;
+  --z-skip-link: 120;
 }
 
 .dark {
   --ink: #EDEDED;
-  --purple: #A78BFA;
-  --soft-lilac: #C4B5FD;
+  --purple: #A78BDA;
+  --purple-deep: #8E6BC9;
+  --purple-soft: #C4B5FD;
+  --purple-tint: rgba(167, 139, 218, 0.15);
+  --gold: #F5D76E;
+  --gold-warm: #E8B94F;
   --muted-text: #C1B9D8;
-  --line: #403653;
-  --background: #0F0F0F;
+  --line: #3D3552;
+  --background: #0F0D15;
   --foreground: #EDEDED;
-  --card: #171717;
+  --card: rgba(26, 22, 36, 0.85);
   --card-foreground: #EDEDED;
-  --popover: #171717;
+  --popover: #1A1624;
   --popover-foreground: #EDEDED;
   --primary: var(--purple);
   --primary-foreground: #FFFFFF;
-  --secondary: #1F1F1F;
+  --secondary: #221C30;
   --secondary-foreground: #EDEDED;
-  --muted: #1F1F1F;
-  --muted-foreground: #9A9A9A;
-  --accent: #1F1F1F;
+  --muted: #221C30;
+  --muted-foreground: #9A93B0;
+  --accent: #221C30;
   --accent-foreground: #EDEDED;
   --destructive: #EF4444;
-  --border: #2A2A2A;
-  --input: #2A2A2A;
+  --border: #3D3552;
+  --input: #3D3552;
   --ring: var(--purple);
-  --chart-1: var(--purple);
-  --chart-2: #8B7FFF;
-  --chart-3: #ABA3FF;
-  --chart-4: #CBC7FF;
-  --chart-5: #EBE9FF;
-  --surface: #171717;
-  --sidebar: #171717;
-  --sidebar-foreground: #EDEDED;
-  --sidebar-primary: #6B5CFF;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #1F1F1F;
-  --sidebar-accent-foreground: #EDEDED;
-  --sidebar-border: #2A2A2A;
-  --sidebar-ring: #6B5CFF;
+  --surface: #1A1624;
 }
 
 /* ─────────────────────────────────────────────
-   BASE STYLES
+   BASE TYPOGRAPHY & ELEMENTS
    ───────────────────────────────────────────── */
 
 @layer base {
@@ -177,41 +161,47 @@
   html {
     @apply scroll-smooth;
     font-family: var(--font-body), system-ui, sans-serif;
-    font-weight: 400;
   }
 
   body {
-    @apply bg-white text-foreground antialiased;
+    @apply bg-background text-foreground antialiased;
     font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  /* Display & Section Headings */
+  h1 {
     font-family: var(--font-body), system-ui, sans-serif;
-    @apply font-semibold tracking-tight text-foreground;
+    font-size: clamp(2.25rem, 5.2vw, 4.25rem);
+    font-weight: 600;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    color: var(--ink);
   }
 
-  h1,
   h2 {
-    font-family: var(--font-body), system-ui, sans-serif !important;
-    font-size: clamp(2rem, 4.6vw, 3.8rem) !important;
-    font-weight: 600 !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.035em !important;
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: clamp(1.85rem, 4vw, 3.25rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
     color: var(--ink);
   }
 
   h3 {
     font-family: var(--font-body), system-ui, sans-serif;
-    font-weight: 600 !important;
-    line-height: 1.3;
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--ink);
   }
 
-  h4,
-  h5,
-  h6 {
-    font-weight: 600 !important;
+  h4, h5, h6 {
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
 
   p {
@@ -219,6 +209,27 @@
     font-size: 1.05rem;
     font-weight: 300;
     line-height: 1.75;
+    color: var(--muted-text);
+  }
+
+  /* Editorial Accent Serif */
+  .font-accent,
+  em {
+    font-family: var(--font-accent), Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--purple);
+    letter-spacing: -0.01em;
+  }
+
+  .section-label,
+  .section-eyebrow {
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--purple);
   }
 
   button,
@@ -227,118 +238,44 @@
   textarea {
     font-family: var(--font-body), system-ui, sans-serif;
   }
-
-  .section-label {
-    font-family: var(--font-body), system-ui, sans-serif;
-    font-size: 0.68rem;
-    font-weight: 400;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--purple);
-  }
-
-  .font-accent {
-    font-family: var(--font-accent), Georgia, serif;
-    font-style: italic;
-    font-weight: 400;
-    color: var(--purple);
-  }
 }
 
 /* ─────────────────────────────────────────────
-   UTILITY CLASSES & ANIMATIONS
+   UTILITY CLASSES & SCAFFOLDING
    ───────────────────────────────────────────── */
 
 @layer utilities {
-  /* Semi-transparent frosted glass cards across all pages matching Contact card spec */
+  /* Semi-transparent frosted glass card */
   .bg-card {
-    background-color: rgba(255, 255, 255, 0.82) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-color: #e9e3fb !important;
+    background-color: var(--card) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: var(--line) !important;
   }
 
   /* Section container with consistent padding and max-width */
   .section-container {
-    @apply mx-auto w-full max-w-[1280px] px-6 md:px-12;
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 md:px-10 lg:px-12;
   }
 
-  /* Vertical section padding */
+  /* Consistent vertical section rhythm */
   .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-16 sm:py-20 md:py-24 lg:py-28;
   }
 
-  /* Text balance for headings */
   .text-balance {
     text-wrap: balance;
   }
 
-  .hero-float {
-    animation: hero-float 9s ease-in-out infinite;
-  }
-
-  .hero-float-delayed {
-    animation: hero-float 11s ease-in-out 1.2s infinite;
-  }
-
-  .animate-data-stream-1 {
-    animation: dataStream 6s linear infinite;
-  }
-
-  .animate-data-stream-2 {
-    animation: dataStream 8s linear 2s infinite;
-  }
-
-  .animate-data-stream-3 {
-    animation: dataStream 5.5s linear 1s infinite;
-  }
-
-  .animate-pulse-slow {
-    animation: pulseGlow 4s ease-in-out infinite;
-  }
-
-  .animate-pulse-medium {
-    animation: pulseGlow 3s ease-in-out 1s infinite;
-  }
-
-  .animate-pulse-fast {
-    animation: pulseGlow 2.5s ease-in-out 0.5s infinite;
-  }
-
-  .animate-halo-ring {
-    animation: pulseHalo 3.5s ease-out infinite;
+  /* Skip to content link styling */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[120] focus:px-4 focus:py-2.5 focus:bg-white focus:text-[#6538A5] focus:font-medium focus:shadow-xl focus:rounded-lg focus:border focus:border-[#6538A5]/40 focus:outline-none focus:ring-2 focus:ring-[#6538A5];
   }
 }
 
-@keyframes hero-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes dataStream {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -240;
-  }
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.85;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.18);
-  }
-}
+/* ─────────────────────────────────────────────
+   KEYFRAME ANIMATIONS
+   ───────────────────────────────────────────── */
 
 @keyframes pulseHalo {
   0% {
@@ -346,17 +283,26 @@
     opacity: 0.8;
   }
   60% {
-    transform: scale(1.7);
+    transform: scale(1.6);
     opacity: 0;
   }
   100% {
-    transform: scale(1.7);
+    transform: scale(1.6);
     opacity: 0;
   }
 }
 
+@keyframes cuicuiGradientRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* ─────────────────────────────────────────────
-   REDUCED MOTION
+   ACCESSIBILITY: REDUCED MOTION
    ───────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

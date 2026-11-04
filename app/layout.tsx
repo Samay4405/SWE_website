@@ -5,7 +5,10 @@ import { Footer } from "@/components/layout/Footer";
 import { BlobBackground } from "@/components/BlobBackground";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://swe-mitwpu.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "SWE MIT-WPU — Society of Women Engineers",
     template: "%s | SWE MIT-WPU",
@@ -21,12 +24,32 @@ export const metadata: Metadata = {
     "Student Chapter",
     "STEM",
   ],
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     title: "SWE MIT-WPU — Society of Women Engineers",
     description:
       "Engineering the Future, Together. Join the SWE MIT-WPU Student Chapter.",
-    type: "website",
+    url: siteUrl,
+    siteName: "SWE MIT-WPU",
     locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/images/hero/swe-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Society of Women Engineers MIT-WPU Chapter",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SWE MIT-WPU — Society of Women Engineers",
+    description:
+      "Engineering the Future, Together. Join the SWE MIT-WPU Student Chapter in Pune.",
+    images: ["/images/hero/swe-logo.png"],
   },
 };
 
@@ -35,22 +58,49 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Society of Women Engineers (SWE) MIT-WPU Student Chapter",
+    alternateName: "SWE MIT-WPU",
+    url: siteUrl,
+    logo: `${siteUrl}/images/hero/swe-logo.png`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Survey No. 124, Paud Road, Kothrud",
+      addressLocality: "Pune",
+      addressRegion: "Maharashtra",
+      postalCode: "411038",
+      addressCountry: "IN",
+    },
+    sameAs: [
+      "https://www.instagram.com/swe_mitwpu",
+      "https://www.linkedin.com/company/swe-mit-wpu",
+    ],
+  };
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${instrumentSerif.variable} h-full`}
     >
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap"
+      <body className="min-h-full flex flex-col antialiased bg-[#FCFBFE] text-[#1e1033]">
+        {/* Skip to Content link for keyboard accessibility */}
+        <a href="#main" className="skip-link">
+          Skip to main content
+        </a>
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className="min-h-full flex flex-col antialiased bg-white">
+
         <div className="site-bg">
           <BlobBackground />
           <Navbar />
-          <main className="relative z-[1] flex-1 pt-16 md:pt-18">{children}</main>
+          <main id="main" tabIndex={-1} className="relative z-[1] flex-1 pt-16 md:pt-18 outline-none">
+            {children}
+          </main>
           <Footer />
         </div>
       </body>
