@@ -20,16 +20,17 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "@/lib/touch";
 import { cn } from "@/lib/utils";
+import { SPRING_GLIDE, EASE_EDITORIAL } from "@/lib/animations";
 import {
   timelineEventsData,
   type TimelineEventItem,
 } from "@/content/timelineEvents";
 
 // ── Physical / spring coefficients adapted for editorial fluidity ──
-const GLIDE_SPRING = { stiffness: 130, damping: 25, mass: 0.9 };
 const FLICK_MOMENTUM = 0.32;
 const MAX_FLICK_EVENTS = 3;
 const DRAG_THRESHOLD = 4;
@@ -118,16 +119,16 @@ function TimelineEventCard({
           className={cn(
             "group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-300",
             active
-              ? "border-[#6d28d9]/40 shadow-[0_18px_42px_-14px_rgba(109,40,217,0.22)] ring-1 ring-[#6d28d9]/15"
-              : "border-[#e9e3fb] shadow-[0_10px_28px_-16px_rgba(109,40,217,0.12)] hover:border-[#6d28d9]/30",
+              ? "border-[#6538A5]/40 shadow-[0_18px_42px_-14px_rgba(101,56,165,0.22)] ring-1 ring-[#6538A5]/20"
+              : "border-[#E9E3FB] shadow-[0_10px_28px_-16px_rgba(101,56,165,0.12)] hover:border-[#6538A5]/30",
           )}
           style={{
-            background: "rgba(255, 255, 255, 0.85)",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
+            background: "rgba(255, 255, 255, 0.88)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
           }}
         >
-          {/* TOP: Image Header (Notion-style cover banner) */}
+          {/* TOP: Image Header */}
           <div className="relative w-full h-[168px] sm:h-[180px] overflow-hidden bg-[#F2EFF7] flex-shrink-0">
             <Image
               src={event.coverImage}
@@ -144,42 +145,47 @@ function TimelineEventCard({
             />
           </div>
 
-          {/* BOTTOM: Clean Semi-transparent Content Area */}
-          <div className="relative flex flex-col justify-between p-4 sm:p-5 bg-transparent text-left min-h-[148px]">
+          {/* BOTTOM: Clean Content Area */}
+          <div className="relative flex flex-col justify-between p-4 sm:p-5 bg-transparent text-left min-h-[160px]">
             <div>
-              <div className="flex items-center justify-between gap-2 mb-1">
+              <div className="flex items-center justify-between gap-2 mb-1.5">
                 <span
                   id={`${id}-date`}
-                  className="text-[11px] font-mono uppercase tracking-wider text-[#6b6385] font-normal"
+                  className="text-[11px] font-mono uppercase tracking-wider text-[#6B6385] font-medium"
                 >
                   {event.dateDisplay}
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#F6F2FC] text-[#6538A5] border border-[#E9E3FB]">
+                  {event.yearLabel}
                 </span>
               </div>
 
               <h3
                 id={`${id}-title`}
-                className="font-semibold text-[16px] sm:text-[17px] text-[#1e1033] tracking-tight line-clamp-1"
-                style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
+                className="font-semibold text-[16px] sm:text-[17px] text-[#1E1033] tracking-tight line-clamp-1"
               >
                 {event.title}
               </h3>
 
               <p
-                className={`mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6b6385] ${
-                  [
-                    "orientation-2025",
-                    "icebreaker-batch-ceremony-2025",
-                    "resq-centre-visit-2025",
-                    "icebreaker-2026",
-                  ].includes(event.id)
-                    ? "line-clamp-4"
-                    : "line-clamp-3"
-                } font-light`}
-                style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
+                className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6B6385] font-light line-clamp-3"
               >
                 {event.description}
               </p>
             </div>
+
+            {/* View Details Link on Active Card */}
+            {active && event.slug && (
+              <div className="mt-3.5 pt-2.5 border-t border-[#E9E3FB] flex items-center justify-between z-20 relative">
+                <Link
+                  href={`/events/${event.slug}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-[#6538A5] hover:text-[#532D8A] transition-colors group/link focus-visible:outline-none focus-visible:underline"
+                >
+                  <span>View Details &amp; Registration</span>
+                  <ArrowRight className="size-3 transition-transform group-hover/link:translate-x-1" />
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Side veil for non-active neighbours (softly dims without disappearing) */}
@@ -199,7 +205,7 @@ function TimelineEventCard({
           aria-labelledby={`${id}-title ${id}-date`}
           onClick={() => onSelect(index)}
           onKeyDown={(e) => onKeyDown(e, index)}
-          className="absolute inset-0 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9] focus-visible:ring-offset-2"
+          className="absolute inset-0 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2 z-10"
         />
       </div>
     </motion.li>
@@ -240,7 +246,7 @@ function GapTicks({
           key={i}
           className={cn(
             "block w-0.5 rounded-full transition-colors",
-            i === middle ? "bg-[#6d28d9]/40" : "bg-[#6d28d9]/18",
+            i === middle ? "bg-[#6538A5]/40" : "bg-[#6538A5]/18",
           )}
           style={{
             height: cardWidth * (i === middle ? TICK_TALL : TICK_SHORT),
@@ -273,7 +279,7 @@ export function EventsCarousel() {
     return () => ro.disconnect();
   }, []);
 
-  // Card width tailored to 340-370px on desktop with responsive mobile/tablet bounds
+  // Responsive card geometry
   const cardWidth = Math.min(
     360,
     stageWidth * (stageWidth < 640 ? 0.8 : stageWidth < 1024 ? 0.46 : 0.32),
@@ -330,7 +336,7 @@ export function EventsCarousel() {
       glidingRef.current = true;
       glideRef.current = animate(scroll, to, {
         type: "spring",
-        ...GLIDE_SPRING,
+        ...SPRING_GLIDE,
         velocity,
         restDelta: 0.001,
         onComplete: () => {
@@ -379,25 +385,6 @@ export function EventsCarousel() {
     },
     [select],
   );
-
-  // Global window arrow key listener when hover/focused inside events
-  useEffect(() => {
-    const handleGlobalKey = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === "INPUT" ||
-        document.activeElement?.tagName === "TEXTAREA"
-      ) {
-        return;
-      }
-      if (e.key === "ArrowLeft") {
-        select(Math.max(0, latest.current.activeIndex - 1));
-      } else if (e.key === "ArrowRight") {
-        select(Math.min(latest.current.last, latest.current.activeIndex + 1));
-      }
-    };
-    window.addEventListener("keydown", handleGlobalKey);
-    return () => window.removeEventListener("keydown", handleGlobalKey);
-  }, [select]);
 
   // Pointer drag gestures
   const draggingRef = useRef(false);
@@ -463,7 +450,7 @@ export function EventsCarousel() {
     settle((-vpx * 1000) / step);
   };
 
-  // Horizontal mouse wheel gesture
+  // Wheel gesture
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -490,103 +477,52 @@ export function EventsCarousel() {
 
   useEffect(() => stopGlide, [stopGlide]);
 
-  // Entrance animation variants triggered when section enters viewport
   const headerVariant = {
     hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
-    },
-  };
-
-  const subtitleVariant = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 16 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: 0.12,
-        ease: [0.16, 1, 0.3, 1] as const,
-      },
-    },
-  };
-
-  const timelineStageVariant = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        delay: 0.22,
-        ease: [0.16, 1, 0.3, 1] as const,
-      },
+      transition: { duration: 0.6, ease: EASE_EDITORIAL },
     },
   };
 
   return (
     <section
       id="events"
-      className="relative w-full bg-transparent overflow-hidden select-none py-12 sm:py-16 md:py-20 flex flex-col justify-center min-h-[calc(100svh-90px)]"
+      className="relative w-full bg-transparent overflow-hidden select-none py-16 sm:py-20 md:py-24 flex flex-col justify-center min-h-[calc(100svh-90px)]"
       aria-label="Events and Workshops Timeline"
     >
-      <div className="mx-auto w-full max-w-[1360px] px-4 sm:px-6 lg:px-8 flex flex-col">
-        {/* ── 1. Heading & Subtitle Sequence ── */}
+      <div className="section-container flex flex-col">
+        {/* ── 1. Heading & Eyebrow ── */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           className="flex flex-col items-center text-center mb-6 sm:mb-8 md:mb-10"
         >
-          {/* Heading */}
+          <motion.div variants={headerVariant} className="flex items-center gap-2 mb-3">
+            <span className="section-eyebrow">Chapter Highlights</span>
+          </motion.div>
+
           <motion.h2
             variants={headerVariant}
-            className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1e1033] leading-tight"
-            style={{
-              fontFamily: "Inter, var(--font-sans), system-ui, sans-serif",
-              letterSpacing: "-0.035em",
-            }}
+            className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1E1033] leading-tight"
           >
             Stories We&apos;ve{" "}
-            <em
-              style={{
-                fontFamily: '"Instrument Serif", Georgia, serif',
-                fontStyle: "italic",
-                fontWeight: 400,
-                color: "#6d28d9",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              Created
-            </em>
-            .
+            <span className="font-accent">Created</span>.
           </motion.h2>
 
-          {/* Subtitle */}
           <motion.p
-            variants={subtitleVariant}
-            className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-[#6b6385] max-w-2xl font-light leading-relaxed"
-            style={{
-              fontFamily: "Inter, var(--font-sans), system-ui, sans-serif",
-              fontWeight: 300,
-              color: "#6b6385",
-            }}
+            variants={headerVariant}
+            className="mt-3 text-sm sm:text-base md:text-lg text-[#6B6385] max-w-2xl font-light leading-relaxed"
           >
-            A collection of events, experiences and moments that make our journey memorable.
+            A curated timeline of hackathons, workshops, and community moments shaping our chapter journey.
           </motion.p>
         </motion.div>
 
         {/* ── 2. Interactive Horizontal Timeline Stage ── */}
-        <motion.div
-          variants={timelineStageVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          className="relative w-full"
-        >
-          {/* Editorial Edge Vignettes (Soft left and right stage fade) */}
+        <div className="relative w-full">
+          {/* Edge Vignettes */}
           <div
             className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-20 bg-gradient-to-r from-[#FCFBFE] to-transparent z-20"
             aria-hidden="true"
@@ -598,7 +534,7 @@ export function EventsCarousel() {
 
           <div
             ref={stageRef}
-            aria-label="Events Horizontal Timeline. Drag or use arrow keys."
+            aria-label="Events horizontal timeline. Drag or use arrow keys."
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
@@ -608,10 +544,10 @@ export function EventsCarousel() {
               TOUCH_GESTURE_CLASS,
             )}
             style={{
-              height: "410px",
+              height: "430px",
             }}
           >
-            {/* Small Connecting Tick Marks in gaps between adjacent cards */}
+            {/* Connecting Gap Ticks */}
             {events.slice(0, -1).map((ev, i) => (
               <GapTicks
                 key={ev.id}
@@ -623,7 +559,7 @@ export function EventsCarousel() {
             ))}
 
             {/* Event Cards Track */}
-            <ul className="absolute inset-0 m-0 p-0">
+            <ul className="absolute inset-0 m-0 p-0" role="list">
               {events.map((ev, i) => (
                 <TimelineEventCard
                   key={ev.id}
@@ -640,34 +576,66 @@ export function EventsCarousel() {
                 />
               ))}
             </ul>
-
           </div>
-        </motion.div>
+        </div>
 
-        {/* ── 3. Event Navigation Controls ── */}
-        <div className="relative z-20 mx-auto mt-4 flex w-full items-center justify-center px-2 sm:mt-5">
+        {/* ── 3. Navigation Controls & Pagination Dots ── */}
+        <div className="relative z-20 mx-auto mt-5 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full">
+          {/* Arrow Buttons (Accessible 44px tap target) */}
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => select(Math.max(0, activeIndex - 1))}
               disabled={activeIndex === 0}
-              aria-label="Previous event"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e9e3fb] bg-white text-[#6d28d9] shadow-xs transition-all duration-200 hover:border-[#6d28d9] hover:bg-[#f3edff] hover:text-[#1e1033] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
+              aria-label="Previous event slide"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] bg-white text-[#6538A5] shadow-xs transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] disabled:pointer-events-none disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-5 w-5" />
             </button>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 border border-[#E9E3FB]" role="tablist" aria-label="Event slides navigation">
+              {events.map((ev, i) => (
+                <button
+                  key={ev.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === activeIndex}
+                  aria-label={`Slide ${i + 1}: ${ev.title}`}
+                  onClick={() => select(i)}
+                  className={cn(
+                    "h-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]",
+                    i === activeIndex
+                      ? "w-6 bg-[#6538A5]"
+                      : "w-2.5 bg-[#E9E3FB] hover:bg-[#A78BDA]"
+                  )}
+                />
+              ))}
+            </div>
+
             <button
               type="button"
               onClick={() => select(Math.min(last, activeIndex + 1))}
               disabled={activeIndex === last}
-              aria-label="Next event"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e9e3fb] bg-white text-[#6d28d9] shadow-xs transition-all duration-200 hover:border-[#6d28d9] hover:bg-[#f3edff] hover:text-[#1e1033] disabled:pointer-events-none disabled:opacity-35 active:scale-95"
+              aria-label="Next event slide"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] bg-white text-[#6538A5] shadow-xs transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] disabled:pointer-events-none disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-5 w-5" />
             </button>
           </div>
+
+          {/* Directory Link CTA */}
+          <Link
+            href="/events"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-[#6538A5] hover:text-[#532D8A] transition-colors group px-3.5 py-1.5 rounded-full hover:bg-[#F6F2FC] border border-transparent hover:border-[#E9E3FB]"
+          >
+            <span>Explore All Events &amp; Workshops</span>
+            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>
   );
 }
+
+export default EventsCarousel;

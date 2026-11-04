@@ -5,24 +5,29 @@ import "./ContactExact.css";
 
 interface ContactExactProps {
   id?: string;
+  isStandalonePage?: boolean;
 }
 
-export function ContactExact({ id = "contact" }: ContactExactProps) {
+export function ContactExact({ id = "contact", isStandalonePage = false }: ContactExactProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [statusText, setStatusText] = useState("Checking chapter hours…");
+  const [statusText, setStatusText] = useState("Checking chapter desk hours…");
   const [copyText, setCopyText] = useState("Copy address");
-  const [btnState, setBtnState] = useState<"idle" | "sending" | "ok">("idle");
+  const [liveAnnouncement, setLiveAnnouncement] = useState("");
+  const [btnState, setBtnState] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     department: "",
     subject: "Membership inquiry",
     message: "",
+    _gotcha: "",
   });
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Live open / closed status (IST, Mon–Fri 10:00–17:30)
+  // Live open / closed status (IST, Mon–Fri 10:00–17:30) computed strictly client-side to prevent hydration mismatches
   useEffect(() => {
     try {
       const p = new Intl.DateTimeFormat("en-US", {
@@ -60,15 +65,20 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
     card.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
 
-  // Copy email
+  // Copy email with polite screen reader confirmation
   const handleCopyEmail = async () => {
     try {
       await navigator.clipboard.writeText("swe.chapter@mitwpu.edu.in");
       setCopyText("Copied ✓");
+      setLiveAnnouncement("Chapter email address copied to clipboard.");
     } catch {
       setCopyText("Press Ctrl+C on the address");
+      setLiveAnnouncement("Press Control C to copy the email address.");
     }
-    setTimeout(() => setCopyText("Copy address"), 2200);
+    setTimeout(() => {
+      setCopyText("Copy address");
+      setLiveAnnouncement("");
+    }, 2500);
   };
 
   const handleChange = (
@@ -80,7 +90,7 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Submit handling
+  // Submit handling with true validation and real error handling
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formRef.current) return;
@@ -88,6 +98,7 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
     if (!formRef.current.reportValidity()) return;
 
     setBtnState("sending");
+    setErrorMessage("");
 
     try {
       const res = await fetch("/api/contact", {
@@ -96,9 +107,14 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) {
-        // Fallback or error still provides graceful feedback
-        console.warn("API responded with non-200 status");
+      const json = await res.json();
+
+      if (!res.ok || !json.success) {
+        setBtnState("error");
+        setErrorMessage(
+          json.error || "Failed to deliver message. Please reach out to swe.chapter@mitwpu.edu.in."
+        );
+        return;
       }
 
       setBtnState("ok");
@@ -108,25 +124,17 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
         department: "",
         subject: "Membership inquiry",
         message: "",
+        _gotcha: "",
       });
 
       setTimeout(() => {
         setBtnState("idle");
-      }, 3200);
-    } catch (err) {
-      console.error("Form submit error", err);
-      // Give visual success feedback for seamless user experience
-      setBtnState("ok");
-      setFormData({
-        name: "",
-        email: "",
-        department: "",
-        subject: "Membership inquiry",
-        message: "",
-      });
-      setTimeout(() => {
-        setBtnState("idle");
-      }, 3200);
+      }, 4000);
+    } catch {
+      setBtnState("error");
+      setErrorMessage(
+        "Network connection error. Please email us directly at swe.chapter@mitwpu.edu.in."
+      );
     }
   };
 
@@ -134,14 +142,32 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
     <div className="contact-scope" id={id}>
       <div id="join" className="absolute -top-24" aria-hidden="true" />
 
-      <main className="page">
-        <div className="eb rv">Contact us</div>
-        <h1
-          className="rv"
-          style={{ "--d": ".1s" } as React.CSSProperties}
-        >
-          Connect with <em>SWE MIT-WPU</em>
-        </h1>
+      {/* Screen reader live notification */}
+      <span className="sr-only" aria-live="polite">
+        {liveAnnouncement}
+      </span>
+
+      {/* Replaced invalid nested <main> with <div className="page"> */}
+      <div className="page" role="region" aria-label="Contact Section">
+        <div className="eb rv">Get in Touch</div>
+
+        {/* Semantic heading hierarchy: h1 if standalone page, h2 when embedded on homepage */}
+        {isStandalonePage ? (
+          <h1
+            className="rv"
+            style={{ "--d": ".1s" } as React.CSSProperties}
+          >
+            Connect with <em>SWE MIT-WPU</em>
+          </h1>
+        ) : (
+          <h2
+            className="rv"
+            style={{ "--d": ".1s" } as React.CSSProperties}
+          >
+            Connect with <em>SWE MIT-WPU</em>
+          </h2>
+        )}
+
         <p
           className="lead rv"
           style={{ "--d": ".2s" } as React.CSSProperties}
@@ -166,8 +192,21 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
             style={{ "--d": ".35s" } as React.CSSProperties}
             onPointerMove={handleCardPointerMove}
           >
-            <h2 className="ct">Send us a message</h2>
+            <h3 className="ct">Send us a message</h3>
             <form id="f" ref={formRef} onSubmit={handleSubmit} noValidate>
+              {/* Anti-spam honeypot (invisible to humans, trapped by bots) */}
+              <input
+                type="text"
+                name="_gotcha"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                style={{ display: "none" }}
+                aria-hidden="true"
+                value={formData._gotcha}
+                onChange={handleChange}
+              />
+
               <div className="f">
                 <label htmlFor="n">
                   Full name <b>*</b>
@@ -240,6 +279,13 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
                 />
               </div>
 
+              {/* Error Alert notice if submission failed */}
+              {btnState === "error" && (
+                <div className="w-full p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs mb-3 text-left">
+                  {errorMessage}
+                </div>
+              )}
+
               <button
                 className={`send ${btnState === "ok" ? "ok" : ""}`}
                 id="b"
@@ -251,6 +297,8 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
                     ? "Sending…"
                     : btnState === "ok"
                     ? "Message sent ✓"
+                    : btnState === "error"
+                    ? "Retry sending"
                     : "Send message"}
                 </span>
                 <svg
@@ -274,7 +322,7 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
             style={{ "--d": ".5s" } as React.CSSProperties}
             onPointerMove={handleCardPointerMove}
           >
-            <h2 className="ct">Find us</h2>
+            <h3 className="ct">Find us</h3>
             <div className="row">
               <div className="ic">
                 <svg
@@ -292,7 +340,7 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
                 </svg>
               </div>
               <div>
-                <h3>Chapter headquarters</h3>
+                <h4>Chapter headquarters</h4>
                 <p>
                   MIT World Peace University Campus
                   <br />
@@ -326,7 +374,7 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
                 </svg>
               </div>
               <div>
-                <h3>Email contact</h3>
+                <h4>Email contact</h4>
                 <p>
                   <a href="mailto:swe.chapter@mitwpu.edu.in">
                     swe.chapter@mitwpu.edu.in
@@ -360,7 +408,7 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
                 </svg>
               </div>
               <div>
-                <h3>Student chapter hours</h3>
+                <h4>Student chapter hours</h4>
                 <p>
                   Monday – Friday
                   <br />
@@ -370,7 +418,7 @@ export function ContactExact({ id = "contact" }: ContactExactProps) {
             </div>
           </aside>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

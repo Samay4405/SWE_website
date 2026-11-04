@@ -1,20 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { CylindricalTeamCarousel } from "@/components/team/CylindricalTeamCarousel";
 import { coreTeamMembers, headsTeamMembers } from "@/content/teamData";
+import { EASE_EDITORIAL } from "@/lib/animations";
 
 export function TeamSection() {
   const prefersReducedMotion = useReducedMotion();
 
   const fadeUpVariant = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 24 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.75,
-        ease: [0.16, 1, 0.3, 1] as const,
+        ease: EASE_EDITORIAL,
       },
     },
   };
@@ -22,34 +25,35 @@ export function TeamSection() {
   return (
     <section
       id="team"
-      className="relative w-full bg-transparent text-[#1e1033] overflow-x-clip pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-28 md:pb-20"
+      className="relative w-full bg-transparent text-[#1E1033] overflow-x-clip pt-16 pb-16 sm:pt-24 sm:pb-20 md:pt-28 md:pb-24"
       aria-label="SWE MIT-WPU Team Showcase"
     >
-      <div className="mx-auto w-full max-w-[1340px] px-4 sm:px-6 lg:px-8">
+      <div className="section-container">
+        {/* Section Header */}
         <motion.div
           variants={fadeUpVariant}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="mb-8 sm:mb-12 text-center font-semibold tracking-tight text-[#1e1033]"
-          style={{
-            fontFamily: "var(--font-display), system-ui, sans-serif",
-            letterSpacing: "-0.03em",
-          }}
+          className="mb-10 sm:mb-16 text-center"
         >
-          <h2 className="font-semibold tracking-tight text-[#1e1033]">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="section-eyebrow">Leadership &amp; Committees</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1E1033]">
             The <span className="font-accent">Minds</span> Behind SWE.
           </h2>
-          <p className="mt-3 text-base font-light leading-relaxed tracking-normal text-[#6b6385] sm:text-lg">
-            A team driven by passion, united by purpose and inspired to make a
-            difference.
+
+          <p className="mt-3 text-base sm:text-lg font-light leading-relaxed text-[#6B6385] max-w-2xl mx-auto">
+            A dedicated team of collegiate leaders united by technical ambition, community mentorship, and a vision for women in STEM.
           </p>
         </motion.div>
 
         {/* ═══════════════════════════════════════════════════════════════
-            SECTION 1 — CORE TEAM (Premium Two-Column Editorial Layout)
+            SECTION 1 — CORE TEAM (Two-Column Editorial Layout)
            ═══════════════════════════════════════════════════════════════ */}
-        <div className="relative min-h-[calc(100svh-120px)] flex flex-col justify-center py-8 sm:py-12 md:py-16">
+        <div className="relative min-h-[calc(100svh-120px)] flex flex-col justify-center py-6 sm:py-10 md:py-12 border-b border-[#E9E3FB]/70">
           <div className="grid -translate-y-2 grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 xl:gap-14 items-center">
             {/* ── LEFT SIDE — TEXT CONTENT (~35% Width) ── */}
             <motion.div
@@ -57,30 +61,15 @@ export function TeamSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              className="lg:col-span-4 xl:col-span-4 flex flex-col justify-center text-center max-w-md lg:max-w-none mx-auto lg:mx-0 w-full"
+              className="lg:col-span-4 xl:col-span-4 flex flex-col justify-center text-center lg:text-left max-w-md lg:max-w-none mx-auto lg:mx-0 w-full"
             >
-              {/* Core Team Heading */}
-              <h2
-                className="text-4xl sm:text-5xl md:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-semibold tracking-tight text-[#1e1033] leading-[1.08]"
-                style={{
-                  fontFamily: "var(--font-display), system-ui, sans-serif",
-                  letterSpacing: "-0.03em",
-                }}
-              >
+              <span className="section-eyebrow mb-2">Executive Board</span>
+              <h3 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold tracking-tight text-[#1E1033] leading-[1.08]">
                 The <span className="font-accent">Core</span>
-              </h2>
+              </h3>
 
-              {/* Directly Underneath: Introductory Description */}
-              <p
-                className="mt-6 sm:mt-7 text-sm sm:text-base leading-relaxed text-[#6b6385] font-light"
-                style={{
-                  fontFamily: "var(--font-sans), system-ui, sans-serif",
-                }}
-              >
-                The foundation of SWE, shaping its vision and bringing every
-                initiative to life through thoughtful planning, collaboration
-                and creativity. They work behind the scenes to build a
-                community where ideas turn into actions.
+              <p className="mt-4 sm:mt-5 text-sm sm:text-base leading-relaxed text-[#6B6385] font-light">
+                The strategic backbone of SWE, defining chapter vision, institutional partnerships, and orchestrating flagship initiatives to build an enduring collegiate community.
               </p>
             </motion.div>
 
@@ -101,9 +90,9 @@ export function TeamSection() {
         </div>
 
         {/* ═══════════════════════════════════════════════════════════════
-            SECTION 2 — THE HEADS (Premium Two-Column Editorial Layout)
+            SECTION 2 — THE HEADS (Two-Column Editorial Layout)
            ═══════════════════════════════════════════════════════════════ */}
-        <div className="relative min-h-[calc(100svh-140px)] flex flex-col justify-center py-8 sm:py-12 md:py-16">
+        <div className="relative min-h-[calc(100svh-140px)] flex flex-col justify-center py-6 sm:py-10 md:py-12">
           <div className="grid -translate-y-2 grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 xl:gap-14 items-center">
             {/* ── LEFT SIDE — TEXT CONTENT (~35% Width) ── */}
             <motion.div
@@ -111,32 +100,16 @@ export function TeamSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              className="lg:col-span-4 xl:col-span-4 flex flex-col justify-center text-center max-w-md lg:max-w-none mx-auto lg:mx-0 w-full"
+              className="lg:col-span-4 xl:col-span-4 flex flex-col justify-center text-center lg:text-left max-w-md lg:max-w-none mx-auto lg:mx-0 w-full"
             >
-              {/* The Heads Heading */}
-              <h2
-                className="text-4xl sm:text-5xl md:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-semibold tracking-tight text-[#1e1033] leading-[1.08]"
-                style={{
-                  fontFamily: "var(--font-display), system-ui, sans-serif",
-                  letterSpacing: "-0.03em",
-                }}
-              >
+              <span className="section-eyebrow mb-2">Department Directors</span>
+              <h3 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold tracking-tight text-[#1E1033] leading-[1.08]">
                 The <span className="font-accent">Heads</span>
-              </h2>
+              </h3>
 
-              {/* Directly Underneath: Introductory Description */}
-              <p
-                className="mt-6 sm:mt-7 text-sm sm:text-base leading-relaxed text-[#6b6385] font-light"
-                style={{
-                  fontFamily: "var(--font-sans), system-ui, sans-serif",
-                }}
-              >
-                The leaders driving each department forward, turning ideas into
-                meaningful initiatives. Through teamwork, mentorship and
-                shared responsibility, they guide their teams, create
-                opportunities and keep the SWE community growing.
+              <p className="mt-4 sm:mt-5 text-sm sm:text-base leading-relaxed text-[#6B6385] font-light">
+                Directing technical operations, design, logistics, sponsorship, and outreach. They turn high-level strategy into tangible programs and nurture collegiate talent.
               </p>
-
             </motion.div>
 
             {/* ── RIGHT SIDE — 3D CAROUSEL (~65% Width) ── */}
@@ -155,7 +128,20 @@ export function TeamSection() {
             </motion.div>
           </div>
         </div>
+
+        {/* ── Directory Link ── */}
+        <div className="mt-8 text-center">
+          <Link
+            href="/team"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#6538A5] hover:text-[#532D8A] transition-colors group px-4 py-2 rounded-full hover:bg-[#F6F2FC] border border-[#E9E3FB]"
+          >
+            <span>View Full Chapter Team Directory ({coreTeamMembers.length + headsTeamMembers.length} Leaders)</span>
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
     </section>
   );
 }
+
+export default TeamSection;

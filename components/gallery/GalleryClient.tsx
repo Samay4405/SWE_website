@@ -1,6 +1,6 @@
 "use client";
 
-import Masonry from "@/components/Masonry";
+import { AccessibleGallery } from "@/components/gallery/AccessibleGallery";
 import type { GalleryMasonryItem } from "@/content/gallery";
 
 interface GalleryClientProps {
@@ -9,40 +9,22 @@ interface GalleryClientProps {
 
 export function GalleryClient({ initialItems }: GalleryClientProps) {
   return (
-    <div className="section-container py-12 md:py-20">
-      <div className="max-w-3xl mb-12">
-        <h1
-          className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4"
-          style={{ fontFamily: "var(--font-display), system-ui, sans-serif" }}
-        >
-          Life at SWE MIT-WPU
+    <div className="section-container py-12 md:py-16">
+      <div className="max-w-3xl mb-10 sm:mb-14 text-left">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="section-eyebrow">Visual Archive</span>
+        </div>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1E1033] mb-4">
+          Life at <span className="font-accent">SWE MIT-WPU</span>
         </h1>
-        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-          A collection of moments, memories and milestones from our SWE journey.
+        <p className="text-base sm:text-lg text-[#6B6385] font-light leading-relaxed">
+          A visual record of collegiate workshops, hackathons, outreach campaigns, and community milestones in Pune.
         </p>
       </div>
 
-      <div className="w-full relative min-h-[400px]">
-        <Masonry
-          items={initialItems}
-          columnWidth={240}
-          gap={12}
-          radius={12}
-          animateFrom="bottom"
-          hoverEffect="zoom"
-          captions="hover"
-          lightbox
-          draggable
-          columns="auto"
-          stagger={0.05}
-          duration={0.6}
-          bounce={0.15}
-          blurToFocus
-          focusOnHover={false}
-          parallax={0}
-          revealOnScroll
-        />
-      </div>
+      <AccessibleGallery items={initialItems} />
     </div>
   );
 }
+
+export default GalleryClient;

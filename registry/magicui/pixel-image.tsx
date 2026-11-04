@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 export interface PixelImageProps {
   /** The image source URL */
@@ -43,7 +43,7 @@ export function PixelImage({
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
   const prefersReducedMotion = useReducedMotion();
 
-  const [isColorRevealed, setIsColorRevealed] = useState(!grayscaleAnimation);
+  const [isColorRevealed, setIsColorRevealed] = useState(!grayscaleAnimation || !!prefersReducedMotion);
 
   // Compute row and column count
   const { rows, cols } = useMemo(() => {
@@ -65,7 +65,6 @@ export function PixelImage({
   // Generate deterministic pseudo-random animation delays per pixel based on index
   const pixelDelays = useMemo(() => {
     return Array.from({ length: totalPixels }, (_, i) => {
-      // Deterministic pseudo-random seed to avoid hydration mismatches
       const pseudoRand = ((i * 9301 + 49297) % 233280) / 233280;
       return (pseudoRand * maxAnimationDelay) / 1000;
     });
@@ -86,13 +85,28 @@ export function PixelImage({
     }
   }, [isInView, grayscaleAnimation, colorRevealDelay, prefersReducedMotion]);
 
+  // Toggle reveal state on touch/click or keyboard activation
+  const handleToggle = useCallback(() => {
+    setIsColorRevealed((prev) => !prev);
+  }, []);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsColorRevealed((prev) => !prev);
+    }
+  }, []);
+
   return (
     <div
       ref={containerRef}
-      role="img"
-      aria-label={alt}
+      role="button"
+      tabIndex={0}
+      aria-label={`${alt}. Click or press Enter to toggle color pixelation effect.`}
+      onClick={handleToggle}
+      onKeyDown={handleKeyDown}
       className={cn(
-        "relative w-full h-full overflow-hidden select-none",
+        "relative w-full h-full overflow-hidden cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2 rounded-[inherit]",
         className
       )}
       style={{
@@ -129,8 +143,8 @@ export function PixelImage({
               filter: isColorRevealed ? "grayscale(0%)" : "grayscale(100%)",
               transition: prefersReducedMotion
                 ? "none"
-                : "filter 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
-              transform: "scale(1.006)", // Subpixel overlap prevents hairline seams across grid cuts
+                : "filter 0.75s cubic-bezier(0.16, 1, 0.3, 1)",
+              transform: "scale(1.006)",
             }}
             className="w-full h-full pointer-events-none"
           />

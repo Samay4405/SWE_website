@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowUp } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { navLinks, socialLinks } from "@/content/navigation";
+import { socialLinks } from "@/content/navigation";
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -46,11 +47,11 @@ const footerSections = [
     ],
   },
   {
-    title: "Organization",
+    title: "Affiliations",
     links: [
-      { label: "About SWE", href: "https://swe.org", external: true },
+      { label: "SWE Global", href: "https://swe.org", external: true },
       { label: "SWE India", href: "https://india.swe.org", external: true },
-      { label: "MIT-WPU", href: "https://mitwpu.edu.in", external: true },
+      { label: "MIT-WPU Pune", href: "https://mitwpu.edu.in", external: true },
     ],
   },
 ];
@@ -64,33 +65,28 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 export function Footer() {
   const currentYear = 2026;
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <footer
-      className="relative z-[1] border-t border-[#e9e3fb]/60"
-      style={{
-        background:
-          "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7))",
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
-      }}
+      className="relative z-1 border-t border-[#E9E3FB]/80 bg-white/70 backdrop-blur-md"
     >
       <div className="section-container py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8">
-          {/* Brand column */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8 text-left">
+          {/* Brand Column */}
           <div className="md:col-span-1">
             <Link
               href="/"
-              className="inline-block font-bold text-lg tracking-tight mb-4"
-              style={{
-                fontFamily: "var(--font-display), system-ui, sans-serif",
-              }}
+              className="inline-block font-semibold text-xl tracking-tight mb-3 text-[#1E1033]"
             >
-              <span className="text-primary">SWE</span>{" "}
-              <span className="text-foreground/70 font-normal text-sm">
+              <span className="text-[#6538A5]">SWE</span>{" "}
+              <span className="font-normal text-sm text-[#6B6385]">
                 MIT-WPU
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-[260px]">
+            <p className="text-xs sm:text-[13px] text-[#6B6385] leading-relaxed max-w-[260px] font-light">
               Society of Women Engineers
               <br />
               MIT-WPU Student Chapter
@@ -98,8 +94,8 @@ export function Footer() {
               Pune, Maharashtra, India
             </p>
 
-            {/* Social links */}
-            <div className="flex items-center gap-3 mt-5">
+            {/* Social Links */}
+            <div className="flex items-center gap-2.5 mt-5">
               {socialLinks.map((social) => {
                 const Icon = iconMap[social.icon];
                 return (
@@ -108,8 +104,8 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="flex items-center justify-center w-9 h-9 rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors duration-200"
+                    aria-label={`Visit SWE MIT-WPU on ${social.label}`}
+                    className="flex items-center justify-center h-10 w-10 rounded-full border border-[#E9E3FB] text-[#6B6385] hover:text-[#6538A5] hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] transition-all duration-200"
                   >
                     {Icon && <Icon className="size-4" />}
                   </a>
@@ -118,10 +114,10 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Sitemap columns */}
+          {/* Links Columns */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h4 className="text-sm font-semibold mb-4 text-foreground">
+              <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-[#1E1033] font-semibold">
                 {section.title}
               </h4>
               <ul className="space-y-2.5">
@@ -132,14 +128,14 @@ export function Footer() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+                        className="text-sm text-[#6B6385] hover:text-[#6538A5] transition-colors duration-200 font-light"
                       >
-                        {link.label}
+                        {link.label} ↗
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+                        className="text-sm text-[#6B6385] hover:text-[#6538A5] transition-colors duration-200 font-light"
                       >
                         {link.label}
                       </Link>
@@ -150,12 +146,12 @@ export function Footer() {
             </div>
           ))}
 
-          {/* Contact info column */}
+          {/* Campus Location Column */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 text-foreground">
+            <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-[#1E1033] font-semibold">
               Location
             </h4>
-            <address className="not-italic text-sm text-muted-foreground leading-relaxed">
+            <address className="not-italic text-xs sm:text-[13px] text-[#6B6385] leading-relaxed font-light">
               MIT World Peace University
               <br />
               Survey No. 124, Paud Road,
@@ -164,29 +160,44 @@ export function Footer() {
               <br />
               Maharashtra, India
             </address>
-            <p className="text-sm text-muted-foreground mt-4">
+            <p className="text-xs sm:text-[13px] text-[#6B6385] mt-4 font-light">
               <a
-                href="mailto:swe@mitwpu.edu.in"
-                className="hover:text-foreground transition-colors duration-200"
+                href="mailto:swe.chapter@mitwpu.edu.in"
+                className="text-[#6538A5] hover:underline"
               >
-                swe@mitwpu.edu.in
+                swe.chapter@mitwpu.edu.in
               </a>
             </p>
           </div>
         </div>
 
-        <Separator className="my-8" />
+        <Separator className="my-8 bg-[#E9E3FB]" />
 
-        {/* Copyright */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
+        {/* Copyright & Back to Top Row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6B6385]">
+          <p className="font-light">
             © {currentYear} SWE MIT-WPU Student Chapter. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">
-            Engineering the Future, Together.
-          </p>
+
+          <div className="flex items-center gap-6">
+            <span className="font-serif italic text-sm text-[#6538A5]">
+              Engineering the Future, Together.
+            </span>
+
+            <button
+              type="button"
+              onClick={scrollToTop}
+              aria-label="Back to top of page"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#E9E3FB] hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] text-[#1E1033] hover:text-[#6538A5] transition-all duration-200 cursor-pointer text-xs font-medium"
+            >
+              <span>Back to top</span>
+              <ArrowUp className="size-3" />
+            </button>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
+
+export default Footer;

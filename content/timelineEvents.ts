@@ -1,5 +1,6 @@
 export interface TimelineEventItem {
   id: string;
+  slug?: string;
   title: string;
   year: number;
   yearLabel: "2025" | "2026";
@@ -12,6 +13,7 @@ export const timelineEventsData: TimelineEventItem[] = [
   // ── YEAR 2025 ──
   {
     id: "orientation-2025",
+    slug: "building-with-javascript",
     title: "SWE Orientation 2025",
     year: 2025,
     yearLabel: "2025",
@@ -22,6 +24,7 @@ export const timelineEventsData: TimelineEventItem[] = [
   },
   {
     id: "icebreaker-batch-ceremony-2025",
+    slug: "swe-industry-connect-mixer",
     title: "Icebreaker & Batch Ceremony",
     year: 2025,
     yearLabel: "2025",
@@ -32,6 +35,7 @@ export const timelineEventsData: TimelineEventItem[] = [
   },
   {
     id: "resq-centre-visit-2025",
+    slug: "stem-empowerment-pune-outreach",
     title: "RESQ Centre Visit",
     year: 2025,
     yearLabel: "2025",
@@ -44,6 +48,7 @@ export const timelineEventsData: TimelineEventItem[] = [
   // ── YEAR 2026 ──
   {
     id: "jab-swe-met-hackathon-2026",
+    slug: "technovate-hackathon-2026",
     title: "SWE Hackathon",
     year: 2026,
     yearLabel: "2026",
@@ -54,6 +59,7 @@ export const timelineEventsData: TimelineEventItem[] = [
   },
   {
     id: "we-local-bengaluru-2026",
+    slug: "women-in-stem-leadership-summit",
     title: "We Local – Bengaluru",
     year: 2026,
     yearLabel: "2026",
@@ -64,6 +70,7 @@ export const timelineEventsData: TimelineEventItem[] = [
   },
   {
     id: "orientation-2026",
+    slug: "cloud-native-kubernetes-masterclass",
     title: "SWE Orientation 2026",
     year: 2026,
     yearLabel: "2026",
@@ -74,6 +81,7 @@ export const timelineEventsData: TimelineEventItem[] = [
   },
   {
     id: "icebreaker-2026",
+    slug: "swe-industry-connect-mixer",
     title: "Icebreaker 2026",
     year: 2026,
     yearLabel: "2026",

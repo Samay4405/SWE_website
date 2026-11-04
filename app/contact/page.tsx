@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  return <ContactExact />;
+  return <ContactExact isStandalonePage={true} />;
 }

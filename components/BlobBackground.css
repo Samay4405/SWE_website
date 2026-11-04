@@ -1,13 +1,12 @@
 /* ─────────────────────────────────────────────────────────────
-   BLOB BACKGROUND
-   File: components/BlobBackground.css
-   Edit blob positions, sizes, or timings here to tweak the background glow.
+   BLOB BACKGROUND — SWE MIT-WPU
+   Ethereal atmospheric ambient gradient glows with GPU rasterization
    ───────────────────────────────────────────────────────────── */
 
 .site-bg {
   position: relative;
   overflow-x: clip;
-  background: #fff;
+  background: #FCFBFE;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -27,16 +26,20 @@
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(30px);
+  filter: blur(40px);
   pointer-events: none;
   z-index: 0;
   will-change: transform;
-  animation: dr 16s ease-in-out infinite alternate;
+  transform: translate3d(0, 0, 0);
+  animation: blobDrift 18s ease-in-out infinite alternate;
 }
 
-@keyframes dr {
-  to {
-    transform: translate(40px, 30px) scale(1.12);
+@keyframes blobDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(36px, 24px, 0) scale(1.08);
   }
 }
 
@@ -46,20 +49,20 @@
   }
 }
 
-/* ── Three Shared Gradient Styles ── */
-/* A: Soft Violet */
+/* ── Three Brand Gradient Styles ── */
+/* A: Soft Lavender */
 .blob-style-a {
-  background: radial-gradient(circle, rgba(167, 139, 250, 0.42), transparent 65%);
+  background: radial-gradient(circle, rgba(167, 139, 218, 0.32), transparent 65%);
 }
 
-/* B: Deep Purple (faint) */
+/* B: Deep SWE Purple (faint) */
 .blob-style-b {
-  background: radial-gradient(circle, rgba(109, 40, 217, 0.22), transparent 65%);
+  background: radial-gradient(circle, rgba(101, 56, 165, 0.16), transparent 65%);
 }
 
-/* C: Light Lavender */
+/* C: Soft Gold / Lilac hint */
 .blob-style-c {
-  background: radial-gradient(circle, rgba(196, 181, 253, 0.45), transparent 65%);
+  background: radial-gradient(circle, rgba(245, 215, 110, 0.12), rgba(167, 139, 218, 0.22) 45%, transparent 68%);
 }
 
 /* ── Staggered Continuous Flow (Percentage-based) ── */
