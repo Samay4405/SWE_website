@@ -1,376 +1,107 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
-import "./HeroConstellation.css";
-
-interface FamousStarData {
-  name: string;
-  field: string;
-  nx: number;
-  ny: number;
-}
-
-const FAMOUS_NODES: FamousStarData[] = [
-  { name: "Ada Lovelace", field: "Algorithms", nx: 0.1, ny: 0.2 },
-  { name: "Marie Curie", field: "Radioactivity", nx: 0.25, ny: 0.12 },
-  { name: "Grace Hopper", field: "Compiler", nx: 0.07, ny: 0.52 },
-  { name: "Katherine Johnson", field: "Trajectories", nx: 0.2, ny: 0.78 },
-  { name: "Hedy Lamarr", field: "Wireless", nx: 0.37, ny: 0.88 },
-  { name: "Margaret Hamilton", field: "Apollo", nx: 0.9, ny: 0.22 },
-  { name: "Radia Perlman", field: "Networking", nx: 0.75, ny: 0.1 },
-  { name: "Kalpana Chawla", field: "Astronaut", nx: 0.93, ny: 0.58 },
-  { name: "Tessy Thomas", field: "Missiles", nx: 0.8, ny: 0.8 },
-  { name: "Anandi Gopal Joshi", field: "Medicine", nx: 0.63, ny: 0.9 },
-];
-
-const WORDS = [
-  "collaborate",
-  "network",
-  "learn",
-  "grow",
-  "lead",
-  "innovate",
-  "inspire",
-];
-
-interface StarNode {
-  nx: number;
-  ny: number;
-  ph: number;
-  f?: number; // 1 for famous nodes
-  r?: number; // radius for small nodes
-  px: number;
-  py: number;
-  e?: HTMLDivElement;
-  card?: HTMLElement | null;
-  open?: boolean;
-}
+import Link from "next/link";
+import { ArrowDown, Sparkles } from "lucide-react";
+import { HeroConstellationCanvas } from "@/components/hero/HeroConstellationCanvas";
+import { HeroTypewriter } from "@/components/hero/HeroTypewriter";
 
 export function Hero() {
-  const heroRef = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const twRef = useRef<HTMLSpanElement>(null);
-
-  // Smooth scroll handler for Join button
-  const handleJoin = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const el =
-      document.getElementById("join") || document.getElementById("contact");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.hash = "contact";
-    }
-  };
-
-  // Smooth scroll handler for Explore Events button
-  const handleEvents = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const el = document.getElementById("events");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.hash = "events";
-    }
-  };
-
-  // Typewriter effect
-  useEffect(() => {
-    let wordIdx = 0;
-    let charIdx = 0;
-    let isDeleting = false;
-    let timer: ReturnType<typeof setTimeout>;
-
-    function step() {
-      const currentWord = WORDS[wordIdx];
-      const el = twRef.current;
-
-      if (!isDeleting) {
-        charIdx++;
-        if (el) el.textContent = currentWord.slice(0, charIdx);
-
-        if (charIdx === currentWord.length) {
-          isDeleting = true;
-          timer = setTimeout(step, 1500);
-          return;
-        }
-        timer = setTimeout(step, 70);
-        return;
-      }
-
-      charIdx--;
-      if (el) el.textContent = currentWord.slice(0, charIdx);
-
-      if (charIdx === 0) {
-        isDeleting = false;
-        wordIdx = (wordIdx + 1) % WORDS.length;
-        timer = setTimeout(step, 300);
-        return;
-      }
-      timer = setTimeout(step, 40);
-    }
-
-    step();
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Constellation Canvas & Nodes Simulation
-  useEffect(() => {
-    const hero = heroRef.current;
-    const cv = canvasRef.current;
-    if (!hero || !cv) return;
-
-    const cx = cv.getContext("2d");
-    if (!cx) return;
-
-    const m = { x: -999, y: -999 };
-
-    const handlePointerMove = (e: PointerEvent) => {
-      const rect = hero.getBoundingClientRect();
-      if (
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom
-      ) {
-        m.x = e.clientX - rect.left;
-        m.y = e.clientY - rect.top;
-      } else {
-        m.x = -999;
-        m.y = -999;
-      }
-    };
-
-    const handlePointerLeave = () => {
-      m.x = -999;
-      m.y = -999;
-    };
-
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    window.addEventListener("pointerleave", handlePointerLeave, { passive: true });
-
-    // Seeded pseudo-random generator
-    let sd = 7;
-    const rnd = () => {
-      sd |= 0;
-      sd = (sd + 0x6d2b79f5) | 0;
-      let t = Math.imul(sd ^ (sd >>> 15), 1 | sd);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-
-    const createdElements: HTMLDivElement[] = [];
-
-    // Initialize nodes array with famous nodes
-    const N: StarNode[] = FAMOUS_NODES.map((f, i) => {
-      const e = document.createElement("div");
-      e.className = "star";
-
-      const p = f.name.split(" ");
-      const ini = p[0][0] + p[p.length - 1][0];
-      const slug = f.name.toLowerCase().replace(/[^a-z]+/g, "-");
-
-      e.innerHTML = `<div class="dot"><div class="core"></div></div><div class="card"><div class="ph"><span>${ini}</span><img src="/photos/${slug}.jpg" alt="${f.name}" onerror="this.remove()"></div><div><small>Known for</small><i>${f.field}</i><span>${f.name}</span></div></div>`;
-
-      hero.appendChild(e);
-      createdElements.push(e);
-
-      const card = e.querySelector<HTMLElement>(".card");
-      const dot = e.querySelector<HTMLElement>(".dot");
-
-      const n: StarNode = {
-        nx: f.nx,
-        ny: f.ny,
-        ph: i * 1.7,
-        f: 1,
-        px: 0,
-        py: 0,
-        e,
-        card,
-        open: false,
-      };
-
-      if (dot && card) {
-        dot.onpointerenter = () => {
-          const w = hero.clientWidth;
-          card.style.setProperty(
-            "--sx",
-            n.px < 130 ? "-12%" : n.px > w - 130 ? "-88%" : "-50%"
-          );
-          e.classList.toggle("dn", n.py < 150);
-        };
-
-        dot.onclick = (event) => {
-          event.stopPropagation();
-          N.forEach((o) => {
-            if (o.f && o !== n && o.e) {
-              o.open = false;
-              o.e.classList.remove("open");
-            }
-          });
-          n.open = !n.open;
-          e.classList.toggle("open", n.open);
-        };
-      }
-
-      return n;
-    });
-
-    // Close cards on outside click
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest(".star")) {
-        N.forEach((o) => {
-          if (o.f && o.open && o.e) {
-            o.open = false;
-            o.e.classList.remove("open");
-          }
-        });
-      }
-    };
-    window.addEventListener("click", handleOutsideClick);
-
-    // Populate quiet field of small background nodes (up to 120 total)
-    while (N.length < 120) {
-      const nx = rnd();
-      const ny = rnd();
-      // Keep center region clear for title and text
-      if (
-        Math.pow((nx - 0.5) / 0.3, 2) + Math.pow((ny - 0.5) / 0.26, 2) <
-        1
-      )
-        continue;
-      const ed = Math.max(Math.abs(nx - 0.5), Math.abs(ny - 0.5)) * 2;
-      if (rnd() > 0.2 + 0.8 * ed * ed) continue;
-      if (N.some((o) => Math.hypot(o.nx - nx, o.ny - ny) < 0.05)) continue;
-
-      N.push({
-        nx,
-        ny,
-        ph: rnd() * 6,
-        r: 0.9 + rnd() * 1.3,
-        px: 0,
-        py: 0,
-      });
-    }
-
-    let animId: number;
-
-    function tick(t: number) {
-      if (!cx) return;
-      const w = hero?.clientWidth || window.innerWidth;
-      const h = hero?.clientHeight || window.innerHeight;
-      const dpr = window.devicePixelRatio || 1;
-
-      if (cv && (cv.width !== w * dpr || cv.height !== h * dpr)) {
-        cv.width = w * dpr;
-        cv.height = h * dpr;
-      }
-
-      cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cx.clearRect(0, 0, w, h);
-
-      const L = Math.max(110, Math.min(w, h) * 0.22);
-
-      N.forEach((n) => {
-        n.px = n.nx * w + Math.sin(t / 2400 + n.ph) * 3;
-        n.py = n.ny * h + Math.cos(t / 2800 + n.ph) * 3;
-
-        const dx = m.x - n.px;
-        const dy = m.y - n.py;
-        const d = Math.hypot(dx, dy);
-
-        if (d < 170 && d > 0) {
-          const k = ((1 - d / 170) * 10) / d;
-          n.px += dx * k;
-          n.py += dy * k;
-        }
-      });
-
-      // Soft cursor glow
-      if (m.x > 0 && m.y > 0) {
-        const g = cx.createRadialGradient(m.x, m.y, 0, m.x, m.y, 130);
-        g.addColorStop(0, "rgba(109,40,217,.08)");
-        g.addColorStop(1, "rgba(109,40,217,0)");
-        cx.fillStyle = g;
-        cx.fillRect(m.x - 130, m.y - 130, 260, 260);
-      }
-
-      // Inter-node connections & cursor connections
-      cx.lineWidth = 0.7;
-      for (let i = 0; i < N.length; i++) {
-        const a = N[i];
-
-        for (let j = i + 1; j < N.length; j++) {
-          const b = N[j];
-          const d = Math.hypot(a.px - b.px, a.py - b.py);
-          if (d < L) {
-            cx.strokeStyle = `rgba(109,40,217,${(1 - d / L) * 0.22})`;
-            cx.beginPath();
-            cx.moveTo(a.px, a.py);
-            cx.lineTo(b.px, b.py);
-            cx.stroke();
-          }
-        }
-
-        const dm = Math.hypot(a.px - m.x, a.py - m.y);
-        if (dm < 170) {
-          cx.strokeStyle = `rgba(109,40,217,${(1 - dm / 170) * 0.4})`;
-          cx.beginPath();
-          cx.moveTo(a.px, a.py);
-          cx.lineTo(m.x, m.y);
-          cx.stroke();
-        }
-      }
-
-      // Render small nodes and update DOM famous star transforms
-      N.forEach((n) => {
-        if (n.f && n.e) {
-          n.e.style.transform = `translate(${n.px}px,${n.py}px)`;
-          return;
-        }
-        if (n.r) {
-          cx.fillStyle = "rgba(109,40,217,.5)";
-          cx.beginPath();
-          cx.arc(n.px, n.py, n.r, 0, 6.3);
-          cx.fill();
-        }
-      });
-
-      animId = requestAnimationFrame(tick);
-    }
-
-    animId = requestAnimationFrame(tick);
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerleave", handlePointerLeave);
-      window.removeEventListener("click", handleOutsideClick);
-      createdElements.forEach((el) => el.remove());
-    };
-  }, []);
-
   return (
-    <section className="hero-constellation" id="hero" ref={heroRef}>
-      <canvas id="c" ref={canvasRef} />
-      <h1>
-        Society of <em>Women</em> Engineers
-      </h1>
-      <div className="eb">MIT-WPU · Pune</div>
-      <p className="sub">
-        We’re here to <span id="tw" ref={twRef}></span>
-        <span className="cur">_</span>
-      </p>
-      <div className="btns">
-        <a className="cta" href="#join" onClick={handleJoin}>
-          Join the community
-        </a>
-        <a className="cta ghost" href="#events" onClick={handleEvents}>
-          Explore events
-        </a>
+    <section
+      id="hero"
+      aria-label="Welcome to Society of Women Engineers MIT-WPU"
+      className="relative w-full min-h-[calc(100svh-4rem)] md:min-h-[calc(100svh-4.5rem)] flex flex-col items-center justify-between overflow-hidden pt-12 pb-8 sm:pb-10 px-4 sm:px-6 lg:px-8 text-center"
+    >
+      {/* ── Progressive Constellation Canvas (Hydrates in background without blocking LCP) ── */}
+      <HeroConstellationCanvas />
+
+      {/* ── Soft Radial Scrim (Ensures text contrast satisfies WCAG AA against constellation lines) ── */}
+      <div
+        className="pointer-events-none absolute inset-0 z-1 flex items-center justify-center"
+        aria-hidden="true"
+      >
+        <div
+          className="w-[720px] h-[480px] max-w-full rounded-full opacity-65 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(252, 251, 254, 0.95) 0%, rgba(252, 251, 254, 0.7) 50%, transparent 80%)",
+          }}
+        />
       </div>
-      <span className="hint">HOVER THE GLOWING NODES · TAP ON MOBILE</span>
+
+      {/* ── Top Spacer ── */}
+      <div className="w-full h-2 sm:h-6" aria-hidden="true" />
+
+      {/* ── Center Content: Server-Rendered for Immediate Sub-Second LCP ── */}
+      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center justify-center my-auto">
+        {/* Eyebrow Label */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E9E3FB] bg-white/80 backdrop-blur-xs text-[11px] sm:text-xs font-mono tracking-widest uppercase text-[#6538A5] shadow-2xs mb-5 sm:mb-6">
+          <Sparkles className="size-3 text-[#E8B94F]" />
+          <span>Society of Women Engineers · MIT-WPU Chapter</span>
+        </div>
+
+        {/* Display Headline */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] font-semibold tracking-tight text-[#1E1033] leading-[1.04]">
+          Society of{" "}
+          <em className="font-serif italic font-normal text-[#6538A5] tracking-normal">
+            Women
+          </em>{" "}
+          Engineers
+        </h1>
+
+        {/* Value Proposition with Stabilized Typewriter */}
+        <HeroTypewriter />
+
+        {/* CTAs */}
+        <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5 sm:gap-4 w-full">
+          <Link
+            href="#contact"
+            className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 rounded-full text-sm font-medium tracking-wide bg-[#1E1033] text-white hover:bg-[#6538A5] shadow-sm hover:shadow-md transition-all duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2"
+          >
+            Join SWE MIT-WPU
+          </Link>
+          <Link
+            href="#events"
+            className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 rounded-full text-sm font-medium tracking-wide bg-white/80 hover:bg-[#F6F2FC] text-[#1E1033] hover:text-[#6538A5] border border-[#E9E3FB] hover:border-[#6538A5]/40 backdrop-blur-xs transition-all duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2"
+          >
+            Explore Our Work
+          </Link>
+        </div>
+
+        {/* Subtle Trust Strip (Real chapter data only — 0 invented numbers) */}
+        <div className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-[13px] text-[#6B6385] font-light">
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold text-[#1E1033]">500+</span>
+            <span>Active Collegiate Members</span>
+          </div>
+          <span className="text-[#E9E3FB] hidden sm:inline" aria-hidden="true">•</span>
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold text-[#1E1033]">35+</span>
+            <span>Technical Events &amp; Workshops</span>
+          </div>
+          <span className="text-[#E9E3FB] hidden sm:inline" aria-hidden="true">•</span>
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold text-[#1E1033]">Est. 2021</span>
+            <span>Pune, India</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Refined Scroll Cue linking to #about ── */}
+      <div className="relative z-10 pt-6 pb-2">
+        <Link
+          href="#about"
+          aria-label="Scroll down to About section"
+          className="group flex flex-col items-center gap-1.5 text-[11px] font-mono tracking-widest text-[#6B6385] hover:text-[#6538A5] transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] rounded-lg px-2 py-1"
+        >
+          <span className="uppercase text-[10px] tracking-widest opacity-80 group-hover:opacity-100">
+            Discover Our Story
+          </span>
+          <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#E9E3FB] bg-white/70 backdrop-blur-xs transition-transform duration-300 group-hover:translate-y-0.5 shadow-2xs">
+            <ArrowDown className="size-3 text-[#6538A5]" />
+          </div>
+        </Link>
+      </div>
     </section>
   );
 }
+
+export default Hero;
