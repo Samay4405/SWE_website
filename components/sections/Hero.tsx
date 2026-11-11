@@ -3,24 +3,79 @@
 import React, { useEffect, useRef } from "react";
 import "./HeroConstellation.css";
 
-interface FamousStarData {
-  name: string;
-  field: string;
-  nx: number;
-  ny: number;
-}
+type FamousRecord = [string, string, number, number, string];
 
-const FAMOUS_NODES: FamousStarData[] = [
-  { name: "Ada Lovelace", field: "Algorithms", nx: 0.1, ny: 0.2 },
-  { name: "Marie Curie", field: "Radioactivity", nx: 0.25, ny: 0.12 },
-  { name: "Grace Hopper", field: "Compiler", nx: 0.07, ny: 0.52 },
-  { name: "Katherine Johnson", field: "Trajectories", nx: 0.2, ny: 0.78 },
-  { name: "Hedy Lamarr", field: "Wireless", nx: 0.37, ny: 0.88 },
-  { name: "Margaret Hamilton", field: "Apollo", nx: 0.9, ny: 0.22 },
-  { name: "Radia Perlman", field: "Networking", nx: 0.75, ny: 0.1 },
-  { name: "Kalpana Chawla", field: "Astronaut", nx: 0.93, ny: 0.58 },
-  { name: "Tessy Thomas", field: "Missiles", nx: 0.8, ny: 0.8 },
-  { name: "Anandi Gopal Joshi", field: "Medicine", nx: 0.63, ny: 0.9 },
+const F: FamousRecord[] = [
+  [
+    "Ada Lovelace",
+    "Algorithms",
+    0.1,
+    0.2,
+    "Wrote the first published algorithm for Babbage’s Analytical Engine in the 1840s.",
+  ],
+  [
+    "Marie Curie",
+    "Radioactivity",
+    0.25,
+    0.12,
+    "The first person to win Nobel Prizes in two different sciences, physics and chemistry.",
+  ],
+  [
+    "Grace Hopper",
+    "Compiler",
+    0.07,
+    0.52,
+    "Built the first compiler and pushed for English-like languages that paved the way to COBOL.",
+  ],
+  [
+    "Katherine Johnson",
+    "Trajectories",
+    0.2,
+    0.78,
+    "Her orbital calculations helped send John Glenn into orbit and astronauts to the Moon.",
+  ],
+  [
+    "Hedy Lamarr",
+    "Wireless",
+    0.37,
+    0.88,
+    "Co-invented frequency hopping, an idea that underpins modern Wi-Fi and Bluetooth.",
+  ],
+  [
+    "Margaret Hamilton",
+    "Apollo",
+    0.9,
+    0.22,
+    "Led the MIT team that wrote the onboard flight software for the Apollo missions.",
+  ],
+  [
+    "Radia Perlman",
+    "Networking",
+    0.75,
+    0.1,
+    "Invented the spanning-tree protocol that keeps Ethernet networks free of loops.",
+  ],
+  [
+    "Kalpana Chawla",
+    "Astronaut",
+    0.93,
+    0.58,
+    "The first woman of Indian origin in space, flying aboard Space Shuttle Columbia in 1997.",
+  ],
+  [
+    "Tessy Thomas",
+    "Missiles",
+    0.8,
+    0.8,
+    "Led India’s Agni-IV and Agni-V missile projects and is known as India’s Missile Woman.",
+  ],
+  [
+    "Anandi Gopal Joshi",
+    "Medicine",
+    0.63,
+    0.9,
+    "India’s first woman physician trained in Western medicine, graduating in 1886.",
+  ],
 ];
 
 const WORDS = [
@@ -38,7 +93,7 @@ interface StarNode {
   ny: number;
   ph: number;
   f?: number; // 1 for famous nodes
-  r?: number; // radius for small nodes
+  r?: number; // radius for background nodes
   px: number;
   py: number;
   e?: HTMLDivElement;
@@ -74,8 +129,11 @@ export function Hero() {
     }
   };
 
-  // Typewriter effect
+  // Typewriter effect matching the exact timing and behavior
   useEffect(() => {
+    const el = twRef.current;
+    if (!el) return;
+
     let wordIdx = 0;
     let charIdx = 0;
     let isDeleting = false;
@@ -83,12 +141,9 @@ export function Hero() {
 
     function step() {
       const currentWord = WORDS[wordIdx];
-      const el = twRef.current;
-
       if (!isDeleting) {
         charIdx++;
         if (el) el.textContent = currentWord.slice(0, charIdx);
-
         if (charIdx === currentWord.length) {
           isDeleting = true;
           timer = setTimeout(step, 1500);
@@ -97,10 +152,8 @@ export function Hero() {
         timer = setTimeout(step, 70);
         return;
       }
-
       charIdx--;
       if (el) el.textContent = currentWord.slice(0, charIdx);
-
       if (charIdx === 0) {
         isDeleting = false;
         wordIdx = (wordIdx + 1) % WORDS.length;
@@ -115,7 +168,7 @@ export function Hero() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Constellation Canvas & Nodes Simulation
+  // Constellation Canvas & Interactive Stars Simulation
   useEffect(() => {
     const hero = heroRef.current;
     const cv = canvasRef.current;
@@ -162,16 +215,81 @@ export function Hero() {
 
     const createdElements: HTMLDivElement[] = [];
 
+    /* Place each card on the side where it clears the centre content and stays on screen */
+    function place(n: StarNode) {
+      if (!hero || !n.card) return;
+      const heroRect = hero.getBoundingClientRect();
+      const W = hero.clientWidth;
+      const H = hero.clientHeight;
+      const c = n.card;
+      const w = Math.min(310, W - 24);
+      c.style.width = w + "px";
+      const h = c.offsetHeight;
+      const g = 28;
+
+      let r: { l: number; t: number; r: number; b: number } | null = null;
+      hero.querySelectorAll<HTMLElement>(".eb,h1,.sub,.btns").forEach((el) => {
+        const b = el.getBoundingClientRect();
+        const bl = b.left - heroRect.left;
+        const bt = b.top - heroRect.top;
+        const br = b.right - heroRect.left;
+        const bb = b.bottom - heroRect.top;
+        r = r
+          ? {
+              l: Math.min(r.l, bl),
+              t: Math.min(r.t, bt),
+              r: Math.max(r.r, br),
+              b: Math.max(r.b, bb),
+            }
+          : { l: bl, t: bt, r: br, b: bb };
+      });
+
+      if (!r) {
+        r = { l: W / 2 - 150, t: H / 2 - 100, r: W / 2 + 150, b: H / 2 + 100 };
+      }
+
+      const pad = 16;
+      const cl = Math.max(12, Math.min(W - w - 12, n.px - w / 2));
+      const ct = Math.max(12, Math.min(H - h - 12, n.py - h / 2));
+      const C: [number, number][] = [
+        [cl, n.py - h - g],
+        [cl, n.py + g],
+        [n.px + g, ct],
+        [n.px - w - g, ct],
+      ];
+      let best = C[0];
+      let bs = 1e12;
+      C.forEach(([x, y]) => {
+        const ox =
+          Math.max(0, Math.min(x + w, r!.r + pad) - Math.max(x, r!.l - pad));
+        const oy =
+          Math.max(0, Math.min(y + h, r!.b + pad) - Math.max(y, r!.t - pad));
+        const out =
+          Math.max(0, 12 - x) +
+          Math.max(0, x + w + 12 - W) +
+          Math.max(0, 12 - y) +
+          Math.max(0, y + h + 12 - H);
+        const s = ox * oy + out * 400;
+        if (s < bs) {
+          bs = s;
+          best = [x, y];
+        }
+      });
+      c.style.setProperty("--cx", best[0] - n.px + "px");
+      c.style.setProperty("--cy", best[1] - n.py + "px");
+    }
+
     // Initialize nodes array with famous nodes
-    const N: StarNode[] = FAMOUS_NODES.map((f, i) => {
+    const N: StarNode[] = F.map((f, i) => {
       const e = document.createElement("div");
       e.className = "star";
+      e.style.setProperty("--d", -i * 0.37 + "s");
 
-      const p = f.name.split(" ");
+      const p = f[0].split(" ");
       const ini = p[0][0] + p[p.length - 1][0];
-      const slug = f.name.toLowerCase().replace(/[^a-z]+/g, "-");
+      const slug = f[0].toLowerCase().replace(/[^a-z]+/g, "-");
 
-      e.innerHTML = `<div class="dot"><div class="core"></div></div><div class="card"><div class="ph"><span>${ini}</span><img src="/photos/${slug}.jpg" alt="${f.name}" onerror="this.remove()"></div><div><small>Known for</small><i>${f.field}</i><span>${f.name}</span></div></div>`;
+      e.innerHTML = `<div class="dot"><div class="core"></div></div><div class="card"><div class="ph"><span>${ini}</span><img src="/photos/${slug}.jpg" alt="${f[0]}" onerror="this.remove()"></div><div><small>Known for</small><i>${f[1]}</i><b>${f[0]}</b><p>${f[4]}</p></div></div>`;
 
       hero.appendChild(e);
       createdElements.push(e);
@@ -180,8 +298,8 @@ export function Hero() {
       const dot = e.querySelector<HTMLElement>(".dot");
 
       const n: StarNode = {
-        nx: f.nx,
-        ny: f.ny,
+        nx: f[2],
+        ny: f[3],
         ph: i * 1.7,
         f: 1,
         px: 0,
@@ -191,16 +309,8 @@ export function Hero() {
         open: false,
       };
 
-      if (dot && card) {
-        dot.onpointerenter = () => {
-          const w = hero.clientWidth;
-          card.style.setProperty(
-            "--sx",
-            n.px < 130 ? "-12%" : n.px > w - 130 ? "-88%" : "-50%"
-          );
-          e.classList.toggle("dn", n.py < 150);
-        };
-
+      if (dot) {
+        dot.onpointerenter = () => place(n);
         dot.onclick = (event) => {
           event.stopPropagation();
           N.forEach((o) => {
@@ -211,6 +321,7 @@ export function Hero() {
           });
           n.open = !n.open;
           e.classList.toggle("open", n.open);
+          if (n.open) place(n);
         };
       }
 
@@ -230,11 +341,20 @@ export function Hero() {
     };
     window.addEventListener("click", handleOutsideClick);
 
+    // Reposition open cards on resize
+    const handleResize = () => {
+      N.forEach((o) => {
+        if (o.f && o.open) {
+          place(o);
+        }
+      });
+    };
+    window.addEventListener("resize", handleResize);
+
     // Populate quiet field of small background nodes (up to 120 total)
     while (N.length < 120) {
       const nx = rnd();
       const ny = rnd();
-      // Keep center region clear for title and text
       if (
         Math.pow((nx - 0.5) / 0.3, 2) + Math.pow((ny - 0.5) / 0.26, 2) <
         1
@@ -347,20 +467,34 @@ export function Hero() {
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerleave", handlePointerLeave);
       window.removeEventListener("click", handleOutsideClick);
+      window.removeEventListener("resize", handleResize);
       createdElements.forEach((el) => el.remove());
     };
   }, []);
 
   return (
-    <section className="hero-constellation" id="hero" ref={heroRef}>
+    <section className="hero" id="hero" ref={heroRef}>
+      <div className="bg">
+        <div className="bl b1"></div>
+        <div className="bl b2"></div>
+        <div className="bl b3"></div>
+        <div className="grid"></div>
+      </div>
       <canvas id="c" ref={canvasRef} />
+      <div className="eb top">Student Chapter</div>
       <h1>
         Society of <em>Women</em> Engineers
       </h1>
       <div className="eb">MIT-WPU · Pune</div>
       <p className="sub">
-        We’re here to <span id="tw" ref={twRef}></span>
-        <span className="cur">_</span>
+        We’re here to{" "}
+        <span className="slot">
+          <span className="sz">collaborate</span>
+          <span className="ty">
+            <span id="tw" ref={twRef}></span>
+            <span className="cur">_</span>
+          </span>
+        </span>
       </p>
       <div className="btns">
         <a className="cta" href="#join" onClick={handleJoin}>

@@ -85,17 +85,29 @@ function DynamicGradientAlumniCard({
       >
 
         {/* Top Profile Row + Testimonial Body */}
-        <div className="p-7 sm:p-8 md:p-9 flex-1 flex flex-col">
-          {/* Top Profile Row: Headshot + Name & SWE Tenure */}
-          <div className="flex items-center gap-4 pb-6 mb-6 border-b border-[#F0ECF6]">
+        <div className="p-5 sm:p-6 md:p-7 flex-1 flex flex-col">
+          {/* Top Profile Row: Headshot or initials + Name & SWE Tenure */}
+          <div className="flex items-center gap-4 pb-4 mb-4 border-b border-[#F0ECF6]">
             <div className="relative size-14 sm:size-16 rounded-xl overflow-hidden bg-[#F2EFF7] border border-[#E5DFEF] shrink-0 shadow-xs">
-              <Image
-                src={story.photograph}
-                alt={`Portrait of ${story.name}`}
-                fill
-                sizes="64px"
-                className="object-cover object-top select-none transition-transform duration-500 group-hover:scale-105"
-              />
+              {story.photograph ? (
+                <Image
+                  src={story.photograph}
+                  alt={`Portrait of ${story.name}`}
+                  fill
+                  sizes="64px"
+                  className="object-cover object-top select-none transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="flex size-full items-center justify-center bg-gradient-to-br from-[#6538A5] to-[#A78BDA] text-lg font-semibold tracking-wide text-white"
+                >
+                  {story.name
+                    .split(" ")
+                    .map((part) => part[0])
+                    .join("")}
+                </span>
+              )}
             </div>
 
             <div className="text-left min-w-0">
@@ -119,20 +131,25 @@ function DynamicGradientAlumniCard({
           </div>
 
           {/* Testimonial Content: Left-aligned, authentic reflection */}
-          <div className="relative flex-1 text-left">
-            <p
-              className="text-sm sm:text-[14.5px] leading-[1.75] text-[#4A4560] font-normal"
-              style={{
-                fontFamily: "var(--font-sans), system-ui, sans-serif",
-              }}
-            >
-              &ldquo;{story.testimonial}&rdquo;
-            </p>
+          <div
+            className="relative flex-1 space-y-3 text-left text-[13px] sm:text-sm leading-[1.65] text-[#4A4560] font-normal"
+            style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
+          >
+            {(Array.isArray(story.testimonial)
+              ? story.testimonial
+              : [story.testimonial]
+            ).map((paragraph, index, paragraphs) => (
+              <p key={paragraph}>
+                {index === 0 && <>&ldquo;</>}
+                {paragraph}
+                {index === paragraphs.length - 1 && <>&rdquo;</>}
+              </p>
+            ))}
           </div>
         </div>
 
         {/* Card Bottom Decorative Element: Large Subtle Quotation Icon in Bottom-Right Corner */}
-        <div className="px-7 sm:px-8 pb-6 pt-0 flex justify-end items-center pointer-events-none">
+        <div className="px-5 sm:px-6 pb-4 pt-0 flex justify-end items-center pointer-events-none">
           <div className="relative flex items-center justify-center size-10 rounded-full bg-[#FAF8FD] border border-[#EFEBF6] transition-colors duration-300 group-hover:border-[#A78BDA]/40 group-hover:bg-[#F6F2FC]">
             <Quote className="size-5 text-[#6538A5] stroke-[2] opacity-80 transition-transform duration-300 group-hover:scale-110" />
           </div>
@@ -186,24 +203,6 @@ export function ImpactPreview() {
         }
       `}</style>
 
-      {/* ── Soft Ambient Atmospheric Glow ── */}
-      <div
-        className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[520px] rounded-full blur-3xl opacity-25 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(101,56,165,0.12) 0%, rgba(245,215,110,0.06) 55%, transparent 75%)",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute bottom-0 right-10 w-[600px] h-[400px] rounded-full blur-3xl opacity-20 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(101,56,165,0.09) 0%, rgba(167,139,218,0.05) 60%, transparent 80%)",
-        }}
-        aria-hidden="true"
-      />
-
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-[1320px]">
         {/* ── Section Heading: Centered with Generous Breathing Space ── */}
         <motion.div
@@ -235,18 +234,18 @@ export function ImpactPreview() {
           </motion.p>
         </motion.div>
 
-        {/* ── Three-Column Card Grid with Dynamic Purple-Yellow Gradient Border ── */}
+        {/* ── Two-Column Card Grid with Dynamic Purple-Yellow Gradient Border ── */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="flex flex-wrap -m-4 sm:-m-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 [grid-auto-rows:1fr]"
         >
           {alumniStories.map((story) => (
             <div
               key={story.id}
-              className="w-full md:w-1/2 lg:w-1/3 p-4 sm:p-6 flex"
+              className="flex h-full min-w-0"
             >
               <DynamicGradientAlumniCard
                 story={story}

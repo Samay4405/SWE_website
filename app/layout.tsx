@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { inter, instrumentSerif } from "@/lib/fonts";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { BlobBackground } from "@/components/BlobBackground";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -48,7 +47,6 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col antialiased bg-white">
         <div className="site-bg">
-          <BlobBackground />
           <Navbar />
           <main className="relative z-[1] flex-1 pt-16 md:pt-18">{children}</main>
           <Footer />

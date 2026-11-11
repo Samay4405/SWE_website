@@ -15,14 +15,14 @@ import { navLinks } from "@/content/navigation";
 interface MobileDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  activeSection: string;
+  pathname: string;
   isHome: boolean;
 }
 
 export function MobileDrawer({
   open,
   onOpenChange,
-  activeSection,
+  pathname,
   isHome,
 }: MobileDrawerProps) {
   const handleNavClick = (href: string) => {
@@ -33,25 +33,13 @@ export function MobileDrawer({
       }, 300);
       return;
     }
-    if (href.startsWith("#") && isHome) {
-      // Small delay for sheet close animation before scrolling
-      setTimeout(() => {
-        const el = document.getElementById(href.replace("#", ""));
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 300);
-    }
   };
 
   const isActive = (href: string) => {
     if (href === "/") {
-      return isHome && (activeSection === "" || activeSection === "hero");
+      return pathname === "/";
     }
-    if (href.startsWith("#")) {
-      return activeSection === href.replace("#", "");
-    }
-    return false;
+    return pathname === href || pathname.startsWith(href + "/");
   };
 
   return (
@@ -83,27 +71,27 @@ export function MobileDrawer({
           {navLinks.map((link) => (
             <Link
               key={link.href}
-              href={link.isSection && !isHome ? `/${link.href}` : link.href}
+              href={link.href}
               onClick={() => handleNavClick(link.href)}
               className={cn(
                 "flex items-center px-3 py-3 text-base font-medium rounded-md transition-colors duration-200",
                 isActive(link.href)
-                  ? "text-foreground bg-muted"
+                  ? "text-foreground bg-muted font-semibold"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
               {link.label}
               {isActive(link.href) && (
-                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#6d28d9]" />
               )}
             </Link>
           ))}
         </nav>
 
-        <div className="px-6 pb-6 mt-auto">
+        <div className="px-6 pt-4 pb-6 mt-auto border-t border-border">
           <Link href="/contact" onClick={() => onOpenChange(false)} className="block">
-            <Button className="w-full rounded-full" size="lg">
-              Join SWE
+            <Button className="w-full justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+              Join SWE Chapter
             </Button>
           </Link>
         </div>

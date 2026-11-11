@@ -3,6 +3,8 @@ export interface EditorialTeamMember {
   name: string;
   designation: string;
   photo: string;
+  photoScale?: number;
+  photoPosition?: { x: number; y: number };
   quote: string;
 }
 
@@ -23,6 +25,8 @@ export const coreTeamMembers: EditorialTeamMember[] = [
     name: "Padmali Joshi",
     designation: "Vice President",
     photo: "/images/team/padmali-joshi.jpg",
+    photoScale: 1.4,
+    photoPosition: { x: 0, y: 40 },
     quote: "Turning collaboration into opportunities, and ideas into impact",
   },
   {
@@ -51,6 +55,7 @@ export const coreTeamMembers: EditorialTeamMember[] = [
     name: "Rashi Rangrej",
     designation: "Joint Treasurer",
     photo: "/images/team/rashi-rangrej.JPG",
+    photoPosition: { x: 75, y: 0 },
     quote: "Balancing ideas, budgets and possibilities.",
   },
   {
@@ -58,6 +63,7 @@ export const coreTeamMembers: EditorialTeamMember[] = [
     name: "Mrinmayee Gokhale",
     designation: "Affliate Manager",
     photo: "/images/team/mrinmayee-gokhale.jpeg",
+    photoPosition: { x: 0, y: 50},
     quote: "Building bridges beyond our community.",
   },
   {
@@ -65,6 +71,8 @@ export const coreTeamMembers: EditorialTeamMember[] = [
     name: "Krisha Oswal",
     designation: "Joint Affliate Manager",
     photo: "/images/team/krisha-oswal.jpg",
+    photoScale: 1.8,
+    photoPosition: { x: 0, y: 60},
     quote: "Connecting people, creating lasting opportunities.",
   },
 ];
@@ -86,6 +94,8 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     name: "Isha Shikhare",
     designation: "Sponsorship Head",
     photo: "/images/team/head-isha-shikhare.jpg",
+    photoScale: 2.2,
+    photoPosition: { x: 0, y: 35},
     quote: "Put your money where the impact is.",
   },
   {
@@ -107,6 +117,7 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     name: "Sonali Dash",
     designation: "Events Head",
     photo: "/images/team/head-sonali-dash.jpg",
+    photoPosition: { x: 0, y: 35},
     quote: "Making every moment worth remembering.",
   },
   {
@@ -121,6 +132,8 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     name: "Ananya Apparaju",
     designation: "HR Head",
     photo: "/images/team/head-ananya-apparaju.jpg",
+    photoScale: 1.4,
+    photoPosition: { x: 0, y: 35},
     quote: "Bringing people together, building bonds.",
   },
   {
@@ -128,6 +141,8 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     name: "Janhavi Modak",
     designation: "HR Head",
     photo: "/images/team/head-janhavi-modak.jpg",
+    photoScale: 1.4,
+    photoPosition: { x: 0, y: 35},
     quote: "Making everyone feel like they belong.",
   },
   {
@@ -135,6 +150,7 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     name: "Prisha Joshi",
     designation: "Media and Marketing Head",
     photo: "/images/team/head-prisha-joshi.jpg",
+    photoPosition: { x: 0, y: 35},
     quote: "Telling stories that deserve to be seen.",
   },
   {
@@ -142,6 +158,8 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     name: "Mahin Shaikh",
     designation: "Media and Marketing Head",
     photo: "/images/team/head-mahin-shaikh.jpg",
+    photoScale: 1.4,
+    photoPosition: { x: 0, y: 35},
     quote: "Making every moment reach the right audience.",
   },
   {
@@ -163,6 +181,7 @@ export const headsTeamMembers: EditorialTeamMember[] = [
     name: "Samay Gandhi",
     designation: "Technical Head",
     photo: "/images/team/head-samay-gandhi.jpg",
+    photoPosition: { x: 0, y: 35},
     quote: "Turning ideas into things that work.",
   },
   {

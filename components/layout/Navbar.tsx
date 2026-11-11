@@ -13,7 +13,6 @@ import { MobileDrawer } from "./MobileDrawer";
 
 export function Navbar() {
   const [elementFocused, setElementFocused] = useState<number | null>(null);
-  const [activeSection, setActiveSection] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
@@ -23,36 +22,14 @@ export function Navbar() {
     setElementFocused(index);
   };
 
-  // ── Scroll spy for active section on homepage ──
   useEffect(() => {
     if (!isHome) {
       setIsScrolled(true);
       return;
     }
 
-    const sectionIds = navLinks
-      .filter((link) => link.isSection)
-      .map((link) => link.href.replace("#", ""));
-
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 24);
-
-      // While near the top, active section is Home ("")
-      if (window.scrollY < 240) {
-        setActiveSection("");
-        return;
-      }
-
-      const scrollPosition = window.scrollY + 180;
-
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const id = sectionIds[i];
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= scrollPosition) {
-          setActiveSection(id);
-          return;
-        }
-      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -70,25 +47,15 @@ export function Navbar() {
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
-      if (href.startsWith("#") && isHome) {
-        e.preventDefault();
-        const el = document.getElementById(href.replace("#", ""));
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth" });
-        }
-      }
     },
     [isHome]
   );
 
   const isActive = (href: string) => {
     if (href === "/") {
-      return isHome && (activeSection === "" || activeSection === "hero");
+      return pathname === "/";
     }
-    if (href.startsWith("#")) {
-      return activeSection === href.replace("#", "");
-    }
-    return pathname === href;
+    return pathname === href || pathname.startsWith(href + "/");
   };
 
   return (
@@ -142,17 +109,22 @@ export function Navbar() {
               return (
                 <Link
                   key={link.label}
-                  href={link.isSection && !isHome ? `/${link.href}` : link.href}
+                  href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   onMouseEnter={() => handleHoverButton(index)}
                   className={cn(
                     "relative inline-flex items-center justify-center px-3.5 py-1.5 text-[0.85rem] font-normal transition-colors duration-200 rounded-[7px] tracking-[0.04em] whitespace-nowrap select-none no-underline",
                     active
-                    ? "text-[#1e1033] font-semibold"
-                    : "text-[#6b6385] hover:text-[#1e1033]"
+                      ? "text-[#1e1033] font-semibold"
+                      : "text-[#6b6385] hover:text-[#1e1033]"
                   )}
                 >
                   <span className="relative z-10">{link.label}</span>
+
+                  {/* Active Indicator bar */}
+                  {active && (
+                    <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#6d28d9] rounded-full" />
+                  )}
 
                   {/* Translucent Purple Animated Hover Rectangle */}
                   <AnimatePresence>
@@ -210,7 +182,7 @@ export function Navbar() {
       <MobileDrawer
         open={mobileOpen}
         onOpenChange={setMobileOpen}
-        activeSection={activeSection}
+        pathname={pathname}
         isHome={isHome}
       />
     </>

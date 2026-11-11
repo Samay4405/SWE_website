@@ -8,9 +8,6 @@ import { ScrollReveal } from "@/components/shared/ScrollReveal";
 export function JourneyCTA() {
   return (
     <section className="relative section-padding bg-gradient-to-b from-card via-primary/[0.04] to-background border-b border-border/60 overflow-hidden">
-      {/* Decorative gradient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-
       <div className="section-container relative z-10 text-center max-w-3xl mx-auto">
         <ScrollReveal>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-background text-xs font-mono font-medium text-muted-foreground mb-6">

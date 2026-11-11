@@ -38,6 +38,7 @@ const footerSections = [
     title: "Pages",
     links: [
       { label: "Home", href: "/" },
+      { label: "About", href: "/about" },
       { label: "Events", href: "/events" },
       { label: "Team", href: "/team" },
       { label: "Impact", href: "/impact" },

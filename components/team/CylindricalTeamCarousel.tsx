@@ -250,12 +250,17 @@ export function CylindricalTeamCarousel({
                         src={member.photo}
                         alt={`Portrait of ${member.name}`}
                         fill
+                        draggable={false}
                         sizes={
                           usesCompactDimensions
                             ? "(max-width: 768px) 210px, 250px"
                             : "(max-width: 768px) 240px, 280px"
                         }
                         className="object-cover object-top select-none transition-transform duration-700 ease-out group-hover:scale-105"
+                        style={{
+                          objectPosition: `${member.photoPosition?.x ?? 50}% ${member.photoPosition?.y ?? 0}%`,
+                          transform: `scale(${member.photoScale ?? 1})`,
+                        }}
                         priority={index < 4}
                       />
 
@@ -307,7 +312,7 @@ export function CylindricalTeamCarousel({
 
                       {/* Personal Quote (Clear medium weight italic, high contrast charcoal) */}
                       <div className="mt-1 sm:mt-1.5 flex items-start gap-1">
-                        <Quote className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-[#DCC554] flex-shrink-0 mt-0.5 stroke-[2.2]" />
+                        <Quote className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-[#6d28d9] flex-shrink-0 mt-0.5 stroke-[2.2]" />
                         <p
                           className={`${
                             usesCompactDimensions

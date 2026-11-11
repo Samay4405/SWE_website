@@ -6,14 +6,14 @@
   --line: #e9e3fb;
 }
 
-.hero-constellation {
+.hero {
   position: relative;
   width: 100%;
+  height: 100vh;
   height: 100svh;
   min-height: 640px;
-  max-height: 1080px;
-  margin-top: -4rem; /* -mt-16 */
-  padding-top: calc(4rem + 24px);
+  margin-top: -4rem; /* pulls behind transparent navbar */
+  padding-top: calc(4rem + max(24px, env(safe-area-inset-top, 0px)));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,19 +23,92 @@
   padding-right: 24px;
   padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
   pointer-events: none;
-  background: transparent;
+  background: #fcfbff;
   overflow: hidden;
   box-sizing: border-box;
+  z-index: 10;
 }
 
 @media (min-width: 768px) {
-  .hero-constellation {
-    margin-top: -4.5rem; /* -mt-18 */
-    padding-top: calc(4.5rem + 24px);
+  .hero {
+    margin-top: -4.5rem;
+    padding-top: calc(4.5rem + max(24px, env(safe-area-inset-top, 0px)));
   }
 }
 
-.hero-constellation #c {
+.hero .bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero .bl {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.6;
+  will-change: transform;
+}
+
+.hero .b1 {
+  width: 56vmax;
+  height: 56vmax;
+  left: 50%;
+  top: 44%;
+  margin: -28vmax 0 0 -28vmax;
+  background: radial-gradient(circle, #e2d6ff, rgba(226, 214, 255, 0) 68%);
+  animation: hero-d1 22s ease-in-out infinite alternate;
+}
+
+.hero .b2 {
+  width: 36vmax;
+  height: 36vmax;
+  left: 14%;
+  top: 56%;
+  background: radial-gradient(circle, #ffe4f2, rgba(255, 228, 242, 0) 68%);
+  animation: hero-d2 26s ease-in-out infinite alternate;
+}
+
+.hero .b3 {
+  width: 34vmax;
+  height: 34vmax;
+  right: 14%;
+  top: 8%;
+  background: radial-gradient(circle, #dce9ff, rgba(220, 233, 255, 0) 68%);
+  animation: hero-d3 30s ease-in-out infinite alternate;
+}
+
+@keyframes hero-d1 {
+  to {
+    transform: translate(4vmax, -3vmax) scale(1.1);
+  }
+}
+
+@keyframes hero-d2 {
+  to {
+    transform: translate(5vmax, -4vmax) scale(1.12);
+  }
+}
+
+@keyframes hero-d3 {
+  to {
+    transform: translate(-4vmax, 4vmax) scale(1.1);
+  }
+}
+
+.hero .grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image: radial-gradient(rgba(109, 40, 217, 0.18) 1px, transparent 1.3px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000, transparent 68%);
+  mask-image: radial-gradient(ellipse at 50% 50%, #000, transparent 68%);
+}
+
+.hero #c {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -43,62 +116,103 @@
   pointer-events: none;
 }
 
-.hero-constellation .eb {
+.hero .eb {
   position: relative;
-  letter-spacing: .32em;
-  font-size: .68rem;
+  letter-spacing: 0.32em;
+  font-size: 0.68rem;
   font-weight: 400;
   text-transform: uppercase;
   color: var(--pu);
 }
 
-.hero-constellation h1 {
+.hero .eb.top {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--mute);
+}
+
+.hero .eb.top::before,
+.hero .eb.top::after {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--soft));
+}
+
+.hero .eb.top::after {
+  transform: scaleX(-1);
+}
+
+.hero h1 {
   position: relative;
   font-size: clamp(1.1rem, 5.4vw, 4.6rem);
   line-height: 1.05;
-  margin: .35em 0;
+  margin: 0.35em 0;
   font-weight: 600;
-  letter-spacing: -.035em;
+  letter-spacing: -0.035em;
   white-space: nowrap;
   color: var(--ink);
 }
 
-.hero-constellation h1 em {
-  font-family: var(--font-accent), Georgia, serif;
+.hero h1 em {
+  font-family: "Instrument Serif", var(--font-accent), Georgia, serif;
   font-style: italic;
   font-weight: 400;
   color: var(--pu);
-  letter-spacing: -.01em;
+  letter-spacing: -0.01em;
 }
 
-.hero-constellation .sub {
+.hero .sub {
   position: relative;
   margin: 24px 0 34px;
   font-size: clamp(1.05rem, 2.3vw, 1.5rem);
   font-weight: 300;
   color: var(--mute);
   line-height: 1.5;
-  min-height: 1.5em;
+  height: 1.5em;
+  white-space: nowrap;
 }
 
-.hero-constellation #tw {
-  font-family: var(--font-accent), Georgia, serif;
+.hero .slot {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+  vertical-align: top;
+  font-family: "Instrument Serif", var(--font-accent), Georgia, serif;
   font-style: italic;
-  color: var(--pu);
   font-size: 1.18em;
+  line-height: 1.27;
 }
 
-.hero-constellation .cur {
+.hero .sz {
+  visibility: hidden;
+}
+
+.hero .ty {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  color: var(--pu);
+}
+
+.hero .cur {
+  font-family: Inter, var(--font-body), system-ui, sans-serif;
+  font-style: normal;
   color: var(--pu);
   font-weight: 300;
   animation: hero-bl 1s steps(1) infinite;
 }
 
 @keyframes hero-bl {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
-.hero-constellation .btns {
+.hero .btns {
   position: relative;
   display: flex;
   gap: 12px;
@@ -106,48 +220,52 @@
   justify-content: center;
 }
 
-.hero-constellation .cta {
+.hero .cta {
   pointer-events: auto;
   background: var(--ink);
   color: #fff;
   border: 1px solid var(--ink);
   text-decoration: none;
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 400;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   padding: 13px 30px;
   border-radius: 99px;
-  transition: .3s;
+  transition: 0.3s;
+  box-shadow: 0 8px 24px rgba(30, 16, 51, 0.18);
   cursor: pointer;
 }
 
-.hero-constellation .cta:hover {
+.hero .cta:hover {
   background: var(--pu);
   border-color: var(--pu);
 }
 
-.hero-constellation .cta.ghost {
-  background: transparent;
+.hero .cta.ghost {
+  background: rgba(255, 255, 255, 0.5);
   color: var(--ink);
   border-color: var(--soft);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
-.hero-constellation .cta.ghost:hover {
+.hero .cta.ghost:hover {
   background: #f6f2ff;
   border-color: var(--pu);
   color: var(--pu);
 }
 
-.hero-constellation .hint {
+.hero .hint {
   position: absolute;
   bottom: max(18px, env(safe-area-inset-bottom, 0px));
-  font-size: .64rem;
-  letter-spacing: .2em;
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
   color: var(--mute);
-  opacity: .7;
+  opacity: 0.7;
 }
 
-.hero-constellation .star {
+.hero .star {
   position: absolute;
   left: 0;
   top: 0;
@@ -156,7 +274,7 @@
   will-change: transform;
 }
 
-.hero-constellation .dot {
+.hero .dot {
   position: absolute;
   width: 38px;
   height: 38px;
@@ -167,91 +285,100 @@
   place-items: center;
   cursor: pointer;
   pointer-events: auto;
-  transition: transform .3s;
+  transition: transform 0.3s;
 }
 
-.hero-constellation .core {
+.hero .core {
   position: relative;
   width: 9px;
   height: 9px;
   border-radius: 50%;
   background: var(--pu);
-  box-shadow: 0 0 0 4px #fff, 0 0 0 5px var(--soft);
-  animation: hero-br 3.2s ease-in-out infinite;
+  box-shadow: 0 0 0 3px #fff, 0 0 16px 3px rgba(167, 139, 250, 0.65);
 }
 
-.hero-constellation .core::after {
+.hero .core::before,
+.hero .core::after {
   content: "";
   position: absolute;
-  inset: -11px;
+  inset: 0;
   border-radius: 50%;
-  border: 1px solid transparent;
-  border-top-color: var(--pu);
-  border-left-color: var(--soft);
-  animation: hero-sp 5s linear infinite;
+  border: 1px solid var(--pu);
+  opacity: 0;
+  animation: hero-rp 3.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  animation-delay: var(--d, 0s);
 }
 
-@keyframes hero-br {
-  50% { transform: scale(.78); }
+.hero .core::after {
+  animation-delay: calc(var(--d, 0s) + 1.8s);
 }
 
-@keyframes hero-sp {
-  to { transform: rotate(360deg); }
+@keyframes hero-rp {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
 }
 
-.hero-constellation .star:hover,
-.hero-constellation .star.open {
+.hero .star:hover,
+.hero .star.open {
   z-index: 6;
 }
 
-.hero-constellation .star:hover .dot,
-.hero-constellation .star.open .dot {
+.hero .star:hover .dot,
+.hero .star.open .dot {
   transform: scale(1.18);
 }
 
-.hero-constellation .card {
+.hero .card {
   position: absolute;
-  left: 0;
-  bottom: 34px;
-  transform: translate(var(--sx, -50%), 6px);
+  left: var(--cx, 0px);
+  top: var(--cy, 0px);
+  width: 310px;
+  transform: translateY(8px);
   opacity: 0;
   pointer-events: none;
-  transition: .28s ease;
-  background: rgba(255, 255, 255, .92);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 12px 18px 13px;
-  white-space: nowrap;
-  text-align: left;
-  box-shadow: 0 14px 40px rgba(109, 40, 217, .14);
+  transition: 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.82), rgba(246, 242, 255, 0.55));
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 50px rgba(109, 40, 217, 0.18), 0 2px 8px rgba(109, 40, 217, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 0 0 1px rgba(167, 139, 250, 0.2);
 }
 
-.hero-constellation .star:hover .card,
-.hero-constellation .star.open .card {
+.hero .star:hover .card,
+.hero .star.open .card {
   opacity: 1;
-  transform: translate(var(--sx, -50%), 0);
+  transform: none;
   pointer-events: auto;
 }
 
-.hero-constellation .ph {
+.hero .ph {
   position: relative;
-  width: 58px;
-  height: 58px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   overflow: hidden;
   flex: none;
   background: #f1ebff;
   border: 1px solid var(--line);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.7);
   display: grid;
   place-items: center;
 }
 
-.hero-constellation .ph img {
+.hero .ph img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -259,39 +386,45 @@
   object-fit: cover;
 }
 
-.hero-constellation .card .ph span {
-  font-family: var(--font-accent), Georgia, serif;
+.hero .ph span {
+  font-family: "Instrument Serif", var(--font-accent), Georgia, serif;
   font-style: italic;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   color: var(--pu);
-  font-weight: 400;
 }
 
-.hero-constellation .card small {
+.hero .card small {
   display: block;
-  font-size: .56rem;
-  letter-spacing: .24em;
+  font-size: 0.56rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--pu);
 }
 
-.hero-constellation .card i {
+.hero .card i {
   display: block;
-  font-family: var(--font-accent), Georgia, serif;
+  font-family: "Instrument Serif", var(--font-accent), Georgia, serif;
   font-style: italic;
-  font-size: 1.6rem;
+  font-size: 1.55rem;
   line-height: 1.15;
   color: var(--ink);
-  margin: 3px 0 2px;
+  margin: 3px 0 1px;
 }
 
-.hero-constellation .card span {
-  font-size: .78rem;
-  color: var(--mute);
+.hero .card b {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.hero .card p {
+  margin: 7px 0 0;
+  padding-top: 7px;
+  border-top: 1px solid var(--line);
+  font-size: 0.76rem;
   font-weight: 300;
-}
-
-.hero-constellation .star.dn .card {
-  bottom: auto;
-  top: 34px;
+  line-height: 1.5;
+  color: var(--mute);
 }
