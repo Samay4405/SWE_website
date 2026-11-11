@@ -40,6 +40,12 @@
   --radius-3xl: 2rem;
   --radius-full: 9999px;
 
+  /* Motion tokens */
+  --ease-standard: cubic-bezier(0.2, 0.0, 0.0, 1.0);
+  --ease-out: cubic-bezier(0.16, 1.0, 0.3, 1.0);
+  --ease-in: cubic-bezier(0.7, 0.0, 0.84, 0.0);
+  --ease-liquid: cubic-bezier(0.22, 1.0, 0.36, 1.0);
+
   /* Fonts */
   --font-sans: var(--font-body), system-ui, sans-serif;
   --font-body: var(--font-body), system-ui, sans-serif;
@@ -116,6 +122,13 @@
   --z-modal: 100;
   --z-tooltip: 110;
   --z-skip-link: 120;
+
+  /* Motion Timing Scale */
+  --duration-instant: 100ms;
+  --duration-fast: 180ms;
+  --duration-base: 280ms;
+  --duration-slow: 480ms;
+  --duration-cinematic: 850ms;
 }
 
 .dark {
