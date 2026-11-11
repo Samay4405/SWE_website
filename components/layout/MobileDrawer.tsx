@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import {
   Sheet,
   SheetContent,
@@ -70,12 +71,13 @@ export function MobileDrawer({
                 alt="SWE Logo"
                 width={70}
                 height={32}
-                className="h-6 w-auto inline-block brightness-0 opacity-80"
+                className="h-6 w-auto inline-block brightness-0 dark:brightness-100 dark:invert opacity-80"
               />
               <span className="text-muted-foreground font-normal text-xs uppercase tracking-wider border-l pl-2">
                 MIT-WPU
               </span>
             </SheetTitle>
+            <ThemeToggle />
           </div>
         </SheetHeader>
 

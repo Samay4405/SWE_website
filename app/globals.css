@@ -53,9 +53,9 @@
   --color-swe-purple-tint: rgba(101, 56, 165, 0.08);
   --color-swe-gold: #F5D76E;
   --color-swe-gold-warm: #E8B94F;
-  --color-swe-ink: #1e1033;
-  --color-swe-muted: #6b6385;
-  --color-swe-line: #e9e3fb;
+  --color-swe-ink: var(--ink);
+  --color-swe-muted: var(--muted-text);
+  --color-swe-line: var(--line);
 }
 
 :root {
@@ -147,6 +147,53 @@
   --input: #3D3552;
   --ring: var(--purple);
   --surface: #1A1624;
+}
+
+/* ─────────────────────────────────────────────
+   DARK MODE ADAPTIVE UTILITIES
+   ───────────────────────────────────────────── */
+
+.dark html {
+  color-scheme: dark;
+}
+
+.dark .text-\[\#1e1033\],
+.dark .text-\[\#1E1033\] {
+  color: #EDEDED !important;
+}
+
+.dark .text-\[\#6b6385\],
+.dark .text-\[\#6B6385\] {
+  color: #C1B9D8 !important;
+}
+
+.dark .border-\[\#e9e3fb\],
+.dark .border-\[\#E9E3FB\],
+.dark .border-\[\#F0ECF8\] {
+  border-color: #3D3552 !important;
+}
+
+.dark .bg-\[\#F4EFFB\],
+.dark .bg-\[\#F2EFF7\],
+.dark .bg-\[\#F6F2FC\],
+.dark .bg-\[\#FCFBFE\] {
+  background-color: #1A1624 !important;
+}
+
+.dark .bg-white\/90,
+.dark .bg-white\/85,
+.dark .bg-white\/80,
+.dark .bg-white\/75,
+.dark .bg-white\/70,
+.dark .bg-white\/50,
+.dark .bg-white {
+  background-color: rgba(26, 22, 36, 0.88) !important;
+}
+
+.dark .shadow-xs,
+.dark .shadow-sm,
+.dark .shadow-md {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* ─────────────────────────────────────────────

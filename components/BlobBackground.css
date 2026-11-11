@@ -11,6 +11,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  transition: background-color 0.35s ease-in-out;
+}
+
+.dark .site-bg {
+  background: #0F0D15;
 }
 
 .blob-bg-container {
@@ -54,15 +59,24 @@
 .blob-style-a {
   background: radial-gradient(circle, rgba(167, 139, 218, 0.32), transparent 65%);
 }
+.dark .blob-style-a {
+  background: radial-gradient(circle, rgba(167, 139, 218, 0.18), transparent 65%);
+}
 
 /* B: Deep SWE Purple (faint) */
 .blob-style-b {
   background: radial-gradient(circle, rgba(101, 56, 165, 0.16), transparent 65%);
 }
+.dark .blob-style-b {
+  background: radial-gradient(circle, rgba(147, 98, 222, 0.22), transparent 65%);
+}
 
 /* C: Soft Gold / Lilac hint */
 .blob-style-c {
   background: radial-gradient(circle, rgba(245, 215, 110, 0.12), rgba(167, 139, 218, 0.22) 45%, transparent 68%);
+}
+.dark .blob-style-c {
+  background: radial-gradient(circle, rgba(245, 215, 110, 0.08), rgba(167, 139, 218, 0.12) 45%, transparent 68%);
 }
 
 /* ── Staggered Continuous Flow (Percentage-based) ── */
