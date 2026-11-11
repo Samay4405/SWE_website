@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useSparkleBurst } from "@/components/shared/SparkleBurst";
 import "./ContactExact.css";
 
 interface ContactExactProps {
@@ -9,6 +10,7 @@ interface ContactExactProps {
 }
 
 export function ContactExact({ id = "contact", isStandalonePage = false }: ContactExactProps) {
+  const { triggerSparkle, SparklePortal } = useSparkleBurst();
   const [isOpen, setIsOpen] = useState(false);
   const [statusText, setStatusText] = useState("Checking chapter desk hours…");
   const [copyText, setCopyText] = useState("Copy address");
@@ -66,11 +68,13 @@ export function ContactExact({ id = "contact", isStandalonePage = false }: Conta
   };
 
   // Copy email with polite screen reader confirmation
-  const handleCopyEmail = async () => {
+  const handleCopyEmail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     try {
       await navigator.clipboard.writeText("swe.chapter@mitwpu.edu.in");
       setCopyText("Copied ✓");
       setLiveAnnouncement("Chapter email address copied to clipboard.");
+      const rect = e.currentTarget.getBoundingClientRect();
+      triggerSparkle(rect.left + rect.width / 2, rect.top + rect.height / 2);
     } catch {
       setCopyText("Press Ctrl+C on the address");
       setLiveAnnouncement("Press Control C to copy the email address.");
@@ -118,6 +122,11 @@ export function ContactExact({ id = "contact", isStandalonePage = false }: Conta
       }
 
       setBtnState("ok");
+      const submitBtn = document.getElementById("b");
+      if (submitBtn) {
+        const rect = submitBtn.getBoundingClientRect();
+        triggerSparkle(rect.left + rect.width / 2, rect.top + rect.height / 2, 28);
+      }
       setFormData({
         name: "",
         email: "",
@@ -140,6 +149,7 @@ export function ContactExact({ id = "contact", isStandalonePage = false }: Conta
 
   return (
     <div className="contact-scope" id={id}>
+      <SparklePortal />
       <div id="join" className="absolute -top-24" aria-hidden="true" />
 
       {/* Screen reader live notification */}

@@ -3,7 +3,9 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Users, HeartHandshake, BookOpen, Compass, Sparkles } from "lucide-react";
 import { PixelImage } from "@/registry/magicui/pixel-image";
+import { TiltCard } from "@/components/shared/TiltCard";
 import { EASE_EDITORIAL, DURATION_SLOW, DURATION_EDITORIAL } from "@/lib/animations";
+import { SPRINGS } from "@/lib/motion";
 
 const VALUE_PILLARS = [
   {
@@ -121,23 +123,23 @@ export function About() {
             {/* Editorial Heading */}
             <motion.h2
               variants={fadeUpVariant}
-              className="text-3xl sm:text-4xl lg:text-[3.25rem] font-semibold tracking-tight text-[#1E1033] leading-[1.08]"
+              className="text-3xl sm:text-4xl lg:text-[3.25rem] font-semibold tracking-tight text-[#1E1033] dark:text-[#EDEDED] leading-[1.08]"
             >
               More Than Just{" "}
-              <span className="font-accent">Engineering</span>.
+              <span className="font-accent text-[#6538A5] dark:text-[#A78BDA]">Engineering</span>.
             </motion.h2>
 
             {/* Tightened Editorial Description */}
             <motion.div variants={fadeUpVariant} className="mt-5 space-y-4 text-left">
-              <p className="text-[15px] sm:text-base leading-[1.75] text-[#6B6385] font-light">
-                <span className="font-semibold text-[#1E1033]">
+              <p className="text-[15px] sm:text-base leading-[1.75] text-[#6B6385] dark:text-[#C1B9D8] font-light">
+                <span className="font-semibold text-[#1E1033] dark:text-[#EDEDED]">
                   The Society of Women Engineers (SWE), MIT-WPU Student Chapter,
                 </span>{" "}
                 is a student-led organization driving technical excellence, professional
                 mentorship, and cross-disciplinary innovation for aspiring engineers in Pune.
               </p>
 
-              <p className="text-[14.5px] sm:text-[15.5px] leading-[1.75] text-[#6B6385] font-light">
+              <p className="text-[14.5px] sm:text-[15.5px] leading-[1.75] text-[#6B6385] dark:text-[#C1B9D8] font-light">
                 Open to students across every engineering track, SWE serves as a platform
                 to develop foundational leadership, build career-defining projects, and champion
                 an inclusive community where technical voices thrive.
@@ -158,71 +160,72 @@ export function About() {
             <div className="relative w-full max-w-[620px] lg:max-w-none">
               {/* Subtle Offset Lavender Backdrop */}
               <div
-                className="absolute -inset-3 sm:-inset-4 rounded-[28px] bg-gradient-to-tr from-[#EBE6F5] via-[#F4F1FA] to-[#FAF8FD] border border-[#E6E0F1]/70 -z-10 shadow-[0_12px_36px_-18px_rgba(101,56,165,0.12)]"
+                className="absolute -inset-3 sm:-inset-4 rounded-[28px] bg-gradient-to-tr from-[#EBE6F5] via-[#F4F1FA] to-[#FAF8FD] dark:from-[#1E182A] dark:via-[#1A1624] dark:to-[#14101D] border border-[#E6E0F1]/70 dark:border-[#3D3552] -z-10 shadow-[0_12px_36px_-18px_rgba(101,56,165,0.12)]"
                 aria-hidden="true"
               />
 
-              {/* Editorial Frame with Asymmetric Rounded Corners */}
-              <motion.div
-                variants={photoRevealVariant}
-                whileHover={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        scale: 1.012,
-                        transition: { duration: 0.4, ease: EASE_EDITORIAL },
-                      }
-                }
-                className="group relative w-full overflow-hidden rounded-[22px] sm:rounded-[26px] border border-[#E9E3FB] shadow-[0_20px_50px_-20px_rgba(101,56,165,0.18)] transition-all duration-500 hover:shadow-[0_26px_60px_-16px_rgba(101,56,165,0.22)] p-2 sm:p-2.5 bg-white/75 backdrop-blur-md"
-              >
-                {/* Aspect Ratio Container with Accessible PixelImage */}
-                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.6] lg:aspect-[16/10] overflow-hidden rounded-[16px] sm:rounded-[20px]">
-                  <PixelImage
-                    src="/images/about/swe-expo.png"
-                    alt="Students visiting the Society of Women Engineers interactive exhibition stall at MIT-WPU Pune"
-                    customGrid={{ rows: 4, cols: 6 }}
-                    grayscaleAnimation
-                    className="w-full h-full"
-                  />
-
-                  {/* Interactive Hint Indicator */}
-                  <div className="pointer-events-none absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[10px] font-mono tracking-wider text-[#6538A5] shadow-xs">
-                    <Sparkles className="size-2.5 text-[#E8B94F]" />
-                    <span>TAP / HOVER TO REVEAL</span>
+              {/* 3D Interactive Tilt Card Frame */}
+              <TiltCard maxTilt={5} spotlight className="w-full">
+                <motion.div
+                  variants={photoRevealVariant}
+                  className="group relative w-full overflow-hidden rounded-[22px] sm:rounded-[26px] border border-[#E9E3FB] dark:border-[#3D3552] shadow-[0_20px_50px_-20px_rgba(101,56,165,0.18)] p-2 sm:p-2.5 bg-white/80 dark:bg-[#1A1624]/85 backdrop-blur-md"
+                >
+                  {/* Floating Chapter Badge */}
+                  <div className="absolute top-4 left-4 z-20 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 dark:bg-[#1E182A]/90 backdrop-blur-md border border-[#E9E3FB] dark:border-[#3D3552] shadow-sm text-[11px] font-mono tracking-wider text-[#6538A5] dark:text-[#F5D76E]">
+                    <Sparkles className="size-3 text-[#F5D76E]" />
+                    <span>MIT-WPU PUNE</span>
                   </div>
-                </div>
-              </motion.div>
+
+                  {/* Aspect Ratio Container with Accessible PixelImage */}
+                  <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.6] lg:aspect-[16/10] overflow-hidden rounded-[16px] sm:rounded-[20px]">
+                    <PixelImage
+                      src="/images/about/swe-expo.png"
+                      alt="Students visiting the Society of Women Engineers interactive exhibition stall at MIT-WPU Pune"
+                      customGrid={{ rows: 4, cols: 6 }}
+                      grayscaleAnimation
+                      className="w-full h-full"
+                    />
+
+                    {/* Interactive Hint Indicator */}
+                    <div className="pointer-events-none absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 dark:bg-[#1A1624]/90 backdrop-blur-xs text-[10px] font-mono tracking-wider text-[#6538A5] dark:text-[#F5D76E] shadow-xs">
+                      <Sparkles className="size-2.5 text-[#E8B94F]" />
+                      <span>TAP / HOVER TO REVEAL</span>
+                    </div>
+                  </div>
+                </motion.div>
+              </TiltCard>
             </div>
           </motion.div>
         </div>
 
-        {/* ── Bottom Section: 4 Core Value Pillars ── */}
+        {/* ── Bottom Section: 4 Core Value Pillars with 3D Tilt ── */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-16 sm:mt-20 pt-10 border-t border-[#E9E3FB]/70"
+          className="mt-16 sm:mt-20 pt-10 border-t border-[#E9E3FB]/70 dark:border-[#3D3552]/70"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {VALUE_PILLARS.map((pillar) => {
               const Icon = pillar.icon;
               return (
-                <motion.div
-                  key={pillar.title}
-                  variants={fadeUpVariant}
-                  className="group relative flex flex-col p-6 rounded-2xl border border-[#E9E3FB] bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-12px_rgba(101,56,165,0.1)] hover:border-[#6538A5]/40 hover:shadow-[0_16px_36px_-12px_rgba(101,56,165,0.18)] transition-all duration-300"
-                >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F6F2FC] border border-[#E9E3FB] text-[#6538A5] mb-4 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
-                    <Icon className="size-5" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-[#1E1033] tracking-tight">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6B6385] font-light">
-                    {pillar.description}
-                  </p>
-                </motion.div>
+                <TiltCard key={pillar.title} maxTilt={4} spotlight>
+                  <motion.div
+                    variants={fadeUpVariant}
+                    className="group relative flex flex-col p-6 rounded-2xl border border-[#E9E3FB] dark:border-[#3D3552] bg-white/70 dark:bg-[#1A1624]/70 backdrop-blur-md shadow-[0_8px_24px_-12px_rgba(101,56,165,0.1)] hover:border-[#6538A5]/40 dark:hover:border-[#F5D76E]/40 transition-all duration-300 h-full"
+                  >
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F6F2FC] dark:bg-[#221C30] border border-[#E9E3FB] dark:border-[#3D3552] text-[#6538A5] dark:text-[#F5D76E] mb-4 transition-transform duration-300 group-hover:scale-110 shadow-2xs">
+                      <Icon className="size-5" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-[#1E1033] dark:text-[#EDEDED] tracking-tight">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6B6385] dark:text-[#C1B9D8] font-light">
+                      {pillar.description}
+                    </p>
+                  </motion.div>
+                </TiltCard>
               );
             })}
           </div>

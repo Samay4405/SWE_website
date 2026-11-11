@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AccessibleGallery } from "@/components/gallery/AccessibleGallery";
+import { MaskedReveal } from "@/components/shared/MaskedReveal";
 
 export interface GalleryMasonryItem {
   id: string;
@@ -164,7 +165,7 @@ export const galleryMasonryItems: GalleryMasonryItem[] = [
 
 export function GallerySection() {
   return (
-    <section id="gallery" className="section-padding bg-transparent border-b border-[#E9E3FB]/60" aria-label="Chapter Photo Gallery">
+    <section id="gallery" className="section-padding bg-transparent border-b border-[#E9E3FB]/60 dark:border-white/10" aria-label="Chapter Photo Gallery">
       <div className="section-container">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
@@ -172,21 +173,29 @@ export function GallerySection() {
             <div className="flex items-center gap-2 mb-3">
               <span className="section-eyebrow">Visual Archive</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1E1033]">
-              Moments in <span className="font-accent">Motion</span>.
-            </h2>
-            <p className="mt-3 text-base sm:text-lg text-[#6B6385] font-light leading-relaxed">
-              Memories, milestones, and camaraderie captured across our workshops, hackathons, and outreach initiatives.
-            </p>
+            <MaskedReveal delay={0.1}>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1E1033] dark:text-[#F3F0FA]">
+                Moments in{" "}
+                <span className="font-accent italic font-normal text-[#6538A5] dark:text-[#CBB7F7]">
+                  Motion
+                </span>
+                .
+              </h2>
+            </MaskedReveal>
+            <MaskedReveal delay={0.2}>
+              <p className="mt-3 text-base sm:text-lg text-[#6B6385] dark:text-[#A79EC4] font-light leading-relaxed">
+                Memories, milestones, and camaraderie captured across our workshops, hackathons, and outreach initiatives.
+              </p>
+            </MaskedReveal>
           </div>
 
           <div className="shrink-0">
             <Link
               href="/gallery"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#E9E3FB] bg-white text-[#1E1033] hover:text-[#6538A5] hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] transition-all duration-200 text-sm font-medium shadow-xs"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#E9E3FB] dark:border-white/10 bg-white/90 dark:bg-[#181126] text-[#1E1033] dark:text-[#F3F0FA] hover:text-[#6538A5] dark:hover:text-[#D1BEFC] hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] dark:hover:bg-[#251A3C] transition-all duration-200 text-sm font-medium shadow-xs"
             >
               <span>Explore Full Archive ({galleryMasonryItems.length})</span>
-              <ArrowRight className="size-4 text-[#6538A5]" />
+              <ArrowRight className="size-4 text-[#6538A5] dark:text-[#D1BEFC]" />
             </Link>
           </div>
         </div>

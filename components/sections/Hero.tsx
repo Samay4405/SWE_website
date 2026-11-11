@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { ArrowDown, Sparkles, ArrowRight } from "lucide-react";
 import { HeroConstellationCanvas } from "@/components/hero/HeroConstellationCanvas";
 import { HeroTypewriter } from "@/components/hero/HeroTypewriter";
+import { MagneticButton } from "@/components/ui/MagneticButton";
+import { MaskedReveal } from "@/components/shared/MaskedReveal";
 
 export function Hero() {
   return (
@@ -19,7 +23,7 @@ export function Hero() {
         aria-hidden="true"
       >
         <div
-          className="w-[720px] h-[480px] max-w-full rounded-full opacity-65 blur-3xl"
+          className="w-[720px] h-[480px] max-w-full rounded-full opacity-65 dark:opacity-35 blur-3xl"
           style={{
             background:
               "radial-gradient(ellipse at center, rgba(252, 251, 254, 0.95) 0%, rgba(252, 251, 254, 0.7) 50%, transparent 80%)",
@@ -33,53 +37,61 @@ export function Hero() {
       {/* ── Center Content: Server-Rendered for Immediate Sub-Second LCP ── */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center justify-center my-auto">
         {/* Eyebrow Label */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E9E3FB] bg-white/80 backdrop-blur-xs text-[11px] sm:text-xs font-mono tracking-widest uppercase text-[#6538A5] shadow-2xs mb-5 sm:mb-6">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E9E3FB] dark:border-[#3D3552] bg-white/80 dark:bg-[#1A1624]/80 backdrop-blur-xs text-[11px] sm:text-xs font-mono tracking-widest uppercase text-[#6538A5] dark:text-[#A78BDA] shadow-2xs mb-5 sm:mb-6">
           <Sparkles className="size-3 text-[#E8B94F]" />
           <span>Society of Women Engineers · MIT-WPU Chapter</span>
         </div>
 
-        {/* Display Headline */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] font-semibold tracking-tight text-[#1E1033] leading-[1.04]">
+        {/* Display Headline with Masked Reveal */}
+        <MaskedReveal as="h1" className="text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] font-semibold tracking-tight text-[#1E1033] dark:text-[#EDEDED] leading-[1.04]">
           Society of{" "}
-          <em className="font-serif italic font-normal text-[#6538A5] tracking-normal">
+          <em className="font-serif italic font-normal text-[#6538A5] dark:text-[#A78BDA] tracking-normal">
             Women
           </em>{" "}
           Engineers
-        </h1>
+        </MaskedReveal>
 
-        {/* Value Proposition with Stabilized Typewriter */}
+        {/* Value Proposition with 3D Flipping Word Carousel */}
         <HeroTypewriter />
 
-        {/* CTAs */}
+        {/* Magnetic CTAs */}
         <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5 sm:gap-4 w-full">
-          <Link
-            href="#contact"
-            className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 rounded-full text-sm font-medium tracking-wide bg-[#1E1033] text-white hover:bg-[#6538A5] shadow-sm hover:shadow-md transition-all duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2"
-          >
-            Join SWE MIT-WPU
+          <Link href="#contact" className="inline-block">
+            <MagneticButton
+              variant="primary"
+              sheen
+              className="px-7 sm:px-9 py-3.5 group font-medium text-sm"
+            >
+              <span>Join SWE MIT-WPU</span>
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </MagneticButton>
           </Link>
-          <Link
-            href="#events"
-            className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 rounded-full text-sm font-medium tracking-wide bg-white/80 hover:bg-[#F6F2FC] text-[#1E1033] hover:text-[#6538A5] border border-[#E9E3FB] hover:border-[#6538A5]/40 backdrop-blur-xs transition-all duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2"
-          >
-            Explore Our Work
+
+          <Link href="#events" className="inline-block">
+            <MagneticButton
+              variant="secondary"
+              sheen={false}
+              className="px-7 sm:px-9 py-3.5 text-sm"
+            >
+              Explore Our Work
+            </MagneticButton>
           </Link>
         </div>
 
         {/* Subtle Trust Strip (Real chapter data only — 0 invented numbers) */}
-        <div className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-[13px] text-[#6B6385] font-light">
+        <div className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-[13px] text-[#6B6385] dark:text-[#C1B9D8] font-light">
           <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-[#1E1033]">500+</span>
+            <span className="font-semibold text-[#1E1033] dark:text-[#EDEDED]">500+</span>
             <span>Active Collegiate Members</span>
           </div>
-          <span className="text-[#E9E3FB] hidden sm:inline" aria-hidden="true">•</span>
+          <span className="text-[#E9E3FB] dark:text-[#3D3552] hidden sm:inline" aria-hidden="true">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-[#1E1033]">35+</span>
+            <span className="font-semibold text-[#1E1033] dark:text-[#EDEDED]">35+</span>
             <span>Technical Events &amp; Workshops</span>
           </div>
-          <span className="text-[#E9E3FB] hidden sm:inline" aria-hidden="true">•</span>
+          <span className="text-[#E9E3FB] dark:text-[#3D3552] hidden sm:inline" aria-hidden="true">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-[#1E1033]">Est. 2021</span>
+            <span className="font-semibold text-[#1E1033] dark:text-[#EDEDED]">Est. 2021</span>
             <span>Pune, India</span>
           </div>
         </div>
@@ -90,18 +102,16 @@ export function Hero() {
         <Link
           href="#about"
           aria-label="Scroll down to About section"
-          className="group flex flex-col items-center gap-1.5 text-[11px] font-mono tracking-widest text-[#6B6385] hover:text-[#6538A5] transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] rounded-lg px-2 py-1"
+          className="group flex flex-col items-center gap-1.5 text-[11px] font-mono tracking-widest text-[#6B6385] dark:text-[#C1B9D8] hover:text-[#6538A5] dark:hover:text-[#F5D76E] transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] rounded-lg px-2 py-1"
         >
           <span className="uppercase text-[10px] tracking-widest opacity-80 group-hover:opacity-100">
             Discover Our Story
           </span>
-          <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#E9E3FB] bg-white/70 backdrop-blur-xs transition-transform duration-300 group-hover:translate-y-0.5 shadow-2xs">
-            <ArrowDown className="size-3 text-[#6538A5]" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#E9E3FB] dark:border-[#3D3552] bg-white/70 dark:bg-[#1A1624]/70 backdrop-blur-xs transition-transform duration-300 group-hover:translate-y-1 shadow-2xs">
+            <ArrowDown className="size-3 text-[#6538A5] dark:text-[#F5D76E]" />
           </div>
         </Link>
       </div>
     </section>
   );
 }
-
-export default Hero;

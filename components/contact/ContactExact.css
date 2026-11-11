@@ -401,6 +401,83 @@
   }
 }
 
+@keyframes statusPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.16);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(109, 40, 217, 0.32);
+  }
+}
+
+.contact-scope .status.on i {
+  animation: statusPulse 2.8s ease-in-out infinite;
+}
+
+/* ── Dark Mode Adaptive System Overrides ── */
+.dark .contact-scope {
+  --pu: #c4b5fd;
+  --soft: #a78bfa;
+  --ink: #f5f3ff;
+  --mute: #a79ec4;
+  --line: rgba(255, 255, 255, 0.12);
+}
+
+.dark .contact-scope .card {
+  background: rgba(20, 14, 36, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.5);
+}
+
+.dark .contact-scope .card:hover {
+  box-shadow: 0 24px 60px -12px rgba(167, 139, 250, 0.18);
+}
+
+.dark .contact-scope input,
+.dark .contact-scope select,
+.dark .contact-scope textarea {
+  background: #19122c;
+  color: #f5f3ff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .contact-scope input::placeholder,
+.dark .contact-scope textarea::placeholder {
+  color: #6b6385;
+}
+
+.dark .contact-scope input:focus,
+.dark .contact-scope select:focus,
+.dark .contact-scope textarea:focus {
+  background: #201738;
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.2);
+}
+
+.dark .contact-scope .status {
+  background: rgba(26, 18, 48, 0.7);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .contact-scope .ic {
+  background: #281d45;
+  color: #c4b5fd;
+}
+
+.dark .contact-scope .row:hover .ic {
+  background: #6d28d9;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(167, 139, 250, 0.35);
+}
+
+.dark .contact-scope .send {
+  background: linear-gradient(90deg, #6d28d9, #8b5cf6);
+}
+
+.dark .contact-scope .send:hover {
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+}
+
 @media (max-width: 860px) {
   .contact-scope .grid {
     grid-template-columns: 1fr;

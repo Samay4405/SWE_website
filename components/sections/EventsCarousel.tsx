@@ -25,6 +25,7 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { capturePointer, releasePointer, TOUCH_GESTURE_CLASS } from "@/lib/touch";
 import { cn } from "@/lib/utils";
 import { SPRING_GLIDE, EASE_EDITORIAL } from "@/lib/animations";
+import { MaskedReveal } from "@/components/shared/MaskedReveal";
 import {
   timelineEventsData,
   type TimelineEventItem,
@@ -99,6 +100,12 @@ function TimelineEventCard({
     offset,
     (o) => SIDE_DIM * Math.min(Math.abs(o), 1),
   );
+  const blurFilter = useTransform(offset, (o) => {
+    const dist = Math.abs(o);
+    if (dist < 0.25) return "blur(0px)";
+    const b = Math.min(dist * 1.4, 3.5);
+    return `blur(${b.toFixed(1)}px)`;
+  });
 
   return (
     <motion.li
@@ -112,24 +119,21 @@ function TimelineEventCard({
         zIndex,
         width: cardWidth,
         marginLeft: -cardWidth / 2,
+        filter: blurFilter,
       }}
     >
       <div className="relative -translate-y-1/2">
         <div
           className={cn(
             "group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-300",
+            "bg-white/90 backdrop-blur-md dark:bg-[#140E24]/85",
             active
-              ? "border-[#6538A5]/40 shadow-[0_18px_42px_-14px_rgba(101,56,165,0.22)] ring-1 ring-[#6538A5]/20"
-              : "border-[#E9E3FB] shadow-[0_10px_28px_-16px_rgba(101,56,165,0.12)] hover:border-[#6538A5]/30",
+              ? "border-[#6538A5]/40 shadow-[0_18px_42px_-14px_rgba(101,56,165,0.22)] ring-1 ring-[#6538A5]/20 dark:border-[#A78BDA]/50 dark:shadow-[0_18px_42px_-14px_rgba(167,139,218,0.25)] dark:ring-[#A78BDA]/30"
+              : "border-[#E9E3FB] shadow-[0_10px_28px_-16px_rgba(101,56,165,0.12)] hover:border-[#6538A5]/30 dark:border-white/10 dark:hover:border-white/20",
           )}
-          style={{
-            background: "rgba(255, 255, 255, 0.88)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-          }}
         >
           {/* TOP: Image Header */}
-          <div className="relative w-full h-[168px] sm:h-[180px] overflow-hidden bg-[#F2EFF7] flex-shrink-0">
+          <div className="relative w-full h-[168px] sm:h-[180px] overflow-hidden bg-[#F2EFF7] dark:bg-[#1A1230] flex-shrink-0">
             <Image
               src={event.coverImage}
               alt={event.title}
@@ -140,7 +144,7 @@ function TimelineEventCard({
             />
             {/* Subtle top edge shine and gradient vignette */}
             <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-60"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-60"
               aria-hidden="true"
             />
           </div>
@@ -151,24 +155,24 @@ function TimelineEventCard({
               <div className="flex items-center justify-between gap-2 mb-1.5">
                 <span
                   id={`${id}-date`}
-                  className="text-[11px] font-mono uppercase tracking-wider text-[#6B6385] font-medium"
+                  className="text-[11px] font-mono uppercase tracking-wider text-[#6B6385] dark:text-[#A79EC4] font-medium"
                 >
                   {event.dateDisplay}
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#F6F2FC] text-[#6538A5] border border-[#E9E3FB]">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#F6F2FC] dark:bg-[#201538] text-[#6538A5] dark:text-[#D1BEFC] border border-[#E9E3FB] dark:border-white/10">
                   {event.yearLabel}
                 </span>
               </div>
 
               <h3
                 id={`${id}-title`}
-                className="font-semibold text-[16px] sm:text-[17px] text-[#1E1033] tracking-tight line-clamp-1"
+                className="font-semibold text-[16px] sm:text-[17px] text-[#1E1033] dark:text-[#F3F0FA] tracking-tight line-clamp-1"
               >
                 {event.title}
               </h3>
 
               <p
-                className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6B6385] font-light line-clamp-3"
+                className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6B6385] dark:text-[#A79EC4] font-light line-clamp-3"
               >
                 {event.description}
               </p>
@@ -176,10 +180,10 @@ function TimelineEventCard({
 
             {/* View Details Link on Active Card */}
             {active && event.slug && (
-              <div className="mt-3.5 pt-2.5 border-t border-[#E9E3FB] flex items-center justify-between z-20 relative">
+              <div className="mt-3.5 pt-2.5 border-t border-[#E9E3FB] dark:border-white/10 flex items-center justify-between z-20 relative">
                 <Link
                   href={`/events/${event.slug}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium text-[#6538A5] hover:text-[#532D8A] transition-colors group/link focus-visible:outline-none focus-visible:underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-[#6538A5] dark:text-[#D1BEFC] hover:text-[#532D8A] dark:hover:text-white transition-colors group/link focus-visible:outline-none focus-visible:underline"
                 >
                   <span>View Details &amp; Registration</span>
                   <ArrowRight className="size-3 transition-transform group-hover/link:translate-x-1" />
@@ -191,7 +195,7 @@ function TimelineEventCard({
           {/* Side veil for non-active neighbours (softly dims without disappearing) */}
           <motion.div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[#FCFBFE]"
+            className="pointer-events-none absolute inset-0 bg-[#FCFBFE] dark:bg-[#0E0A1A]"
             style={{ opacity: veilOpacity }}
           />
         </div>
@@ -494,46 +498,43 @@ export function EventsCarousel() {
     >
       <div className="section-container flex flex-col">
         {/* ── 1. Heading & Eyebrow ── */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col items-center text-center mb-6 sm:mb-8 md:mb-10"
-        >
-          <motion.div variants={headerVariant} className="flex items-center gap-2 mb-3">
+        <div className="flex flex-col items-center text-center mb-6 sm:mb-8 md:mb-10">
+          <div className="flex items-center gap-2 mb-3">
             <span className="section-eyebrow">Chapter Highlights</span>
-          </motion.div>
+          </div>
 
-          <motion.h2
-            variants={headerVariant}
-            className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1E1033] leading-tight"
-          >
-            Stories We&apos;ve{" "}
-            <span className="font-accent">Created</span>.
-          </motion.h2>
+          <MaskedReveal delay={0.1}>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1E1033] dark:text-[#F3F0FA] leading-tight">
+              Stories We&apos;ve{" "}
+              <span className="font-accent italic font-normal text-[#6538A5] dark:text-[#CBB7F7]">
+                Created
+              </span>
+              .
+            </h2>
+          </MaskedReveal>
 
-          <motion.p
-            variants={headerVariant}
-            className="mt-3 text-sm sm:text-base md:text-lg text-[#6B6385] max-w-2xl font-light leading-relaxed"
-          >
-            A curated timeline of hackathons, workshops, and community moments shaping our chapter journey.
-          </motion.p>
-        </motion.div>
+          <MaskedReveal delay={0.2}>
+            <p className="mt-3 text-sm sm:text-base md:text-lg text-[#6B6385] dark:text-[#A79EC4] max-w-2xl font-light leading-relaxed">
+              A curated timeline of hackathons, workshops, and community moments shaping our chapter journey.
+            </p>
+          </MaskedReveal>
+        </div>
 
         {/* ── 2. Interactive Horizontal Timeline Stage ── */}
         <div className="relative w-full">
           {/* Edge Vignettes */}
           <div
-            className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-20 bg-gradient-to-r from-[#FCFBFE] to-transparent z-20"
+            className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-20 bg-gradient-to-r from-[#FCFBFE] dark:from-[#0F0D15] to-transparent z-20"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-20 bg-gradient-to-l from-[#FCFBFE] to-transparent z-20"
+            className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-20 bg-gradient-to-l from-[#FCFBFE] dark:from-[#0F0D15] to-transparent z-20"
             aria-hidden="true"
           />
 
           <div
             ref={stageRef}
+            data-cursor="drag"
             aria-label="Events horizontal timeline. Drag or use arrow keys."
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -588,13 +589,13 @@ export function EventsCarousel() {
               onClick={() => select(Math.max(0, activeIndex - 1))}
               disabled={activeIndex === 0}
               aria-label="Previous event slide"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] bg-white text-[#6538A5] shadow-xs transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] disabled:pointer-events-none disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] dark:border-white/10 bg-white/90 dark:bg-[#181126] text-[#6538A5] dark:text-[#D1BEFC] shadow-xs transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] dark:hover:bg-[#251A3C] disabled:pointer-events-none disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
 
             {/* Pagination Dots */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 border border-[#E9E3FB]" role="tablist" aria-label="Event slides navigation">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-[#181126]/80 border border-[#E9E3FB] dark:border-white/10" role="tablist" aria-label="Event slides navigation">
               {events.map((ev, i) => (
                 <button
                   key={ev.id}
@@ -606,8 +607,8 @@ export function EventsCarousel() {
                   className={cn(
                     "h-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]",
                     i === activeIndex
-                      ? "w-6 bg-[#6538A5]"
-                      : "w-2.5 bg-[#E9E3FB] hover:bg-[#A78BDA]"
+                      ? "w-6 bg-[#6538A5] dark:bg-[#A78BDA]"
+                      : "w-2.5 bg-[#E9E3FB] dark:bg-white/20 hover:bg-[#A78BDA]"
                   )}
                 />
               ))}
@@ -618,7 +619,7 @@ export function EventsCarousel() {
               onClick={() => select(Math.min(last, activeIndex + 1))}
               disabled={activeIndex === last}
               aria-label="Next event slide"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] bg-white text-[#6538A5] shadow-xs transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] disabled:pointer-events-none disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] dark:border-white/10 bg-white/90 dark:bg-[#181126] text-[#6538A5] dark:text-[#D1BEFC] shadow-xs transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] dark:hover:bg-[#251A3C] disabled:pointer-events-none disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -627,7 +628,7 @@ export function EventsCarousel() {
           {/* Directory Link CTA */}
           <Link
             href="/events"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-[#6538A5] hover:text-[#532D8A] transition-colors group px-3.5 py-1.5 rounded-full hover:bg-[#F6F2FC] border border-transparent hover:border-[#E9E3FB]"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-[#6538A5] dark:text-[#D1BEFC] hover:text-[#532D8A] dark:hover:text-white transition-colors group px-3.5 py-1.5 rounded-full hover:bg-[#F6F2FC] dark:hover:bg-[#201538] border border-transparent hover:border-[#E9E3FB] dark:hover:border-white/10"
           >
             <span>Explore All Events &amp; Workshops</span>
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />

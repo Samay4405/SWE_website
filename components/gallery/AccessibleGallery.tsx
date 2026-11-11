@@ -103,18 +103,23 @@ export function AccessibleGallery({ items, limit }: AccessibleGalleryProps) {
       {/* ── Masonry Grid Layout ── */}
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
         {displayItems.map((item, index) => (
-          <div
+          <motion.div
             key={item.id}
-            className="break-inside-avoid overflow-hidden rounded-2xl border border-[#E9E3FB] bg-white/80 shadow-xs hover:shadow-md hover:border-[#6538A5]/40 transition-all duration-300 group"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.5, delay: (index % 4) * 0.08, ease: EASE_EDITORIAL }}
+            className="break-inside-avoid overflow-hidden rounded-2xl border border-[#E9E3FB] dark:border-white/10 bg-white/80 dark:bg-[#140E24]/80 shadow-xs hover:shadow-md hover:border-[#6538A5]/40 dark:hover:border-[#A78BDA]/40 transition-all duration-300 group"
           >
             <button
               type="button"
+              data-cursor="view"
               onClick={(e) => openLightbox(index, e.currentTarget)}
               aria-label={`View enlarged photo: ${item.title}`}
-              className="relative block w-full text-left outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2 rounded-2xl overflow-hidden"
+              className="relative block w-full text-left outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5] focus-visible:ring-offset-2 rounded-2xl overflow-hidden cursor-pointer"
             >
               <div
-                className="relative w-full overflow-hidden bg-[#F2EFF7]"
+                className="relative w-full overflow-hidden bg-[#F2EFF7] dark:bg-[#1A1230]"
                 style={{
                   aspectRatio: `${item.width} / ${item.height}`,
                 }}
@@ -133,24 +138,24 @@ export function AccessibleGallery({ items, limit }: AccessibleGalleryProps) {
                   className="absolute inset-0 bg-[#1E1033]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none"
                   aria-hidden="true"
                 >
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-xs text-xs font-medium text-[#1E1033] shadow-sm transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <ZoomIn className="size-3.5 text-[#6538A5]" />
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 dark:bg-[#181126]/90 backdrop-blur-xs text-xs font-medium text-[#1E1033] dark:text-[#F3F0FA] shadow-sm transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <ZoomIn className="size-3.5 text-[#6538A5] dark:text-[#D1BEFC]" />
                     <span>View</span>
                   </div>
                 </div>
               </div>
 
               {/* Caption */}
-              <div className="p-3 bg-white/90 backdrop-blur-xs border-t border-[#F0ECF6]">
-                <p className="text-xs font-medium text-[#1E1033] truncate">
+              <div className="p-3 bg-white/90 dark:bg-[#140E24]/90 backdrop-blur-xs border-t border-[#F0ECF6] dark:border-white/10">
+                <p className="text-xs font-medium text-[#1E1033] dark:text-[#F3F0FA] truncate">
                   {item.title}
                 </p>
-                <p className="text-[11px] text-[#6B6385] truncate font-light mt-0.5">
+                <p className="text-[11px] text-[#6B6385] dark:text-[#A79EC4] truncate font-light mt-0.5">
                   {item.alt}
                 </p>
               </div>
             </button>
-          </div>
+          </motion.div>
         ))}
       </div>
 
@@ -214,15 +219,23 @@ export function AccessibleGallery({ items, limit }: AccessibleGalleryProps) {
               <ChevronRight className="size-6" />
             </button>
 
-            {/* Center Enlarged Image Frame */}
+            {/* Center Enlarged Image Frame with Drag-to-Dismiss */}
             <motion.div
               key={currentItem.id}
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={0.6}
+              onDragEnd={(_, info) => {
+                if (Math.abs(info.offset.y) > 120 || Math.abs(info.velocity.y) > 500) {
+                  closeLightbox();
+                }
+              }}
               transition={{ duration: 0.25, ease: EASE_EDITORIAL }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl max-h-[80vh] w-full flex flex-col items-center justify-center"
+              className="relative max-w-4xl max-h-[80vh] w-full flex flex-col items-center justify-center cursor-grab active:cursor-grabbing"
             >
               <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
@@ -236,7 +249,7 @@ export function AccessibleGallery({ items, limit }: AccessibleGalleryProps) {
               </div>
 
               {/* Bottom Caption Pill */}
-              <div className="mt-3 px-4 py-2 rounded-xl bg-black/60 backdrop-blur-sm text-center text-white max-w-xl">
+              <div className="mt-3 px-4 py-2 rounded-xl bg-black/70 backdrop-blur-md border border-white/10 text-center text-white max-w-xl">
                 <p className="text-sm font-semibold">{currentItem.title}</p>
                 <p className="text-xs text-white/75 font-light mt-0.5">
                   {currentItem.alt}

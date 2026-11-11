@@ -200,11 +200,11 @@ export function CylindricalTeamCarousel({
               aria-label={`${i + 1} of ${members.length}`}
             >
               <div
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#E9E3FB] shadow-[0_14px_36px_-16px_rgba(101,56,165,0.14)] bg-white/85 backdrop-blur-md"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#E9E3FB] dark:border-white/10 shadow-[0_14px_36px_-16px_rgba(101,56,165,0.14)] bg-white/85 dark:bg-[#140E24]/85 backdrop-blur-md"
                 style={{ height: `${cardDim.height}px` }}
               >
                 <div
-                  className="relative w-full overflow-hidden bg-[#F4F1F8] shrink-0"
+                  className="relative w-full overflow-hidden bg-[#F4F1F8] dark:bg-[#1A1230] shrink-0"
                   style={{ height: `${photoHeight}px` }}
                 >
                   <Image
@@ -218,18 +218,18 @@ export function CylindricalTeamCarousel({
                   />
                 </div>
                 <div
-                  className="p-4 flex flex-col justify-center border-t border-[#E9E3FB]"
+                  className="p-4 flex flex-col justify-center border-t border-[#E9E3FB] dark:border-white/10"
                   style={{ height: `${infoPanelHeight}px` }}
                 >
-                  <h4 className="font-semibold text-[16px] text-[#1E1033] truncate">
+                  <h4 className="font-semibold text-[16px] text-[#1E1033] dark:text-[#F3F0FA] truncate">
                     {member.name}
                   </h4>
-                  <p className="mt-1 text-[11px] uppercase tracking-wider text-[#6B6385] truncate font-medium">
+                  <p className="mt-1 text-[11px] uppercase tracking-wider text-[#6B6385] dark:text-[#A79EC4] truncate font-medium">
                     {member.designation}
                   </p>
                   <div className="mt-1.5 flex items-start gap-1">
                     <Quote className="h-3 w-3 text-[#E8B94F] shrink-0 mt-0.5" />
-                    <p className="text-[11.5px] italic text-[#2E2A40] line-clamp-2">
+                    <p className="text-[11.5px] italic text-[#2E2A40] dark:text-[#D1BEFC] line-clamp-2">
                       &ldquo;{member.quote}&rdquo;
                     </p>
                   </div>
@@ -253,13 +253,13 @@ export function CylindricalTeamCarousel({
           <div
             className={`pointer-events-none absolute left-0 top-0 bottom-0 ${
               isHeads ? "w-4 sm:w-6" : "w-8 sm:w-14 md:w-16"
-            } bg-gradient-to-r from-[#FCFBFE] to-transparent z-10`}
+            } bg-gradient-to-r from-[#FCFBFE] dark:from-[#0F0D15] to-transparent z-10`}
             aria-hidden="true"
           />
           <div
             className={`pointer-events-none absolute right-0 top-0 bottom-0 ${
               isHeads ? "w-4 sm:w-6" : "w-8 sm:w-14 md:w-16"
-            } bg-gradient-to-l from-[#FCFBFE] to-transparent z-10`}
+            } bg-gradient-to-l from-[#FCFBFE] dark:from-[#0F0D15] to-transparent z-10`}
             aria-hidden="true"
           />
 
@@ -272,6 +272,7 @@ export function CylindricalTeamCarousel({
           >
             {/* Rotatable Cylinder Hub */}
             <motion.div
+              data-cursor="drag"
               onPanStart={handlePanStart}
               onPan={handlePan}
               onPanEnd={handlePanEnd}
@@ -313,17 +314,14 @@ export function CylindricalTeamCarousel({
                   >
                     {/* Profile Card: 65% Photo + 35% Information Panel */}
                     <div
-                      className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-[#E9E3FB] shadow-[0_14px_36px_-16px_rgba(101,56,165,0.14)] transition-all duration-300 hover:border-[#6538A5]/40 hover:shadow-[0_20px_48px_-12px_rgba(101,56,165,0.22)]"
+                      className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-[#E9E3FB] dark:border-white/10 shadow-[0_14px_36px_-16px_rgba(101,56,165,0.14)] transition-all duration-300 hover:border-[#6538A5]/40 dark:hover:border-[#A78BDA]/50 hover:shadow-[0_20px_48px_-12px_rgba(101,56,165,0.22)] bg-white/90 dark:bg-[#140E24]/90 backdrop-blur-md"
                       style={{
-                        background: "rgba(255, 255, 255, 0.88)",
-                        backdropFilter: "blur(12px)",
-                        WebkitBackdropFilter: "blur(12px)",
                         transformStyle: "flat",
                       }}
                     >
                       {/* Member Photograph */}
                       <div
-                        className="relative w-full overflow-hidden bg-[#F4F1F8] shrink-0"
+                        className="relative w-full overflow-hidden bg-[#F4F1F8] dark:bg-[#1A1230] shrink-0"
                         style={{ height: `${photoHeight}px` }}
                       >
                         <Image
@@ -341,7 +339,7 @@ export function CylindricalTeamCarousel({
                           priority={index < 4}
                         />
                         <div
-                          className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-70"
+                          className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-70"
                           aria-hidden="true"
                         />
                       </div>
@@ -352,7 +350,7 @@ export function CylindricalTeamCarousel({
                           usesCompactDimensions
                             ? "px-3.5 py-2.5 sm:px-4 sm:py-3"
                             : "px-4 py-3 sm:px-5 sm:py-3.5"
-                        } text-left border-t border-[#E9E3FB]`}
+                        } text-left border-t border-[#E9E3FB] dark:border-white/10`}
                         style={{ height: `${infoPanelHeight}px` }}
                       >
                         <h4
@@ -360,7 +358,7 @@ export function CylindricalTeamCarousel({
                             usesCompactDimensions
                               ? "text-[15px] sm:text-[16px]"
                               : "text-[16px] sm:text-[17.5px]"
-                          } font-semibold tracking-tight text-[#1E1033] leading-tight truncate`}
+                          } font-semibold tracking-tight text-[#1E1033] dark:text-[#F3F0FA] leading-tight truncate`}
                         >
                           {member.name}
                         </h4>
@@ -370,7 +368,7 @@ export function CylindricalTeamCarousel({
                             usesCompactDimensions
                               ? "text-[9.5px] sm:text-[10px] tracking-[0.14em]"
                               : "text-[10.5px] sm:text-[11px] tracking-[0.14em]"
-                          } font-medium uppercase text-[#6B6385] line-clamp-1`}
+                          } font-medium uppercase text-[#6B6385] dark:text-[#A79EC4] line-clamp-1`}
                         >
                           {member.designation}
                         </p>
@@ -382,7 +380,7 @@ export function CylindricalTeamCarousel({
                               usesCompactDimensions
                                 ? "text-[11px] sm:text-[11.5px]"
                                 : "text-[11.5px] sm:text-[12px]"
-                            } leading-tight sm:leading-snug text-[#2E2A40] italic font-medium line-clamp-2`}
+                            } leading-tight sm:leading-snug text-[#2E2A40] dark:text-[#D1BEFC] italic font-medium line-clamp-2`}
                           >
                             &ldquo;{member.quote}&rdquo;
                           </p>
@@ -404,7 +402,7 @@ export function CylindricalTeamCarousel({
             type="button"
             onClick={() => rotateToStep("prev")}
             aria-label="Rotate carousel to previous member"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] bg-white/90 backdrop-blur-xs text-[#6538A5] shadow-sm transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] dark:border-white/10 bg-white/90 dark:bg-[#181126] backdrop-blur-xs text-[#6538A5] dark:text-[#D1BEFC] shadow-sm transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] dark:hover:bg-[#251A3C] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -412,7 +410,7 @@ export function CylindricalTeamCarousel({
             type="button"
             onClick={() => rotateToStep("next")}
             aria-label="Rotate carousel to next member"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] bg-white/90 backdrop-blur-xs text-[#6538A5] shadow-sm transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E3FB] dark:border-white/10 bg-white/90 dark:bg-[#181126] backdrop-blur-xs text-[#6538A5] dark:text-[#D1BEFC] shadow-sm transition-all duration-200 hover:border-[#6538A5] hover:bg-[#F6F2FC] dark:hover:bg-[#251A3C] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6538A5]"
           >
             <ChevronRight className="h-5 w-5" />
           </button>

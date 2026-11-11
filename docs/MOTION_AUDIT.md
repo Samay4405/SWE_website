@@ -90,3 +90,4 @@ export const SPRINGS = {
 8. **Magnetic Primary CTA**: Primary button (*Join SWE MIT-WPU*) pulls magnetically toward the cursor (max 8px) with a spring release on mouse-leave.
 9. **Sweeping Sheen Highlight**: An angled, luminous white-gold sheen sweeps across the primary CTA on hover, accompanied by a sliding arrow ($+4\text{px}$).
 10. **Touch & Reduced-Motion Fallback**: Automatically bypass all mouse parallax and physics on touchscreens or when `prefers-reduced-motion` is detected, rendering a crisp, static SVG constellation with instant tooltips.
+

@@ -4,6 +4,11 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { BlobBackground } from "@/components/BlobBackground";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { SmoothScroll } from "@/components/shared/SmoothScroll";
+import { ScrollProgressBar } from "@/components/layout/ScrollProgressBar";
+import { CustomCursor } from "@/components/shared/CustomCursor";
+import { BrandedIntro } from "@/components/shared/BrandedIntro";
+import { GrainOverlay } from "@/components/shared/GrainOverlay";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://swe-mitwpu.vercel.app";
@@ -116,14 +121,20 @@ export default function RootLayout({
         />
 
         <ThemeProvider>
-          <div className="site-bg">
-            <BlobBackground />
-            <Navbar />
-            <main id="main" tabIndex={-1} className="relative z-[1] flex-1 pt-16 md:pt-18 outline-none">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <SmoothScroll>
+            <BrandedIntro />
+            <GrainOverlay />
+            <CustomCursor />
+            <ScrollProgressBar />
+            <div className="site-bg">
+              <BlobBackground />
+              <Navbar />
+              <main id="main" tabIndex={-1} className="relative z-[1] flex-1 pt-16 md:pt-18 outline-none">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </SmoothScroll>
         </ThemeProvider>
       </body>
     </html>

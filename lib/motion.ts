@@ -15,6 +15,8 @@ export const DURATION = {
   cinematic: 0.85, // 850ms — hero transitions, route cross-fades
 } as const;
 
+export const DURATIONS = DURATION;
+
 export const DURATION_MS = {
   instant: 100,
   fast: 180,
@@ -34,6 +36,8 @@ export const EASING = {
   // Fluid liquid curve for theme/wave transitions
   liquid: [0.22, 1.0, 0.36, 1.0] as const,
 } as const;
+
+export const EASINGS = EASING;
 
 // 3. Physical Spring Presets
 export const SPRINGS = {
@@ -137,10 +141,16 @@ export function useMotionPreference() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isLowPower, setIsLowPower] = useState(false);
 
+  const [isTouch, setIsTouch] = useState(false);
+
   useEffect(() => {
     // Check system prefers-reduced-motion
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
+
+    // Check pointer type
+    const touchQuery = window.matchMedia("(pointer: coarse)");
+    setIsTouch(touchQuery.matches);
 
     const handleMediaChange = (e: MediaQueryListEvent) => {
       setPrefersReducedMotion(e.matches);
@@ -164,8 +174,11 @@ export function useMotionPreference() {
 
   return {
     prefersReducedMotion,
+    isReduced: prefersReducedMotion,
     isLowPower,
+    isTouch,
     // Whether rich motion (3D tilt, parallax, particle canvas) should run
     shouldAnimate: !prefersReducedMotion && !isLowPower,
   };
 }
+

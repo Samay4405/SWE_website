@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUp } from "lucide-react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
 import { socialLinks } from "@/content/navigation";
 
@@ -64,6 +65,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export function Footer() {
   const currentYear = 2026;
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { damping: 25, stiffness: 120 });
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -71,7 +74,7 @@ export function Footer() {
 
   return (
     <footer
-      className="relative z-1 border-t border-[#E9E3FB]/80 bg-white/70 backdrop-blur-md"
+      className="relative z-1 border-t border-[#E9E3FB]/80 dark:border-white/10 bg-white/70 dark:bg-[#0F0D15]/80 backdrop-blur-md"
     >
       <div className="section-container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8 text-left">
@@ -79,14 +82,14 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link
               href="/"
-              className="inline-block font-semibold text-xl tracking-tight mb-3 text-[#1E1033]"
+              className="inline-block font-semibold text-xl tracking-tight mb-3 text-[#1E1033] dark:text-[#F3F0FA]"
             >
-              <span className="text-[#6538A5]">SWE</span>{" "}
-              <span className="font-normal text-sm text-[#6B6385]">
+              <span className="text-[#6538A5] dark:text-[#A78BDA]">SWE</span>{" "}
+              <span className="font-normal text-sm text-[#6B6385] dark:text-[#A79EC4]">
                 MIT-WPU
               </span>
             </Link>
-            <p className="text-xs sm:text-[13px] text-[#6B6385] leading-relaxed max-w-[260px] font-light">
+            <p className="text-xs sm:text-[13px] text-[#6B6385] dark:text-[#A79EC4] leading-relaxed max-w-[260px] font-light">
               Society of Women Engineers
               <br />
               MIT-WPU Student Chapter
@@ -94,21 +97,24 @@ export function Footer() {
               Pune, Maharashtra, India
             </p>
 
-            {/* Social Links */}
+            {/* Social Links with Spring Hover Bounce */}
             <div className="flex items-center gap-2.5 mt-5">
               {socialLinks.map((social) => {
                 const Icon = iconMap[social.icon];
                 return (
-                  <a
+                  <motion.a
                     key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Visit SWE MIT-WPU on ${social.label}`}
-                    className="flex items-center justify-center h-10 w-10 rounded-full border border-[#E9E3FB] text-[#6B6385] hover:text-[#6538A5] hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] transition-all duration-200"
+                    whileHover={{ scale: 1.15, rotate: -6 }}
+                    whileTap={{ scale: 0.92 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 18 }}
+                    className="flex items-center justify-center h-10 w-10 rounded-full border border-[#E9E3FB] dark:border-white/10 text-[#6B6385] dark:text-[#A79EC4] hover:text-[#6538A5] dark:hover:text-[#D1BEFC] hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] dark:hover:bg-[#201538] transition-colors duration-200"
                   >
                     {Icon && <Icon className="size-4" />}
-                  </a>
+                  </motion.a>
                 );
               })}
             </div>
@@ -117,7 +123,7 @@ export function Footer() {
           {/* Links Columns */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-[#1E1033] font-semibold">
+              <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-[#1E1033] dark:text-[#F3F0FA] font-semibold">
                 {section.title}
               </h4>
               <ul className="space-y-2.5">
@@ -128,14 +134,14 @@ export function Footer() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-[#6B6385] hover:text-[#6538A5] transition-colors duration-200 font-light"
+                        className="text-sm text-[#6B6385] dark:text-[#A79EC4] hover:text-[#6538A5] dark:hover:text-[#D1BEFC] transition-colors duration-200 font-light"
                       >
                         {link.label} ↗
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="text-sm text-[#6B6385] hover:text-[#6538A5] transition-colors duration-200 font-light"
+                        className="text-sm text-[#6B6385] dark:text-[#A79EC4] hover:text-[#6538A5] dark:hover:text-[#D1BEFC] transition-colors duration-200 font-light"
                       >
                         {link.label}
                       </Link>
@@ -148,10 +154,10 @@ export function Footer() {
 
           {/* Campus Location Column */}
           <div>
-            <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-[#1E1033] font-semibold">
+            <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-[#1E1033] dark:text-[#F3F0FA] font-semibold">
               Location
             </h4>
-            <address className="not-italic text-xs sm:text-[13px] text-[#6B6385] leading-relaxed font-light">
+            <address className="not-italic text-xs sm:text-[13px] text-[#6B6385] dark:text-[#A79EC4] leading-relaxed font-light">
               MIT World Peace University
               <br />
               Survey No. 124, Paud Road,
@@ -160,10 +166,10 @@ export function Footer() {
               <br />
               Maharashtra, India
             </address>
-            <p className="text-xs sm:text-[13px] text-[#6B6385] mt-4 font-light">
+            <p className="text-xs sm:text-[13px] text-[#6B6385] dark:text-[#A79EC4] mt-4 font-light">
               <a
                 href="mailto:swe.chapter@mitwpu.edu.in"
-                className="text-[#6538A5] hover:underline"
+                className="text-[#6538A5] dark:text-[#D1BEFC] hover:underline"
               >
                 swe.chapter@mitwpu.edu.in
               </a>
@@ -171,28 +177,32 @@ export function Footer() {
           </div>
         </div>
 
-        <Separator className="my-8 bg-[#E9E3FB]" />
+        <Separator className="my-8 bg-[#E9E3FB] dark:bg-white/10" />
 
         {/* Copyright & Back to Top Row */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6B6385]">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6B6385] dark:text-[#A79EC4]">
           <p className="font-light">
             © {currentYear} SWE MIT-WPU Student Chapter. All rights reserved.
           </p>
 
           <div className="flex items-center gap-6">
-            <span className="font-serif italic text-sm text-[#6538A5]">
+            <span className="font-serif italic text-sm text-[#6538A5] dark:text-[#CBB7F7]">
               Engineering the Future, Together.
             </span>
 
-            <button
+            <motion.button
               type="button"
               onClick={scrollToTop}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
               aria-label="Back to top of page"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#E9E3FB] hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] text-[#1E1033] hover:text-[#6538A5] transition-all duration-200 cursor-pointer text-xs font-medium"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E9E3FB] dark:border-white/10 hover:border-[#6538A5]/40 hover:bg-[#F6F2FC] dark:hover:bg-[#201538] text-[#1E1033] dark:text-[#F3F0FA] hover:text-[#6538A5] dark:hover:text-[#D1BEFC] transition-colors duration-200 cursor-pointer text-xs font-medium"
             >
               <span>Back to top</span>
-              <ArrowUp className="size-3" />
-            </button>
+              <div className="relative size-4 flex items-center justify-center">
+                <ArrowUp className="size-3 text-[#6538A5] dark:text-[#D1BEFC]" />
+              </div>
+            </motion.button>
           </div>
         </div>
       </div>
