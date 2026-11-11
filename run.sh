@@ -99,3 +99,4 @@ echo ""
 
 # Wait for both background processes
 wait "$PID_REVAMP" "$PID_PREV"
+
