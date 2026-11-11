@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { InkBleedCanvas, InkBleedTriggerOptions } from "./InkBleedCanvas";
+import { PaintSplashWave, PaintSplashTriggerOptions } from "./PaintSplashWave";
 
 type Theme = "light" | "dark";
 
@@ -29,7 +29,7 @@ export const useTheme = () => useContext(ThemeContext);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
-  const triggerRef = useRef<((options: InkBleedTriggerOptions) => void) | null>(null);
+  const waveTriggerRef = useRef<((options: PaintSplashTriggerOptions) => void) | null>(null);
 
   // Sync state on client mount
   useEffect(() => {
@@ -38,9 +38,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(isCurrentlyDark ? "dark" : "light");
   }, []);
 
-  const registerTrigger = useCallback(
-    (fn: (options: InkBleedTriggerOptions) => void) => {
-      triggerRef.current = fn;
+  const registerWaveTrigger = useCallback(
+    (fn: (options: PaintSplashTriggerOptions) => void) => {
+      waveTriggerRef.current = fn;
     },
     []
   );
@@ -49,7 +49,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     (event?: React.MouseEvent | { clientX: number; clientY: number }) => {
       const nextTheme: Theme = theme === "dark" ? "light" : "dark";
 
-      // Calculate origin coordinates for ink bleed
+      // Calculate origin coordinates for the paint wave
       let x = typeof window !== "undefined" ? window.innerWidth / 2 : 0;
       let y = typeof window !== "undefined" ? window.innerHeight / 2 : 0;
 
@@ -69,15 +69,53 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
       };
 
-      // Trigger the fluid ink bleed animation
-      if (triggerRef.current) {
-        triggerRef.current({
-          x,
-          y,
-          targetTheme: nextTheme,
-          onThemeSwap: applyThemeToDOM,
+      const prefersReducedMotion =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Check for native View Transitions support (Chrome 111+, Edge 111+, Safari 18+)
+      const hasViewTransition =
+        typeof document !== "undefined" &&
+        "startViewTransition" in document &&
+        !prefersReducedMotion;
+
+      if (hasViewTransition) {
+        // Trigger the luminous paint splash wave along the boundary
+        if (waveTriggerRef.current) {
+          waveTriggerRef.current({ x, y, duration: 720 });
+        }
+
+        const maxDist = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        );
+
+        // Native View Transition: Takes a live snapshot of old theme and blooms new theme over it
+        // CONTENT IS NEVER ERASED!
+        const transition = (document as any).startViewTransition(() => {
+          applyThemeToDOM();
+        });
+
+        transition.ready.then(() => {
+          document.documentElement.animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${maxDist * 1.05}px at ${x}px ${y}px)`,
+              ],
+            },
+            {
+              duration: 720,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              pseudoElement: "::view-transition-new(root)",
+            }
+          );
         });
       } else {
+        // Fallback for older browsers
+        if (!prefersReducedMotion && waveTriggerRef.current) {
+          waveTriggerRef.current({ x, y, duration: 600 });
+        }
         applyThemeToDOM();
       }
     },
@@ -93,7 +131,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-      <InkBleedCanvas registerTrigger={registerTrigger} />
+      <PaintSplashWave registerTrigger={registerWaveTrigger} />
     </ThemeContext.Provider>
   );
 }

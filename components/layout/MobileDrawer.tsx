@@ -71,7 +71,7 @@ export function MobileDrawer({
                 alt="SWE Logo"
                 width={70}
                 height={32}
-                className="h-6 w-auto inline-block brightness-0 dark:brightness-100 dark:invert opacity-80"
+                className="h-6 w-auto inline-block brightness-0 dark:filter-none dark:brightness-100 opacity-90"
               />
               <span className="text-muted-foreground font-normal text-xs uppercase tracking-wider border-l pl-2">
                 MIT-WPU

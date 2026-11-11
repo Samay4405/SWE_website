@@ -117,11 +117,11 @@ export function Navbar() {
                   alt="SWE Logo"
                   width={110}
                   height={52}
-                  className="h-6 sm:h-7 md:h-8 w-auto object-contain transition-all duration-300 select-none brightness-0 dark:brightness-100 dark:invert opacity-85 group-hover:opacity-100"
+                  className="h-6 sm:h-7 md:h-8 w-auto object-contain transition-all duration-300 select-none brightness-0 dark:filter-none dark:brightness-100 opacity-90 group-hover:opacity-100"
                   priority
                 />
               </div>
-              <span className="font-heading font-semibold text-xs md:text-sm tracking-widest uppercase transition-colors duration-300 border-l border-neutral-300 dark:border-neutral-700 pl-2.5 select-none text-neutral-600 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white">
+              <span className="font-heading font-semibold text-xs md:text-sm tracking-widest uppercase transition-colors duration-300 border-l border-neutral-300 dark:border-neutral-700 pl-2.5 select-none text-neutral-600 dark:text-neutral-100 group-hover:text-neutral-900 dark:group-hover:text-white">
                 MIT-WPU
               </span>
             </Link>
